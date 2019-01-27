@@ -1,6 +1,12 @@
 // Pipes for PVC & Pirodock
 // on github/swatchphp
-window.addEventListener("click", function(ev) {
+/* Add one or more listeners to an element
+** @param {DOMElement} element - DOM element to add listeners to
+** @param {string} eventNames - space separated list of event names, e.g. 'click change'
+** @param {Function} listener - function to attach for each event as a listener
+*/
+['click', 'touch', 'tap'].forEach(function(e) {
+	window.addEventListener(e, function(ev) {
 	var method_thru = "";
 	var mode_thru = "";
 	var cache_thru = "";
@@ -73,4 +79,5 @@ window.addEventListener("click", function(ev) {
 	fetch(opts_req, opts);
 	if (elem.hasAttribute("to-pipe"))
 		window.location.href = elem.getAttribute("to-pipe");
+}, false);
 });
