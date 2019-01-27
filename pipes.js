@@ -17,9 +17,6 @@
 	var pipe_to = "";
 	var return_method = "";
 	var elem = document.getElementById(ev.target.id);
-	//return is non-pipe
-	if (elem === null || elem === undefined)
-		return;
 	//does not mix with href (but you can still use <a></a>)
 	if (elem.hasAttribute("href"))
 		window.location.replace(elem.getAttribute("href"));
@@ -28,6 +25,9 @@
 	var elem_values = document.getElementsByClassName("data-pipe");
 	var elem_qstring = "";
 
+	//return is non-pipe
+	if (elem === null || elem === undefined)
+		return;
 	// No 'pipe' means it is generic
 	for (var i = 0 ; i < elem_values.length ; i++) {
 		var val = "";
