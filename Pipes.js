@@ -25,7 +25,7 @@ window.addEventListener("click", function(ev) {
 	for (var i = 0 ; i < elem_values.length ; i++)
 		elem_qstring = elem_qstring + elem_values[i].name + "=" + elem_values[i].value + "&";
 	
-	if (elem_qstring[elem_qstring] === "&" || elem_qstring[elem_qstring] === "?")
+	if (elem_qstring[elem_qstring] === "&")
 		elem_qstring = elem_qstring.substring(0, elem_qstring.length() - 1);
 
 	(elem.getAttribute("method") == undefined) ? method_thru = "GET" : method_thru = elem.getAttribute("method");
