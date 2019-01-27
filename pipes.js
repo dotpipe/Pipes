@@ -11,19 +11,28 @@ window.addEventListener("click", function(ev) {
 	var pipe_to = "";
 	var return_method = "";
 	var elem = document.getElementById(ev.target.id);
+	//return is non-pipe
 	if (elem === null || elem === undefined)
 		return;
+	//does not mix with href (but you can still use <a></a>)
 	if (elem.hasAttribute("href"))
 		window.location.replace(elem.getAttribute("href"));
 	var return_method = "";
+	//use 'data-pipe' as the name of a tag to include its value
 	var elem_values = document.getElementsByClassName("data-pipe");
 	var elem_qstring = "";
+
+	// No 'pipe' means it is generic
 	for (var i = 0 ; i < elem_values.length ; i++) {
 		var val = "";
-		elem_qstring = elem_qstring + elem_values[i].name + "=" + elem_values[i].getAttribute("value") + "&";
+		console.log(elem.id);
+	//if this is designated as belonging to another pipe, it won't be passed in the url
+		if (!elem_values[i].hasAttribute("pipe") || elem_values[i].getAttribute("pipe") === elem.id)
+			elem_qstring = elem_qstring + elem_values[i].name + "=" + elem_values[i].getAttribute("value") + "&";
 	}
-	
-	if (elem_qstring[elem_qstring] === "&")
+
+	//strip last & char
+	if (elem_qstring[elem_qstring.length-1] === "&")
 		elem_qstring = elem_qstring.substring(0, elem_qstring.length - 1);
 
 	if (!elem.hasAttribute("thru-pipe")) {
@@ -31,6 +40,8 @@ window.addEventListener("click", function(ev) {
 			window.location.href = elem.getAttribute("to-pipe") + "?" +  elem_qstring.substring(0, elem_qstring.length - 1);
 		return;
 	}
+
+	//make up headers and options for fetch call
 	(!elem.hasAttribute("method")) ? method_thru = "GET" : method_thru = elem.getAttribute("method");
 	(!elem.hasAttribute("mode")) ? mode_thru = "no-cors" : mode_thru = elem.getAttribute("mode");
 	(!elem.hasAttribute("cache")) ? cache_thru = "no-cache" : cache_thru = elem.getAttribute("cache");
