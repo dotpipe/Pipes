@@ -1,4 +1,4 @@
-<script>
+///<script>
 // Pipes for PVC & Pirodock
 // on github/swatchphp
 window.addEventListener("click", function(ev) {
@@ -62,4 +62,4 @@ window.addEventListener("click", function(ev) {
 	if (elem.getAttribute("to-pipe") !== undefined)
 		window.location.replace(elem.getAttribute("to-pipe"));
 });
-</script>
+///</script>
