@@ -33,13 +33,21 @@ window.addEventListener("click", function(ev) {
 	(!elem.hasAttribute("mode")) ? mode_thru = "no-cors" : mode_thru = elem.getAttribute("mode");
 	(!elem.hasAttribute("cache")) ? cache_thru = "no-cache" : cache_thru = elem.getAttribute("cache");
 	(!elem.hasAttribute("credentials")) ? cred_thru = "same-origin" : cred_thru = elem.getAttribute("cred");
-	(!elem.hasAttribute("headers")) ? content_thru = "text/html" : content_thru = elem.getAttribute("content");
-	(!elem.hasAttribute("redirect")) ? redirect_thru = "manual" : content_thru = elem.getAttribute("redirect");
-	(!elem.hasAttribute("referrer")) ? refer_thru = "client" : content_thru = elem.getAttribute("referrer");
+	(!elem.hasAttribute("headers")) ? content_thru = '"Access-Control-Allow-Origin":"*"' : content_thru = elem.getAttribute("content");
+	(!elem.hasAttribute("redirect")) ? redirect_thru = "manual" : redirect_thru = elem.getAttribute("redirect");
+	(!elem.hasAttribute("referrer")) ? refer_thru = "client" : refer_thru = elem.getAttribute("referrer");
 
 	var opts_req = new Request(elem.getAttribute("thru-pipe"));
-	sequence<ByteString, ByteString> opts = {
-		method: method_thru, // *GET, POST, PUT, DELETE, etc.
+	opts = new Array();
+	opts.push("method", method_thru); // *GET, POST, PUT, DELETE, etc.
+	opts.push("mode", mode_thru); // no-cors, cors, *same-origin
+	opts.push("cache", cache_thru); // *default, no-cache, reload, force-cache, only-if-cached
+	opts.push("credentials", cred_thru); // include, same-origin, *omit
+	opts.push("header", content_thru); // content-type
+	opts.push("redirect", redirect_thru); // manual, *follow, error
+	opts.push("referrer", refer_thru); // no-referrer, *client
+	opts.push("body", elem_qstring); // no-referrer, *client
+	/*
 		mode: mode_thru, // no-cors, cors, *same-origin
 		cache: cache_thru, // *default, no-cache, reload, force-cache, only-if-cached
 		credentials: cred_thru, // include, same-origin, *omit
@@ -47,7 +55,8 @@ window.addEventListener("click", function(ev) {
 		redirect: redirect_thru, // manual, *follow, error
 		referrer: refer_thru, // no-referrer, *client
 		body: elem_qstring
-	};
+	*/
+//	};
 	/*
 	if (content_thru == "application/json") {
 		opts.push('body', JSON.stringify(elem_qstring));
