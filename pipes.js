@@ -46,25 +46,12 @@ window.addEventListener("click", function(ev) {
 	opts.push("header", content_thru); // content-type
 	opts.push("redirect", redirect_thru); // manual, *follow, error
 	opts.push("referrer", refer_thru); // no-referrer, *client
-	opts.push("body", elem_qstring); // no-referrer, *client
-	/*
-		mode: mode_thru, // no-cors, cors, *same-origin
-		cache: cache_thru, // *default, no-cache, reload, force-cache, only-if-cached
-		credentials: cred_thru, // include, same-origin, *omit
-		headers: content_thru, // content-type
-		redirect: redirect_thru, // manual, *follow, error
-		referrer: refer_thru, // no-referrer, *client
-		body: elem_qstring
-	*/
-//	};
-	/*
 	if (content_thru == "application/json") {
-		opts.push('body', JSON.stringify(elem_qstring));
+		opts.push("body", JSON.stringify(elem_qstring));
 	}
 	else {
-		opts.push('body', elem_qstring); // body data type must match "Content-Type" header
+		opts.push("body", elem_qstring); // body data type must match "Content-Type" header
 	}
-	*/
 	const abort_ctrl = new AbortController();
 	const signal = abort_ctrl.signal;
 
