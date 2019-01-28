@@ -13,27 +13,28 @@
 	var pipe_to = "";
 	var return_method = "";
 	var elem = document.getElementById(ev.target.id);
-	//does not mix with href (but you can still use <a></a>)
-	if (elem.hasAttribute("href"))
-		window.location.replace(elem.getAttribute("href"));
-	var return_method = "";
-	//use 'data-pipe' as the name of a tag to include its value
-	var elem_values = document.getElementsByClassName("data-pipe");
-	var elem_qstring = "";
 
-	if (ev.target.hasAttribute("onclick")) {
-    		var f = ev.target.getAttribute("onclick");
-    		(f)();
-	}
+
 	if (elem === null || elem === undefined) {
+		if (ev.target.onclick !== null && ev.target.onclick !== undefined)
+			(ev.target.onclick)();
 	//does not mix with href (but you can still use <a></a>)
 		if (ev.target.href !== null && ev.target.href !== undefined)
 			window.location.href = ev.target.href;
 		return;
 	}
+	//use 'data-pipe' as the classname to include its value
+	// specify which pipe with pipe="target.id"
+	var elem_values = document.getElementsByClassName("data-pipe");
+	var elem_qstring = "";
+
+	//return if non-pipe
+
+
 	// No 'pipe' means it is generic
 	for (var i = 0 ; i < elem_values.length ; i++) {
 		var val = "";
+		console.log(elem.id);
 	//if this is designated as belonging to another pipe, it won't be passed in the url
 		if (!elem_values[i].hasAttribute("pipe") || elem_values[i].getAttribute("pipe") === elem.id)
 			elem_qstring = elem_qstring + elem_values[i].name + "=" + elem_values[i].getAttribute("value") + "&";
@@ -53,8 +54,8 @@
 	(!elem.hasAttribute("method")) ? method_thru = "GET" : method_thru = elem.getAttribute("method");
 	(!elem.hasAttribute("mode")) ? mode_thru = "no-cors" : mode_thru = elem.getAttribute("mode");
 	(!elem.hasAttribute("cache")) ? cache_thru = "no-cache" : cache_thru = elem.getAttribute("cache");
-	(!elem.hasAttribute("credentials")) ? cred_thru = "same-origin" : cred_thru = elem.getAttribute("cred");
-	(!elem.hasAttribute("headers")) ? content_thru = '{"Access-Control-Allow-Origin":"*","Content-Type":"text/html"}' : content_thru = elem.getAttribute("content");
+	(!elem.hasAttribute("credentials")) ? cred_thru = "same-origin" : cred_thru = elem.getAttribute("credentials");
+	(!elem.hasAttribute("headers")) ? content_thru = '{"Access-Control-Allow-Origin":"*","Content-Type":"text/html"}' : content_thru = elem.getAttribute("headers");
 	(!elem.hasAttribute("redirect")) ? redirect_thru = "manual" : redirect_thru = elem.getAttribute("redirect");
 	(!elem.hasAttribute("referrer")) ? refer_thru = "client" : refer_thru = elem.getAttribute("referrer");
 
@@ -79,16 +80,29 @@
 	if (elem.hasAttribute("out-pipe"))
 		target__ = document.getElementById(elem.hasAttribute("out-pipe"));
 	fetch(opts_req, {signal});
-	setTimeout(() => abort_ctrl.abort(), 10 * 1000);
-	fetch(opts_req, opts)
-		.then((res) => {
-			return res.text();
-		})
-		.then((data) => {
-			if (target__ != null)
-				target__.innerHTML = data;
+	setTimeout(() => abort_ctrl.abort(), 3 * 1000);
+	const __grab = async (opts_r, opts_) => {
+		return fetch(opts_r, opts_)
+			.then(function(response){
+			return response.text().then(function(text) {
+				if (target__ != null)
+					target__.innerHTML = text;
+				return text;
+			});
 		});
+		let dataBack = await text.text();
+		return dataBack;
+	
+	}
 
+	const getActivity = async (opts_req, opts) => {
+		let g = await __grab(opts_req, opts);
+		if (elem.hasAttribute("call-pipe")) {
+			var t = elem.getAttribute("call-pipe");
+			return (t)(g);
+		}
+	}
+	var s = getActivity(opts_req, opts);
 	if (elem.hasAttribute("to-pipe"))
 		window.location.href = elem.getAttribute("to-pipe");
 }, false);
