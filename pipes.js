@@ -1,10 +1,6 @@
 // Pipes for PVC & Pirodock
 // on github/swatchphp
-/* Add one or more listeners to an element
-** @param {DOMElement} element - DOM element to add listeners to
-** @param {string} eventNames - space separated list of event names, e.g. 'click change'
-** @param {Function} listener - function to attach for each event as a listener
-*/
+
 ['click', 'touch', 'tap'].forEach(function(e) {
 	window.addEventListener(e, function(ev) {
 	var method_thru = "";
@@ -25,9 +21,14 @@
 	var elem_values = document.getElementsByClassName("data-pipe");
 	var elem_qstring = "";
 
-	//return is non-pipe
-	if (elem === null || elem === undefined)
+	if (ev.target.onclick !== null && ev.target.onclick !== undefined)
+		ev.target.onclick)();
+	if (elem === null || elem === undefined) {
+	//does not mix with href (but you can still use <a></a>)
+		if (ev.target.href !== null && ev.target.href !== undefined)
+			window.location.href = ev.target.href;
 		return;
+	}
 	// No 'pipe' means it is generic
 	for (var i = 0 ; i < elem_values.length ; i++) {
 		var val = "";
