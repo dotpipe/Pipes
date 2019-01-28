@@ -21,8 +21,10 @@
 	var elem_values = document.getElementsByClassName("data-pipe");
 	var elem_qstring = "";
 
-	if (ev.target.onclick !== null && ev.target.onclick !== undefined)
-		ev.target.onclick)();
+	if (ev.target.hasAttribute("onclick")) {
+    		var f = ev.target.getAttribute("onclick");
+    		(f)();
+	}
 	if (elem === null || elem === undefined) {
 	//does not mix with href (but you can still use <a></a>)
 		if (ev.target.href !== null && ev.target.href !== undefined)
