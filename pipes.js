@@ -94,6 +94,10 @@
 	
 	}
 
+	// call-pipe is the callback function for the fetch
+	// You may leave it out, but you won't have a reply
+	// It is recommended to leave at least a file that
+	// you got it. You can do this through setting out-pipe.
 	const getActivity = async (opts_req, opts) => {
 		let g = await __grab(opts_req, opts);
 		if (elem.hasAttribute("call-pipe")) {
