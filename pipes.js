@@ -34,7 +34,6 @@
 	// No 'pipe' means it is generic
 	for (var i = 0 ; i < elem_values.length ; i++) {
 		var val = "";
-		console.log(elem.id);
 	//if this is designated as belonging to another pipe, it won't be passed in the url
 		if (!elem_values[i].hasAttribute("pipe") || elem_values[i].getAttribute("pipe") === elem.id)
 			elem_qstring = elem_qstring + elem_values[i].name + "=" + elem_values[i].getAttribute("value") + "&";
@@ -101,6 +100,7 @@
 			var t = elem.getAttribute("call-pipe");
 			return (t)(g);
 		}
+		return;
 	}
 	var s = getActivity(opts_req, opts);
 	if (elem.hasAttribute("to-pipe"))
