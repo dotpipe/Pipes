@@ -57,26 +57,36 @@
 	(!elem.hasAttribute("referrer")) ? refer_thru = "client" : refer_thru = elem.getAttribute("referrer");
 
 	var opts_req = new Request(elem.getAttribute("thru-pipe"));
-	opts = new Array();
-	opts.push("method", method_thru); // *GET, POST, PUT, DELETE, etc.
-	opts.push("mode", mode_thru); // no-cors, cors, *same-origin
-	opts.push("cache", cache_thru); // *default, no-cache, reload, force-cache, only-if-cached
-	opts.push("credentials", cred_thru); // include, same-origin, *omit
-	opts.push("header", content_thru); // content-type
-	opts.push("redirect", redirect_thru); // manual, *follow, error
-	opts.push("referrer", refer_thru); // no-referrer, *client
+	opts = new Map();
+	opts.set("method", method_thru); // *GET, POST, PUT, DELETE, etc.
+	opts.set("mode", mode_thru); // no-cors, cors, *same-origin
+	opts.set("cache", cache_thru); // *default, no-cache, reload, force-cache, only-if-cached
+	opts.set("credentials", cred_thru); // include, same-origin, *omit
+	opts.set("header", content_thru); // content-type
+	opts.set("redirect", redirect_thru); // manual, *follow, error
+	opts.set("referrer", refer_thru); // no-referrer, *client
 	if (content_thru == "application/json") {
-		opts.push('body', JSON.stringify(elem_qstring));
+		opts.set('body', JSON.stringify(elem_qstring));
 	}
 	else {
-		opts.push('body', elem_qstring); // body data type must match "Content-Type" header
+		opts.set('body', elem_qstring); // body data type must match "Content-Type" header
 	}
 	const abort_ctrl = new AbortController();
 	const signal = abort_ctrl.signal;
-
+	var target__ = null;
+	if (elem.hasAttribute("out-pipe"))
+		target__ = document.getElementById(elem.hasAttribute("out-pipe"));
 	fetch(opts_req, {signal});
 	setTimeout(() => abort_ctrl.abort(), 10 * 1000);
-	fetch(opts_req, opts);
+	fetch(opts_req, opts)
+		.then((res) => {
+			return res.text();
+		})
+		.then((data) => {
+			if (target__ != null)
+				target__.innerHTML = data;
+		});
+
 	if (elem.hasAttribute("to-pipe"))
 		window.location.href = elem.getAttribute("to-pipe");
 }, false);
