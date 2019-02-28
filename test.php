@@ -1,6 +1,6 @@
 <?php
 echo "<span style=\"background-color:black;width:100%\"><br>";
-echo "Firemaker::Pirodock v1.0 - <a href=\"http://www.github.com/swatchphp\">GitHub</a> + ";
+echo "Adoms::Hydrogen v1.0 - <a href=\"http://www.github.com/swatchphp\">GitHub</a> + ";
 echo "<a id='wiki-link' to-pipe=\"http://www.github.com/swatchphp/adoms/wiki/\">Wiki</a> + ";
 echo "<a id='donate' redirect=\"follow\" method=\"POST\" to-pipe=\"https://www.paypal.com/cgi-bin/webscr\"> Donate </a>";
 echo '<input type="hidden" pipe="donate" class="data-pipe" name="cmd" value="_s-xclick" />';
