@@ -46,7 +46,8 @@
 		return;
 	}
 
-	// communicate properties of Fetch Request
+	// communication properties of Fetch Request
+	// any used are required to be in link being clicked. No other way.
 	(!elem.hasAttribute("method")) ? method_thru = "GET" : method_thru = elem.getAttribute("method");
 	(!elem.hasAttribute("mode")) ? mode_thru = "no-cors" : mode_thru = elem.getAttribute("mode");
 	(!elem.hasAttribute("cache")) ? cache_thru = "no-cache" : cache_thru = elem.getAttribute("cache");
