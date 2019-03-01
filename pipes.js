@@ -39,17 +39,20 @@
 	if (elem_qstring[elem_qstring.length-1] === "&")
 		elem_qstring = elem_qstring.substring(0, elem_qstring.length - 1);
 
+	// if thru-pipe isn't used, then use to-pipe
 	if (!elem.hasAttribute("thru-pipe")) {
 		if (elem.hasAttribute("to-pipe") && elem.getAttribute("to-pipe") !== "")
 			window.location.href = elem.getAttribute("to-pipe") + "?" + elem_qstring;
 		return;
 	}
 
+	// communicate properties of Fetch Request
 	(!elem.hasAttribute("method")) ? method_thru = "GET" : method_thru = elem.getAttribute("method");
 	(!elem.hasAttribute("mode")) ? mode_thru = "no-cors" : mode_thru = elem.getAttribute("mode");
 	(!elem.hasAttribute("cache")) ? cache_thru = "no-cache" : cache_thru = elem.getAttribute("cache");
 	(!elem.hasAttribute("credentials")) ? cred_thru = "same-origin" : cred_thru = elem.getAttribute("credentials");
-	(!elem.hasAttribute("headers")) ? content_thru = '{"Access-Control-Allow-Origin":"*","Content-Type":"text/html"}' : content_thru = elem.getAttribute("headers");
+// updated "headers" attribute to more friendly "content-type" attribute
+	(!elem.hasAttribute("content-type")) ? content_thru = '{"Access-Control-Allow-Origin":"*","Content-Type":"text/html"}' : content_thru = elem.getAttribute("headers");
 	(!elem.hasAttribute("redirect")) ? redirect_thru = "manual" : redirect_thru = elem.getAttribute("redirect");
 	(!elem.hasAttribute("referrer")) ? refer_thru = "client" : refer_thru = elem.getAttribute("referrer");
 
@@ -59,15 +62,10 @@
 	opts.set("mode", mode_thru); // no-cors, cors, *same-origin
 	opts.set("cache", cache_thru); // *default, no-cache, reload, force-cache, only-if-cached
 	opts.set("credentials", cred_thru); // include, same-origin, *omit
-	opts.set("header", content_thru); // content-type
+	opts.set("content-type", content_thru); // content-type UPDATED**
 	opts.set("redirect", redirect_thru); // manual, *follow, error
 	opts.set("referrer", refer_thru); // no-referrer, *client
-	if (content_thru == "application/json") {
-		opts.set('body', JSON.stringify(elem_qstring));
-	}
-	else {
-		opts.set('body', elem_qstring); // body data type must match "Content-Type" header
-	}
+	opts.set('body', JSON.stringify(content_thru));
 	const abort_ctrl = new AbortController();
 	const signal = abort_ctrl.signal;
 	var target__ = null;
