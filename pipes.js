@@ -30,9 +30,15 @@
 	// No 'pipe' means it is generic
 	for (var i = 0 ; i < elem_values.length ; i++) {
 	//if this is designated as belonging to another pipe, it won't be passed in the url
-		if (elem_values[i].hasAttribute(multiple) || !elem_values[i].hasAttribute("pipe") || elem_values[i].getAttribute("pipe") == elem.id)
+		if (!elem_values[i].hasAttribute("pipe") || elem_values[i].getAttribute("pipe") == elem.id)
 			elem_qstring = elem_qstring + elem_values[i].name + "=" + elem_values[i].value + "&";
-		
+		if (elem_values.hasAttribute(multiple)) {
+			for (var o of elem_values.options) {
+				if (o.selected) {
+					elem_qstring = elem_qstring + elem_values[i].name + "=" + o.value + "&";
+				}
+			}
+		}
 	}
 
 	//strip last & char
@@ -46,8 +52,7 @@
 		return;
 	}
 
-	// communication properties of Fetch Request
-	// any used are required to be in link being clicked. No other way.
+	// communicate properties of Fetch Request
 	(!elem.hasAttribute("method")) ? method_thru = "GET" : method_thru = elem.getAttribute("method");
 	(!elem.hasAttribute("mode")) ? mode_thru = "no-cors" : mode_thru = elem.getAttribute("mode");
 	(!elem.hasAttribute("cache")) ? cache_thru = "no-cache" : cache_thru = elem.getAttribute("cache");
