@@ -20,19 +20,19 @@
 			window.location.href = ev.target.href;
 		return;
 	}
-	//use 'data-pipe' as the classname to include its value
-	// specify which pipe with pipe="target.id"
+
+//use 'data-pipe' as the classname to include its value
+// specify which pipe with pipe="target.id"
 	var elem_values = document.getElementsByClassName("data-pipe");
 	var elem_qstring = "";
 
-	//return if non-pipe
-
-	// No 'pipe' means it is generic
+// No 'pipe' means it is generic
 	for (var i = 0 ; i < elem_values.length ; i++) {
+
 	//if this is designated as belonging to another pipe, it won't be passed in the url
 		if (!elem_values[i].hasAttribute("pipe") || elem_values[i].getAttribute("pipe") == elem.id)
 			elem_qstring = elem_qstring + elem_values[i].name + "=" + elem_values[i].value + "&";
-		if (elem_values.hasAttribute(multiple)) {
+		if (elem_values[i].hasAttribute("multiple")) {
 			for (var o of elem_values.options) {
 				if (o.selected) {
 					elem_qstring = elem_qstring + elem_values[i].name + "=" + o.value + "&";
@@ -41,18 +41,18 @@
 		}
 	}
 
-	//strip last & char
+//strip last & char
 	if (elem_qstring[elem_qstring.length-1] === "&")
 		elem_qstring = elem_qstring.substring(0, elem_qstring.length - 1);
 
-	// if thru-pipe isn't used, then use to-pipe
+// if thru-pipe isn't used, then use to-pipe
 	if (!elem.hasAttribute("thru-pipe")) {
 		if (elem.hasAttribute("to-pipe") && elem.getAttribute("to-pipe") !== "")
 			window.location.href = elem.getAttribute("to-pipe") + "?" + elem_qstring;
 		return;
 	}
 
-	// communicate properties of Fetch Request
+// communicate properties of Fetch Request
 	(!elem.hasAttribute("method")) ? method_thru = "GET" : method_thru = elem.getAttribute("method");
 	(!elem.hasAttribute("mode")) ? mode_thru = "no-cors" : mode_thru = elem.getAttribute("mode");
 	(!elem.hasAttribute("cache")) ? cache_thru = "no-cache" : cache_thru = elem.getAttribute("cache");
@@ -75,6 +75,8 @@
 	const abort_ctrl = new AbortController();
 	const signal = abort_ctrl.signal;
 	var target__ = null;
+
+// This is where the output will go. Uses id attribute
 	if (elem.hasAttribute("out-pipe"))
 		target__ = document.getElementById(elem.getAttribute("out-pipe"));
 	fetch(opts_req, {signal});
@@ -84,6 +86,7 @@
 		return fetch(opts_r, opts_)
 			.then(function(response){
 			return response.text().then(function(text) {
+// Make sure that the target out-pipe exists still
 				if (target__ != null)
 					target__.innerHTML = text;
 				return text;
@@ -94,6 +97,7 @@
 	
 	}
 
+//  Insert a callback function by useing call-pipe
 	const getActivity = async (opts_rq, opts) => {
 		let g = await __grab(opts_rq, opts);
 		if (elem.hasAttribute("call-pipe")) {
@@ -104,6 +108,7 @@
 	}
 	var s = getActivity(opts_req, opts);
 
+// to-pipe means, go here with current browser window
 	if (elem.hasAttribute("to-pipe"))
 		window.location.href = elem.getAttribute("to-pipe");
 }, false);
