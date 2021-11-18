@@ -1,5 +1,12 @@
-['click', 'touch', 'tap'].forEach(function(e) {
-    window.addEventListener(e, function(ev) {
+document.getElementById('idContentEditable').addEventListener('keypress', (evt) => {
+    if (evt.which === 13) {
+        evt.preventDefault();
+        pipe(evt);
+    }
+});
+
+function pipe(ev) {
+    
         var method_thru = "";
         var mode_thru = "";
         var cache_thru = "";
@@ -120,4 +127,4 @@
         if (elem.hasAttribute("ajax") && elem.hasAttribute("goto"))
             window.location.href = elem.getAttribute("goto");
     }, false);
-});
+}
