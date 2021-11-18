@@ -2,7 +2,7 @@
 // It should do the actions needed elsewise, which
 // PipesJS doesn't handle natively.
 
-document.getElementById('idContentEditable').addEventListener('keypress', (evt) => {
+document.addEventListener('keypress', (evt) => {
     if (evt.which === 13) {
         evt.preventDefault();
         pipe(evt);
