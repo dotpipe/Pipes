@@ -1,16 +1,52 @@
 // Use a listener like this directly in your page
 // It should do the actions needed elsewise, which
 // PipesJS doesn't handle natively.
-
-document.addEventListener('keypress', (evt) => {
-    if (evt.which === 13) {
-        evt.preventDefault();
-        pipe(evt);
+function handleJSON(ev, j)
+{
+    if (ev == 'price') {
+        const readvar = "$" + JSON.parse(j).data['amount'];
+        document.getElementById('price').innerHTML = readvar;
     }
-});
+    else if (ev == 'change')
+    {
+        const open = (JSON.parse(j));
+        const percent_ch = ( 1 - parseFloat(open.last / open.open) )*100;
+        document.getElementById('change').innerHTML =  (open.open < last.last) ? "+" + percent_ch.toFixed(3) + "%" : percent_ch.toFixed(3) + "%";
+    }
+    else if (ev == 'ytu')
+    {
+        //const json = JSON.parse(j);
+        console.log(".");
+        
+        document.getElementById('success-uri').innerHTML = "Success";
+    }
+    else
+    {
+      	bids = JSON.parse(j);
+      	asks = JSON.parse(j);
+        
+      	var readvar = '<table style="border:1px solid black;margin-left:-15px;width:145px;color:black;background-color:white !important;opacity:85%;padding:2px">';
+      	readvar += '<tr><td style="font-size:16;text-align:center;" colspan="2">Price</td></tr>';
+      	readvar += "<tr style='background-color:blue !important;margin:2px;'><td style='width:50%;float:right'>Bid</td><td>Ask</td></tr>";
+      	color = 68;
+        
+        for (i = 0 ; i < 5 ; i++)
+        {
+          	h = color;
+          	colortemp = Math.floor(Math.random * (255 << 16));
+          	hex = parseInt(colortemp,16);
+          	hex = hex;
+            readvar += '<tr style="margin:2px;background-color:orange !important;"><td style="width:50%;text-align:left;font-size:15;"><b>' + bids.bids[i][0] + '</b></td><td style="text-align:center;font-size:15;"><b>' + asks.asks[i][0] + '</b></td></tr>';
+          	h <<= 3;
+          	h += 2;
+          	color ^= h;
+        }
+        readvar += '</table>';
+        document.getElementById(ev).innerHTML = readvar;
+    }
+}
 
 function pipe(ev) {
-    
         var method_thru = "";
         var mode_thru = "";
         var cache_thru = "";
@@ -18,17 +54,9 @@ function pipe(ev) {
         var content_thru = "";
         var redirect_thru = "";
         var refer_thru = "";
-        var elem = document.getElementById(ev.target.id);
 
-        if (elem === null || elem === undefined) {
-            if (ev.target.onclick !== null && ev.target.onclick !== undefined)
-                (ev.target.onclick)();
-            //does not mix with href (but you can still use <a></a>)
-            if (ev.target.href !== null && ev.target.href !== undefined)
-                window.location.href = ev.target.href;
-            return;
-        }
-
+        var elem = document.getElementById(ev);
+        console.log(elem);
         //use 'data-pipe' as the classname to include its value
         // specify which pipe with pipe="target.id"
         var elem_values = document.getElementsByClassName("data-pipe");
@@ -50,33 +78,40 @@ function pipe(ev) {
             }
         }
 
+        // This is to get textContent values from forms. No 'pipe' means it is generic. This means it is open season for all with this class
+        for (var i = 0; i < elem_values.length; i++) {
+            //if this is designated as belonging to another pipe, it won't be passed in the url
+            if (!elem_values[i].hasAttribute("pipe") || elem_values[i].getAttribute("pipe") == elem.id)
+                elem_qstring = elem_qstring + elem_values[i].name + "=" + elem_values[i].textContent + "&";
+        }
+
         //strip last & char
         if (elem_qstring[elem_qstring.length - 1] === "&")
             elem_qstring = elem_qstring.substring(0, elem_qstring.length - 1);
 
         // if thru-pipe isn't used, then use to-pipe
-        if (!elem.hasAttribute("ajax")) {
+        if (elem !== null && elem !== undefined && !elem.hasAttribute("ajax")) {
             if (elem.hasAttribute("goto") && elem.getAttribute("goto") !== "")
                 window.location.href = elem.getAttribute("goto") + "?" + elem_qstring;
             return;
         }
 
         // communicate properties of Fetch Request
-        (!elem.hasAttribute("method")) ? method_thru = "GET": method_thru = elem.getAttribute("method");
-        (!elem.hasAttribute("mode")) ? mode_thru = "no-cors": mode_thru = elem.getAttribute("mode");
-        (!elem.hasAttribute("cache")) ? cache_thru = "no-cache": cache_thru = elem.getAttribute("cache");
-        (!elem.hasAttribute("credentials")) ? cred_thru = "same-origin": cred_thru = elem.getAttribute("credentials");
+        (elem === null || elem === undefined || !elem.hasAttribute("method")) ? method_thru = "GET": method_thru = elem.getAttribute("method");
+        (elem === null || elem === undefined || !elem.hasAttribute("mode")) ? mode_thru = "no-cors": mode_thru = elem.getAttribute("mode");
+        (elem === null || elem === undefined || !elem.hasAttribute("cache")) ? cache_thru = "no-cache": cache_thru = elem.getAttribute("cache");
+        (elem === null || elem === undefined || !elem.hasAttribute("credentials")) ? cred_thru = "same-origin": cred_thru = elem.getAttribute("credentials");
         // updated "headers" attribute to more friendly "content-type" attribute
-        (!elem.hasAttribute("content-type")) ? content_thru = '{"Access-Control-Allow-Origin":"*","Content-Type":"text/html"}': content_thru = elem.getAttribute("headers");
-        (!elem.hasAttribute("redirect")) ? redirect_thru = "manual": redirect_thru = elem.getAttribute("redirect");
-        (!elem.hasAttribute("referrer")) ? refer_thru = "client": refer_thru = elem.getAttribute("referrer");
+        (elem === null || elem === undefined || !elem.hasAttribute("content-type")) ? content_thru = '{"Access-Control-Allow-Origin":"*","Content-Type":"application/json"}': content_thru = elem.getAttribute("headers");
+        (elem === null || elem === undefined || !elem.hasAttribute("redirect")) ? redirect_thru = "manual": redirect_thru = elem.getAttribute("redirect");
+        (elem === null || elem === undefined || !elem.hasAttribute("referrer")) ? refer_thru = "client": refer_thru = elem.getAttribute("referrer");
 
-        var opts_req = new Request(elem.getAttribute("ajax") + "?" + elem_qstring);
+        var opts_req = (elem === null || elem === undefined || !elem.hasAttribute("ajax")) ? "" : new Request(elem.getAttribute("ajax") + elem_qstring);
         opts = new Map();
         opts.set("method", method_thru); // *GET, POST, PUT, DELETE, etc.
         opts.set("mode", mode_thru); // no-cors, cors, *same-origin
         opts.set("cache", cache_thru); // *default, no-cache, reload, force-cache, only-if-cached
-        opts.set("credentials", cred_thru); // include, same-origin, *omit
+        opts.set("credentials", cred_thru);  // include, same-origin, *omit
         opts.set("content-type", content_thru); // content-type UPDATED**
         opts.set("redirect", redirect_thru); // manual, *follow, error
         opts.set("referrer", refer_thru); // no-referrer, *client
@@ -87,18 +122,14 @@ function pipe(ev) {
 
         var pipe_back = "";
         // This is where the output will go. Indicates id attribute to aim at
-        if (elem.hasAttribute("insert-in"))
+        if (elem !== null && elem !== undefined && elem.hasAttribute("insert-in"))
             target__ = document.getElementById(elem.getAttribute("insert-in"));
-        // This is where the output will go. Indicates id attribute to aim at
-        if (elem.hasAttribute("json")) {
-            target__ = document.getElementById(elem.getAttribute("json"));
-            pipe_back = "json";
-        }
+
         fetch(opts_req, {
             signal
         });
-
-        setTimeout(() => abort_ctrl.abort(), 3 * 1000);
+        
+        setTimeout(() => abort_ctrl.abort(), 10 * 1000);
         const __grab = async (opts_r, opts_) => {
             return fetch(opts_r, opts_)
                 .then(function(response) {
@@ -116,19 +147,20 @@ function pipe(ev) {
         }
 
         //  Insert a callback function by useing call-pipe
-        const getActivity = async (opts_rq, opts) => {
+        const getActivity = async (opts_rq, opts, ev) => {
             let g = await __grab(opts_rq, opts);
-            if (elem.hasAttribute("callback")) {
-                var t = elem.getAttribute("callback");
-                return (t)(g);
+            if (elem !== null && elem !== undefined && elem.hasAttribute("callback")) {
+              	if (g.length == 0)
+                  return "Error";
+                return handleJSON(ev, g);
             }
             return;
         }
-        var s = getActivity(opts_req, opts);
+        var s = getActivity(opts_req, opts, ev);
 
         // to-pipe means, go here with current browser window
         // Only uses if thru-pipe exists. Unlike above.
-        if (elem.hasAttribute("ajax") && elem.hasAttribute("goto"))
+        if (elem !== null && elem !== undefined && elem.hasAttribute("ajax") && elem.hasAttribute("goto"))
             window.location.href = elem.getAttribute("goto");
-    }, false);
+    //}, false);
 }
