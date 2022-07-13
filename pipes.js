@@ -1,49 +1,9 @@
 // Use a listener like this directly in your page
 // It should do the actions needed elsewise, which
 // PipesJS doesn't handle natively.
-function handleJSON(ev, j)
+function handleJSON(ev, json)
 {
-    if (ev == 'price') {
-        const readvar = "$" + JSON.parse(j).data['amount'];
-        document.getElementById('price').innerHTML = readvar;
-    }
-    else if (ev == 'change')
-    {
-        const open = (JSON.parse(j));
-        const percent_ch = ( 1 - parseFloat(open.last / open.open) )*100;
-        document.getElementById('change').innerHTML =  (open.open < last.last) ? "+" + percent_ch.toFixed(3) + "%" : percent_ch.toFixed(3) + "%";
-    }
-    else if (ev == 'ytu')
-    {
-        //const json = JSON.parse(j);
-        console.log(".");
-        
-        document.getElementById('success-uri').innerHTML = "Success";
-    }
-    else
-    {
-      	bids = JSON.parse(j);
-      	asks = JSON.parse(j);
-        
-      	var readvar = '<table style="border:1px solid black;margin-left:-15px;width:145px;color:black;background-color:white !important;opacity:85%;padding:2px">';
-      	readvar += '<tr><td style="font-size:16;text-align:center;" colspan="2">Price</td></tr>';
-      	readvar += "<tr style='background-color:blue !important;margin:2px;'><td style='width:50%;float:right'>Bid</td><td>Ask</td></tr>";
-      	color = 68;
-        
-        for (i = 0 ; i < 5 ; i++)
-        {
-          	h = color;
-          	colortemp = Math.floor(Math.random * (255 << 16));
-          	hex = parseInt(colortemp,16);
-          	hex = hex;
-            readvar += '<tr style="margin:2px;background-color:orange !important;"><td style="width:50%;text-align:left;font-size:15;"><b>' + bids.bids[i][0] + '</b></td><td style="text-align:center;font-size:15;"><b>' + asks.asks[i][0] + '</b></td></tr>';
-          	h <<= 3;
-          	h += 2;
-          	color ^= h;
-        }
-        readvar += '</table>';
-        document.getElementById(ev).innerHTML = readvar;
-    }
+    // handle JSONs here (callback attribute)    
 }
 
 function pipe(ev) {
