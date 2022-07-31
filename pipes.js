@@ -282,7 +282,7 @@ function classToAJAX(elem) {
     opts = new Map();
     f = 0;
 
-    let elem_qstring = elem.getAttribute("ajax") + "?" + elem.getAttribute("query");
+    let elem_qstring = elem.getAttribute("ajax") + "?" + elem.getAttribute("query").toString();
     elem_qstring = encodeURI(elem_qstring);
 
     ["Referrer-Policy","Strict","GET","no-cors","no-cache"," ",'{"Access-Control-Allow-Origin":"*","Content-Type":"text/html"}', "manual", "client"]
