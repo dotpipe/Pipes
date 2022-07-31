@@ -137,37 +137,6 @@ function navigate(el) {
     }
 }
 
-function collectURLData(el)
-{
-    if (!document.body.contains(el))
-        return;
-    elem = document.getElementById(el.id);
-    //use 'data-pipe' as the classname to include its value
-    // specify which pipe with pipe="target.id"
-    var elem_values = document.getElementsByClassName("data-pipe");
-    var elem_qstring = "";
-
-    // No, 'pipe' means it is generic. This means it is open season for all with this class
-    for (var i = 0; i < elem_values.length; i++) {
-        //if this is designated as belonging to another pipe, it won't be passed in the url
-        if (elem_values && !elem_values[i].hasOwnProperty("pipe") || elem_values[i].getAttribute("pipe") == elem.id)
-            elem_qstring = elem_qstring + elem_values[i].name + "=" + elem_values[i].value + "&";
-        // Multi-select box
-        console.log(".");
-        if (elem_values[i].hasOwnProperty("multiple")) {
-            for (var o of elem_values.options) {
-                if (o.selected) {
-                    elem_qstring = elem_qstring + "&" + elem_values[i].name + "=" + o.value;
-                }
-            }
-        }
-    }
-
-    console.log(elem.getAttribute("ajax") + "?" + elem_qstring.substr(1));
-    elem_qstring = elem.getAttribute("ajax") + "?" + elem_qstring.substr(1);
-    return encodeURI(elem_qstring);
-}
-
 function pipe(ev)
 {
         // This is a quick if to make a downloadable link in an href
@@ -283,18 +252,19 @@ function notify(t)
                             p.innerText = text;
                             p.style.position = "relative";
                             ppr.setAttribute("notify-ms",3000);
-                            document.body.data-insertBefore(ppr,document.body.firstChild);
+                            document.body.insertBefore(ppr,document.body.firstChild);
                         }
                         else {
                             ppr = document.getElementsByTagName(t)[0];
                         }
-                            let p = document.createElement("p");
-                            p.innerText = text;
-                            p.style.position = "relative";
-                            ppr.data-insertBefore(p,ppr.firstChild);
+
+                        let p = document.createElement("p");
+                        p.innerText = text;
+                        p.style.position = "relative";
+                        ppr.insertBefore(p,ppr.firstChild);
                         var xy = parseInt(elem.getAttribute("notify-ms"));
                         setTimeout(function(){
-                            ppr.removeChild(ppr.lastChild);
+                        ppr.removeChild(ppr.lastChild);
                         }, xy);
                     return;
                 });
@@ -312,28 +282,7 @@ function classToAJAX(elem) {
     opts = new Map();
     f = 0;
 
-    let elem_qstring = "";
-    var elem_values = document.getElementsByClassName("data-pipe");
-    
-    // No, 'pipe' means it is generic. This means it is open season for all with this class
-    for (var i = 0; i < elem_values.length; i++) {
-        //if this is designated as belonging to another pipe, it won't be passed in the url
-        if (elem_values && !elem_values[i].hasOwnProperty("pipe") || elem_values[i].getAttribute("pipe") == elem.id)
-            elem_qstring = elem_qstring + elem_values[i].name + "=" + elem_values[i].value + "&";
-        // Multi-select box
-        console.log(".");
-        if (elem_values[i].hasOwnProperty("multiple")) {
-            for (var o of elem_values.options) {
-                if (o.selected) {
-                    elem_qstring = elem_qstring + "&" + elem_values[i].name + "=" + o.value;
-                }
-            }
-        }
-    }
-
-    elem_qstring = elem_qstring + "&" + elem.name + "=" + elem.value;
-    console.log(elem.getAttribute("ajax") + "?" + elem_qstring.substr(1));
-    elem_qstring = elem.getAttribute("ajax") + "?" + elem_qstring.substr(1);
+    let elem_qstring = elem.getAttribute("ajax") + "?" + elem.getAttribute("query");
     elem_qstring = encodeURI(elem_qstring);
 
     ["Referrer-Policy","Strict","GET","no-cors","no-cache"," ",'{"Access-Control-Allow-Origin":"*","Content-Type":"text/html"}', "manual", "client"]
