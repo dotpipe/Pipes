@@ -82,7 +82,7 @@ function setAJAXOpts(el)
     var mode_thru = (opts["mode"] !== undefined) ? opts["mode"]: (!elem.hasAttribute("mode")) ? "no-cors" : elem.getAttribute("mode").toString();
     var cache_thru = (opts["cache"] !== undefined) ? opts["cache"]: (!elem.hasAttribute("cred")) ? "no-cache" : elem.getAttribute("cache").toString();
     var cred_thru = (opts["cred"] !== undefined) ? opts["cred"]: (!elem.hasAttribute("cred")) ? "same-origin" : elem.getAttribute("cred").toString();
-    // updated "headers" attribute to more friendly "content-type" attribute name
+    // updated "headers" attribute to more friendly "content-type" attribute
     var content_thru = (opts["headers"] !== undefined) ? opts["headers"]: (elem.hasAttribute("headers")) ? '{"Access-Control-Allow-Origin":"*","Content-Type":"text/html"}' : elem.getAttribute("headers").toString();
     var redirect_thru = (opts["redirect"] !== undefined) ? opts["redirect"]: (!elem.hasAttribute("redirect")) ? "manual" : elem.getAttribute("redirect").toString();
     var refer_thru = (opts["referrer"] !== undefined) ? opts["referrer"]: (!elem.hasAttribute("referrer")) ? "client" : elem.getAttribute("referrer").toString();
@@ -148,9 +148,8 @@ function navigate(el) {
         element.style.display = 'none';
         document.body.appendChild(element);
 
-     // Click our self made link
         element.click();
-     // Remove the link
+
         document.body.removeChild(element);
 
         return;
@@ -162,12 +161,12 @@ function collectURLData(el)
     if (!document.body.contains(el))
         return;
     elem = document.getElementById(el.id);
-    //use 'data-pipe' as a classname to include its value
+    //use 'data-pipe' as the classname to include its value
     // specify which pipe with pipe="target.id"
     var elem_values = document.getElementsByClassName("data-pipe");
-    var elem_qstring = "";
+    var elem_qstring = (elem.hasAttribute("query")) ? elem.getAttribute("query").toString() : "";
 
-    // Simply making a undefined 'pipe' attribute means it is generic. This means it is open season for all with this class
+    // No, 'pipe' means it is generic. This means it is open season for all with this class
     for (var i = 0; i < elem_values.length; i++) {
         //if this is designated as belonging to another pipe, it won't be passed in the url
         if (elem_values && !elem_values[i].hasOwnProperty("pipe") || elem_values[i].getAttribute("pipe") == elem.id)
@@ -192,7 +191,7 @@ function pipe(ev)
 {
 
         // This is a quick if to make a downloadable link in an href
-        if (ev.hasAttribute("class") && ev.classList !== undefined && ev.classList == "download")
+        if (ev.target.classList.contains("download"))
         {
             var text = ev.target.getAttribute("file");
             var element = document.createElement('a');
@@ -208,7 +207,8 @@ function pipe(ev)
 
             return;
         }
-        const elem = ev;
+        const elem = ev.target;
+        console.log(ev);
         classToAJAX(elem);
 }
 
@@ -246,12 +246,10 @@ function captureAJAXResponse(elem, opts) {
     return __grab(opts_req, opts);
 }
 
-function notify(tagname) {
+function notify(targetname) {
 
-    elem = document.getElementsByTagName(tagname)[0];
+    elem = document.getElementsByTagName(targetname)[0];
 
-    if (!elem)
-        return;
     opts = new Map();
     f = 0;
 
@@ -272,7 +270,7 @@ function notify(tagname) {
         signal
     });
 
-    target__ = tagname;
+    target__ = targetname;
     
     setTimeout(() => abort_ctrl.abort(), 10 * 1000);
     const __grab = async (opts_req, opts) => {
@@ -282,9 +280,9 @@ function notify(tagname) {
                         return;
                 return response.text().then(function(text) {
                     
-                        if (undefined == document.getElementsByTagName(tagname)[0]) {
+                        if (undefined == document.getElementsByTagName(targetname)[0]) {
 
-                            ppr = document.createElement(tagname);
+                            ppr = document.createElement(targetname);
                             ppr.style.position = "absolute";
                             ppr.style.backgroundColor = "navy";
                             ppr.style.wordwrap = true;
@@ -296,7 +294,7 @@ function notify(tagname) {
                             document.body.insertBefore(ppr,document.body.firstChild);
                         }
                         else {
-                            ppr = document.getElementsByTagName(tagname)[0];
+                            ppr = document.getElementsByTagName(targetname)[0];
                         }
                             let p = document.createElement("p");
                             p.innerText = text;
@@ -315,20 +313,20 @@ function notify(tagname) {
 
 function classToAJAX(elem) {
 
+    
+    if (!elem)
+        return;
+
     opts = new Map();
     f = 0;
 
-    if (elem.id == undefined)
-        return;
 
-    elem_qstring = "";
-    if (elem.hasAttribute("query"))
-        elem_qstring = elem.getAttribute("query").toString();
+    elem_qstring = elem.getAttribute("query").toString();
 
     var elem_values = document.getElementsByClassName("data-pipe");
     
     // No, 'pipe' means it is generic. This means it is open season for all with this class
-    for (var i = 0; i < elem_values.length && elem.classList.contains("data-pipe"); i++) {
+    for (var i = 0; i < elem_values.length; i++) {
         //if this is designated as belonging to another pipe, it won't be passed in the url
         if (elem_values && !elem_values[i].hasOwnProperty("pipe") || elem_values[i].getAttribute("pipe") == elem.id)
             elem_qstring = elem_qstring + elem_values[i].name + "=" + elem_values[i].value + "&";
@@ -342,11 +340,13 @@ function classToAJAX(elem) {
             }
         }
     }
-    
+
+    elem_qstring = elem_qstring + "&" + elem.name + "=" + elem.value;
+    console.log(elem.getAttribute("ajax") + "?" + elem_qstring.substr(1));
     elem_qstring = elem.getAttribute("ajax") + "?" + elem_qstring.substr(1);
     elem_qstring = encodeURI(elem_qstring);
 
-    /*
+/*
     ["Referrer-Policy","Strict","GET","no-cors","no-cache"," ",'{"Access-Control-Allow-Origin":"*","Content-Type":"text/html"}', "manual", "client"]
     .forEach((e,f) => {
         let header_array =["strict-origin-when-cross-origin","SameSite","method","mode","cache","credentials","content-type","redirect","referrer"] ;
