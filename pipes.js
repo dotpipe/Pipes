@@ -192,7 +192,7 @@ function pipe(ev)
 {
 
         // This is a quick if to make a downloadable link in an href
-        if (ev.target.classList == "download")
+        if (ev.hasAttribute("class") && ev.classList !== undefined && ev.classList == "download")
         {
             var text = ev.target.getAttribute("file");
             var element = document.createElement('a');
@@ -208,10 +208,8 @@ function pipe(ev)
 
             return;
         }
-        const elem = ev.target;
-        console.log(ev);
-        if (-1 == (elem))
-            classToAJAX(elem);
+        const elem = ev;
+        classToAJAX(elem);
 }
 
 function captureAJAXResponse(elem, opts) {
@@ -274,7 +272,7 @@ function notify(tagname) {
         signal
     });
 
-    target__ = "blinkbox";
+    target__ = tagname;
     
     setTimeout(() => abort_ctrl.abort(), 10 * 1000);
     const __grab = async (opts_req, opts) => {
@@ -295,7 +293,7 @@ function notify(tagname) {
                             p.innerText = text;
                             p.style.position = "relative";
                             ppr.setAttribute("notify-ms",3000);
-                            document.body.data-insertBefore(ppr,document.body.firstChild);
+                            document.body.insertBefore(ppr,document.body.firstChild);
                         }
                         else {
                             ppr = document.getElementsByTagName(tagname)[0];
@@ -303,7 +301,7 @@ function notify(tagname) {
                             let p = document.createElement("p");
                             p.innerText = text;
                             p.style.position = "relative";
-                            ppr.data-insertBefore(p,ppr.firstChild);
+                            ppr.insertBefore(p,ppr.firstChild);
                         var xy = parseInt(elem.getAttribute("notify-ms"));
                         setTimeout(function(){
                             ppr.removeChild(ppr.lastChild);
@@ -317,20 +315,20 @@ function notify(tagname) {
 
 function classToAJAX(elem) {
 
-    
-    if (!elem)
-        return;
-
     opts = new Map();
     f = 0;
 
+    if (elem.id == undefined)
+        return;
 
-    elem_qstring = elem.getAttribute("query").toString();
+    elem_qstring = "";
+    if (elem.hasAttribute("query"))
+        elem_qstring = elem.getAttribute("query").toString();
 
     var elem_values = document.getElementsByClassName("data-pipe");
     
     // No, 'pipe' means it is generic. This means it is open season for all with this class
-    for (var i = 0; i < elem_values.length; i++) {
+    for (var i = 0; i < elem_values.length && elem.classList.contains("data-pipe"); i++) {
         //if this is designated as belonging to another pipe, it won't be passed in the url
         if (elem_values && !elem_values[i].hasOwnProperty("pipe") || elem_values[i].getAttribute("pipe") == elem.id)
             elem_qstring = elem_qstring + elem_values[i].name + "=" + elem_values[i].value + "&";
@@ -344,12 +342,11 @@ function classToAJAX(elem) {
             }
         }
     }
-
-    elem_qstring = elem_qstring + "&" + elem.name + "=" + elem.value;
-    console.log(elem.getAttribute("ajax") + "?" + elem_qstring.substr(1));
+    
     elem_qstring = elem.getAttribute("ajax") + "?" + elem_qstring.substr(1);
     elem_qstring = encodeURI(elem_qstring);
 
+    /*
     ["Referrer-Policy","Strict","GET","no-cors","no-cache"," ",'{"Access-Control-Allow-Origin":"*","Content-Type":"text/html"}', "manual", "client"]
     .forEach((e,f) => {
         let header_array =["strict-origin-when-cross-origin","SameSite","method","mode","cache","credentials","content-type","redirect","referrer"] ;
@@ -357,7 +354,7 @@ function classToAJAX(elem) {
         opts.set(header_array[f], e);
         
     });
-
+*/
     content_thru = '{"Access-Control-Allow-Origin":"*","Content-Type":"text/html"}';
     var opts_req = new Request(elem_qstring);
     opts.set('body', JSON.stringify({"Access-Control-Allow-Origin":"*","Content-Type":"text/html"}));

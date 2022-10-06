@@ -1,15 +1,15 @@
-<script src="pipes.js"></script>
+<script src="wisephp/src/switches/pipes.js"></script>
 <span id="hed" style="width:100%"><br>
-Pipes demonstration - <a href="http://www.github.com/pipes">GitHub</a>
+Pipes demonstration - <a href="http://www.github.com/pipes">GitHub</a> + 
 <a id="donate" redirect="follow" method="POST" goto="https://www.paypal.com/cgi-bin/webscr"> Donate + </button>
 <input type="hidden" pipe="donate" class="data-pipe" name="cmd" value="_s-xclick" />
 <input type="hidden" pipe="donate" class="data-pipe" name="hosted_button_id" value="TMZJ4ZGG84ACL"/>
 <input type="hidden" pipe="donate" class="data-pipe" name="source" value="url" />
 <a pipe="wiki-link" class="data-pipe" name="me" value="mailto:inland14@live.com">Contact</a> +
-<a pipe="wiki-link" class="data-pipe" name="ops" value="hey" href="mailto:inland14@live.com">Bug Report</a>
-
+<a pipe="wiki-link" class="data-pipe" name="ops" value="hey" href="mailto:inland14@live.com">Bug Report</a> + 
+<button id="smile" ajax="example.txt" insert="red" onclick="pipe(this)">Interact</button>
 // the out-pipe attribute comes to here
 <b id='red'></b>
 </span>
-<button id="red-smile" ajax="example.txt" insert-in="red">Interact</button>
+
 </p>
