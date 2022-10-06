@@ -1,25 +1,48 @@
-/*
+ /*
     Tags in script:
-        query       = query string to go with URL
+        query       = default query string associated with url
         pipe        = name of id
         ajax        = calls and returns this file's ouput
-        file-order  = ajax to these files, iterating [0,1,2,3]%array.length
+        file-order  = ajax to these files, iterating [0,1,2,3]%array.length per call
         index       = counter of which index to use with file-order to go with ajax
-        redirect    = "follow" to go where the ajax says
+        incrIndex   = increment thru index of file-order (0 moves once) (default: 1)
+        decrIndex   = decrement thru index of file-order (0 moves once) (default: 1)
+        redirect    = "follow" the ajax call in POST or GET mode
+        mode        = "POST" or "GET" (default: "POST")
         data-pipe   = name of class for multi-tag data (augment with pipe)
         multiple    = states that this object has two or more key/value pairs
         remove      = remove element in tag
         display     = toggle visible and invisible
-        replace     = target ajax callback return in this id
-        target      = same as replace
+        replace     = data-insert ajax callback return in this id
+        data-insert = same as replace
         json        = returning a JSON
-        !!! ALL HEADERS FOR AJAX are available. They will use defaults to
+        !!! ALL HEADERS FOR data-AJAX are available. They will use defaults to
         !!! go on if there is no input to replace them.
 */
 
+function fileOrder(elem)
+{
+    arr = elem.getAttribute("file-order").split(",");
+    index = parseInt(elem.getAttribute("index").toString());
+    arr[index];
+    if (elem.hasAttribute("incrIndex"))
+        index += parseInt(elem.getAttribute("incrIndex").toString()) + 1;
+    if (elem.hasAttribute("decrIndex"))
+        index -= Math.abs(parseInt(elem.getAttribute("decrIndex").toString())) - 1;
+    if (index < 0)
+        index = arr.length-1;
+    index = index%arr.length;
+    elem.setAttribute("index",index.toString());
+    pfc = elem.firstChild;
+    console.log(pfc);
+    console.log(index);
+    ppfc = pfc.nextElementSibling;
+    ppfc.setAttribute("src",arr[index]);
+}
+
 function display(elem)
 {
-            // Toggle visibility of CSS display style of object
+    // Toggle visibility of CSS display style of object
     if (elem.hasOwnProperty("display"))
     {
         var toggle = elem.getAttribute("display");
@@ -47,12 +70,6 @@ function remove(elem)
         doc_set.parentNode.removeChild(doc_set);
             
     }
-}
-
-function carousel(el)
-{
-
-
 }
 
 function setAJAXOpts(el)
@@ -103,7 +120,8 @@ function navigate(el) {
             var json = elem.getAttribute("opts").toString();
             var data=fs.readFileSync(json, 'utf8');
             var words=JSON.parse(data);
-            return setAJAXOpts(words);
+            var opts = setAJAXOpts(words);
+            captureAJAXResponse(elem, opts);
         }
         if (elem.hasAttribute("json") && elem.getAttribute("json"))
         {
@@ -113,13 +131,13 @@ function navigate(el) {
             var words=JSON.parse(data);
             return words;
         }
-        if (elem.hasAttribute("target") && elem.getAttribute("target"))
+        if (elem.hasAttribute("insert") && elem.getAttribute("insert"))
         {
             var url = collectURLData(el).toString();
-            document.getElementById(el.getElementById("target").toString()).innerHTML = captureAJAXResponse(elem.getAttribute("ajax").toString());
+            document.getElementById(el.getElementById("insert").toString()).innerHTML = captureAJAXResponse(elem.getAttribute("ajax").toString());
         }
     }
-// This is a quick if to make a downloadable link in an href
+// This is a quick way to make a downloadable link in an href
     else if (ev.target.classList == "download")
     {
         var text = ev.target.getAttribute("file");
@@ -138,43 +156,67 @@ function navigate(el) {
     }
 }
 
+function collectURLData(el)
+{
+    if (!document.body.contains(el))
+        return;
+    elem = document.getElementById(el.id);
+    //use 'data-pipe' as the classname to include its value
+    // specify which pipe with pipe="target.id"
+    var elem_values = document.getElementsByClassName("data-pipe");
+    var elem_qstring = "";
+
+    // No, 'pipe' means it is generic. This means it is open season for all with this class
+    for (var i = 0; i < elem_values.length; i++) {
+        //if this is designated as belonging to another pipe, it won't be passed in the url
+        if (elem_values && !elem_values[i].hasOwnProperty("pipe") || elem_values[i].getAttribute("pipe") == elem.id)
+            elem_qstring = elem_qstring + elem_values[i].name + "=" + elem_values[i].value + "&";
+        // Multi-select box
+        console.log(".");
+        if (elem_values[i].hasOwnProperty("multiple")) {
+            for (var o of elem_values.options) {
+                if (o.selected) {
+                    elem_qstring = elem_qstring + "&" + elem_values[i].name + "=" + o.value;
+                }
+            }
+        }
+    }
+
+    console.log(elem.getAttribute("ajax") + "?" + elem_qstring.substr(1));
+    elem_qstring = elem.getAttribute("ajax") + "?" + elem_qstring.substr(1);
+    return encodeURI(elem_qstring);
+}
+
 function pipe(ev)
 {
+
         // This is a quick if to make a downloadable link in an href
-        if (ev.hasAttribute("download"))
+        if (ev.target.classList == "download")
         {
-            var text = ev.getAttribute("file");
+            var text = ev.target.getAttribute("file");
             var element = document.createElement('a');
-            var location = ev.getAttribute("directory");
+            var location = ev.target.getAttribute("directory");
             element.setAttribute('href', location + encodeURIComponent(text));
+
             element.style.display = 'none';
             document.body.appendChild(element);
+
             element.click();
+
             document.body.removeChild(element);
+
             return;
         }
-        const elem = ev;
-        classToAJAX(elem);
+        const elem = ev.target;
+        console.log(ev);
+        if (-1 == (elem))
+            classToAJAX(elem);
 }
 
-function makeCarousel (file)
-{
-    // give the current elem a chance to figure its link
-    var carousl = document.getElementById("carousel");
-    
-    if (carousl == undefined)
-        return;
-    
-    var carousel = document.getElementById("carousel");
-
-    carousel.innerHTML = '<table style="width:500;height:150;background-color:black;color:white;" id="carousel-table" ajax="' + file + '"><tr></tr></table>';
-    return;
-}
-
-function captureAJAXResponse(elem, opts)
-{
+function captureAJAXResponse(elem, opts) {
 
     f = 0;
+
 
     opts.forEach((e,f) => {
         let header_array = ["method","mode","cache","credentials","content-type","redirect","referrer"];
@@ -182,7 +224,7 @@ function captureAJAXResponse(elem, opts)
         opts.set(e, header_array[f]);
         
     });
-   
+
     var opts_req = new Request(elem.getAttribute("ajax").toString());
     const abort_ctrl = new AbortController();
     const signal = abort_ctrl.signal;
@@ -205,17 +247,16 @@ function captureAJAXResponse(elem, opts)
     return __grab(opts_req, opts);
 }
 
-function notify(t)
-{
+function notify() {
 
-    elem = document.getElementsByTagName(t)[0];
+    elem = document.getElementsByTagName("blinkbox")[0];
 
     if (!elem)
         return;
     opts = new Map();
     f = 0;
 
-    ["method","mode","cache","credentials","content-type","redirect","referrer"].forEach((e,f) => {
+    collectURLData(elem).forEach((e,f) => {
         let header_array = ["POST","no-cors","no-cache"," ",'{"Access-Control-Allow-Origin":"*","Content-Type":"text/html"}', "manual", "client"];
 
         opts.set(e, header_array[f]);
@@ -242,9 +283,9 @@ function notify(t)
                         return;
                 return response.text().then(function(text) {
                     
-                        if (undefined == document.getElementsByTagName(t)[0]) {
+                        if (undefined == document.getElementsByTagName("blinkbox")[0]) {
 
-                            ppr = document.createElement(t);
+                            ppr = document.createElement("blinkbox");
                             ppr.style.position = "absolute";
                             ppr.style.backgroundColor = "navy";
                             ppr.style.wordwrap = true;
@@ -253,19 +294,18 @@ function notify(t)
                             p.innerText = text;
                             p.style.position = "relative";
                             ppr.setAttribute("notify-ms",3000);
-                            document.body.insertBefore(ppr,document.body.firstChild);
+                            document.body.data-insertBefore(ppr,document.body.firstChild);
                         }
                         else {
-                            ppr = document.getElementsByTagName(t)[0];
+                            ppr = document.getElementsByTagName("blinkbox")[0];
                         }
-
-                        let p = document.createElement("p");
-                        p.innerText = text;
-                        p.style.position = "relative";
-                        ppr.insertBefore(p,ppr.firstChild);
+                            let p = document.createElement("p");
+                            p.innerText = text;
+                            p.style.position = "relative";
+                            ppr.data-insertBefore(p,ppr.firstChild);
                         var xy = parseInt(elem.getAttribute("notify-ms"));
                         setTimeout(function(){
-                        ppr.removeChild(ppr.lastChild);
+                            ppr.removeChild(ppr.lastChild);
                         }, xy);
                     return;
                 });
@@ -283,7 +323,30 @@ function classToAJAX(elem) {
     opts = new Map();
     f = 0;
 
-    let elem_qstring = elem.getAttribute("ajax") + "?" + elem.getAttribute("query").toString();
+
+    elem_qstring = elem.getAttribute("query").toString();
+
+    var elem_values = document.getElementsByClassName("data-pipe");
+    
+    // No, 'pipe' means it is generic. This means it is open season for all with this class
+    for (var i = 0; i < elem_values.length; i++) {
+        //if this is designated as belonging to another pipe, it won't be passed in the url
+        if (elem_values && !elem_values[i].hasOwnProperty("pipe") || elem_values[i].getAttribute("pipe") == elem.id)
+            elem_qstring = elem_qstring + elem_values[i].name + "=" + elem_values[i].value + "&";
+        // Multi-select box
+        console.log(".");
+        if (elem_values[i].hasOwnProperty("multiple")) {
+            for (var o of elem_values.options) {
+                if (o.selected) {
+                    elem_qstring = elem_qstring + "&" + elem_values[i].name + "=" + o.value;
+                }
+            }
+        }
+    }
+
+    elem_qstring = elem_qstring + "&" + elem.name + "=" + elem.value;
+    console.log(elem.getAttribute("ajax") + "?" + elem_qstring.substr(1));
+    elem_qstring = elem.getAttribute("ajax") + "?" + elem_qstring.substr(1);
     elem_qstring = encodeURI(elem_qstring);
 
     ["Referrer-Policy","Strict","GET","no-cors","no-cache"," ",'{"Access-Control-Allow-Origin":"*","Content-Type":"text/html"}', "manual", "client"]
@@ -312,8 +375,8 @@ function classToAJAX(elem) {
                     return;
                 return response.text().then(function(text) {
                     {
-                        let td = text;
-                        document.getElementById(elem.getAttribute("target").toString()).innerHTML = td;
+                        let td = '<p>' + text + '</p>';
+                        document.getElementById(elem.getAttribute("insert").toString()).innerHTML = td;
                     }
                     return;
                 });
@@ -325,20 +388,4 @@ function classToAJAX(elem) {
 function rem(elem)
 {
     elem.remove();
-}
-
-function carouselScrollLeft(elem,pixels) {
-
-    elem.scrollX -= pixels;
-
-}
-
-function carouselScrollRight(elem,pixels) {
-
-    elem.scrollX += pixels;
-
-}
-
-function carouselXPos(elem) {
-    return elem.offsetLeft;
 }
