@@ -2,6 +2,7 @@
     Usable DOM Attributes:
     query       = default query string associated with url
     pipe        = name of id
+    goto        = URI to go to
     ajax        = calls and returns this files output
     file-order  = ajax to these files, iterating [0,1,2,3]%array.length per call
     index       = counter of which index to use with file-order to go with ajax
@@ -83,7 +84,7 @@ function setAJAXOpts(elem, opts)
     var cache_thru = (opts["cache"] !== undefined) ? opts["cache"]: (elem == undefined || !elem.hasAttribute("cred")) ? "no-cache" : elem.getAttribute("cache");
     var cred_thru = (opts["cred"] !== undefined) ? opts["cred"]: (elem == undefined || !elem.hasAttribute("cred")) ? "same-origin" : elem.getAttribute("cred");
     // updated "headers" attribute to more friendly "content-type" attribute
-    var content_thru = (opts["headers"] !== undefined) ? opts["headers"]: (elem == undefined || elem.hasAttribute("headers")) ? '{"Access-Control-Allow-Origin":"*","Content-Type":"text/html"}' : elem.getAttribute("headers");
+    var content_thru = (opts["headers"] !== undefined) ? opts["headers"]: (elem == undefined || !elem.hasAttribute("headers")) ? '{"Access-Control-Allow-Origin":"*","Content-Type":"text/html"}' : elem.getAttribute("headers");
     var redirect_thru = (opts["redirect"] !== undefined) ? opts["redirect"]: (elem == undefined || !elem.hasAttribute("redirect")) ? "manual" : elem.getAttribute("redirect");
     var refer_thru = (opts["referrer"] !== undefined) ? opts["referrer"]: (elem == undefined || !elem.hasAttribute("referrer")) ? "client" : elem.getAttribute("referrer");
     opts = new Map();
@@ -101,25 +102,42 @@ function setAJAXOpts(elem, opts)
     return opts;
 }
 
-function navigate(el) {
+function pipes(el) {
 
     elem = document.getElementById(el.id);
+    opts = new Map();
 
-    if (elem.hasAttribute("link"))
+    if (elem.hasAttribute("ajax") && elem.getAttribute("ajax"))
     {
-        if (elem.hasAttribute("window"))
+        if (elem.classList.contains("link"))
         {
-            var newWindow = elem.getAttribute("window").toString();
-            if (newWindow !== undefined)
-                window.open(elem.getAttribute("link").toString(), newWindow);
-            else
-                window.open(elem.getAttribute("link").toString(), "_new");
+            window.location.href = elem.getAttribute("ajax");
+            return;
         }
-        else
-            window.location.replace = elem.getAttribute("link").toString();
-    }
-    else if (elem.hasAttribute("ajax") && elem.getAttribute("ajax"))
-    {
+        if (elem.hasAttribute("pipes"))
+        {
+            var opts = new Map();
+
+            var optsArray = elem.getAttribute("pipes").split(";");
+
+            optsArray.forEach((e,f) => {
+                var g = e.split(":");
+                opts.set(g[0], g[1]);
+            });
+
+            var headers = new Map();
+            if (elem.hasAttribute("headers"))
+            {
+                var optsArray = elem.getAttribute("headers").split(";");
+                optsArray.forEach((e,f) => {
+                    var g = e.split(":");
+                    headers.set(g[0], g[1]);
+                });
+            }
+
+            navigate(elem, headers, opts);
+            return;
+        }
         if (elem.hasAttribute("headers"))
         {
             var opts = new Map();
@@ -128,7 +146,7 @@ function navigate(el) {
                 var g = e.split(":");
                 opts.set(g[0], g[1]);
             });
-            captureAJAXResponse(elem, opts);
+            navigate(elem, headers);
         }
         if (elem.hasAttribute("fs-opts"))
         {
@@ -149,8 +167,7 @@ function navigate(el) {
         }
         if (elem.hasAttribute("insert") && elem.getAttribute("insert"))
         {
-            var url = collectURLData(el).toString();
-            document.getElementById(el.getElementById("insert").toString()).innerHTML = captureAJAXResponse(elem.getAttribute("ajax").toString());
+            document.getElementById(elem.getAttribute("insert").toString()).innerHTML = navigate(elem); // elem.getAttribute("ajax");
         }
     }
     // This is a quick way to make a downloadable link in an href
@@ -170,6 +187,7 @@ function navigate(el) {
 
         return;
     }
+    navigate(elem);
 }
 
 function collectURLData(el)
@@ -201,7 +219,7 @@ function collectURLData(el)
     return encodeURI(elem_qstring);
 }
 
-function pipe(ev)
+function navigate(ev, opts = [], headers = [])
 {
     // This is a quick if to make a downloadable link in an href
     if (ev.classList.contains("download"))
@@ -219,6 +237,10 @@ function pipe(ev)
         document.body.removeChild(element);
 
         return;
+    }
+    if (ev.classList.contains("redirect"))
+    {
+        window.location.href = ev.getAttribute("ajax") + (ev.hasAttribute("query")) ? "?" + ev.getAttribute("query") : "";
     }
     const elem = ev;
     classToAJAX(elem);
@@ -326,25 +348,25 @@ function classToAJAX(elem) {
 
     var elem_values = document.getElementsByClassName("data-pipe");
 
-    // No, 'pipe' means it is generic. This means it is open season for all with this class
+    // 'pipe', alone, means it is generic. This means it is open season for all with this class
     for (var i = 0; i < elem_values.length; i++) {
-    //if this is designated as belonging to another pipe, it won't be passed in the url
-    if (elem_values && !elem_values[i].hasOwnProperty("pipe") || elem_values[i].getAttribute("pipe") == elem.id)
-        elem_qstring = elem_qstring + elem_values[i].name + "=" + elem_values[i].value + "&";
-    // Multi-select box
-    console.log(".");
-    if (elem_values[i].hasOwnProperty("multiple")) {
-        for (var o of elem_values.options) {
-            if (o.selected) {
-                elem_qstring = elem_qstring + "&" + elem_values[i].name + "=" + o.value;
+        //if this is designated as belonging to another pipe, it won't be passed in the url
+        if (elem_values && (elem_values[i].hasOwnProperty("pipe") ^ elem_values[i].getAttribute("pipe") == elem.id))
+            elem_qstring = elem_qstring + elem_values[i].name + "=" + elem_values[i].value + "&";
+        // Multi-select box
+        console.log(".");
+        if (elem_values[i].hasOwnProperty("multiple")) {
+            for (var o of elem_values.options) {
+                if (o.selected) {
+                    elem_qstring = elem_qstring + "&" + elem_values[i].name + "=" + o.value;
+                }
             }
         }
     }
-    }
 
     elem_qstring = elem_qstring + "&" + elem.name + "=" + elem.value;
-    console.log(elem.getAttribute("ajax") + "?" + elem_qstring.substr(1));
-    elem_qstring = elem.getAttribute("ajax") + "?" + elem_qstring.substr(1);
+    console.log(elem.getAttribute("ajax") + "?" + elem_qstring);
+    elem_qstring = elem.getAttribute("ajax") + "?" + elem_qstring;
     elem_qstring = encodeURI(elem_qstring);
 
     opts = setAJAXOpts(elem, opts);
