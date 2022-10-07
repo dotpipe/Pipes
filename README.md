@@ -21,6 +21,11 @@ With using a FLAG bit, like in any other threading situation, as a semaphore blo
 
 When we switch between recursions, the blocking begins to have its reasoning. A second bit of the FLAG byte, turned on, is used to recall the certitude of the thread's end. When all cases of the thread have been ergodic, then it will be off again. As we recede from the thread, all lanes have been recovered. This means, that if the thread is not destroyed, as told by the send FLAG bit, then the session will be considered corrupt, and the user will be logged out, to an error message.
 
+Expansion:
+
+Switching between session id's is the only determinable way to refocus on another state in the PHP engine, besides it's own enabled one. This can be used to create many functions which handle back doors and such. Relying on a focusable contract in the background, it would seem saving state is best. And using the different session id's to create foundation for file handling that would certainly otherwise be impossible would be latent and congested in its legacy prone decay. 
+
+Assuming that the session ids is the same each time, there is the ability to create a PHP within PHP that handles file management. And it would certainly be just a proxy of controls and immediately a staple of the community. This SessPool of information, using databases, and temp files, as well as controlling routing and other management controls, would be elegant and understandable as a misfit entity. The language package, PASM would be best to use. It has all the continuity to use the restrictions and management tools herein cast out.
 
 Recursion control:
 
@@ -32,3 +37,10 @@ There is a reason to see if you have a semaphore still working on the thread. An
 
 After all of this, to this point, we see that the articulation of the FLAG bits are to be as important to be commanded as the thread is. If the thread cannot be contacted for some time, the system will bring the user an error message. Where and how this is done is completely within the hands of the programmer and/or administrator. If there is an error during the unlink() command, then the work is to be cut off and left to a third FLAG bit, of whether to tell the system admin, or both user and system admin. 
 
+# New Synopsis on working with Pipes
+
+Pipes v3
+
+Now we've come to a new way to understand and make readable the HTML markup. Thanks to the people over there at CSS, who made a lexicon of creating listing values for attributes in markup, PipesJS is now substantially easier to create with. Just plug in your needs to the pipes="name:value;" attribute in the tag you're using. Even headers can be used with it. Go right ahead and dive into this new ability. It is integral and does the work rapidly concerning new use cases. The old legacy code will remain until otherwise explained as to why there would be a reason to abandon it. So, in Pipes v3 you would also set up the list of changed headers to headers="method:get;". It is simply awesome. You may use any headers. If I'm not mistaken you can include ANY header you like. 
+
+Have a nice day!
