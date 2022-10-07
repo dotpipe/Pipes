@@ -3,26 +3,26 @@
     to begin using the PipesJS code.
     Usable DOM Attributes:
     Attribute   |   Use Case
-    query       = default query string associated with url
-    pipe        = name of id
-    goto        = URI to go to
-    ajax        = calls and returns this files output
-    fileOrder  = ajax to these files, iterating [0,1,2,3]%array.length per call
-    index       = counter of which index to use with file-order to go with ajax
-    incrIndex   = increment thru index of file-order (0 moves once) (default: 1)
-    decrIndex   = decrement thru index of file-order (0 moves once) (default: 1)
-    redirect    = "follow" the ajax call in POST or GET mode
-    mode        = "POST" or "GET" (default: "POST")
-    data-pipe   = name of class for multi-tag data (augment with pipe)
-    multiple    = states that this object has two or more key/value pairs
-    remove      = remove element in tag
-    display     = toggle visible and invisible
-    replace     = insert ajax callback return in this id
-    insert      = same as replace
-    json        = returning a JSON
-    fs-opts     = JSON headers for AJAX implementation
-    headers     = headers in CSS markup-style-attribute
-    link        = class for operating tag as clickable link
+    -------------------------------------------------------------
+    query.......= default query string associated with url
+    pipe........= name of id
+    goto........= URI to go to
+    ajax........= calls and returns this files output
+    fileOrder...= ajax to these files, iterating [0,1,2,3]%array.length per call
+    index.......= counter of which index to use with file-order to go with ajax
+    incrIndex...= increment thru index of file-order (0 moves once) (default: 1)
+    decrIndex...= decrement thru index of file-order (0 moves once) (default: 1)
+    redirect....= "follow" the ajax call in POST or GET mode
+    mode........= "POST" or "GET" (default: "POST")
+    data-pipe...= name of class for multi-tag data (augment with pipe)
+    multiple....= states that this object has two or more key/value pairs
+    remove......= remove element in tag
+    display.....= toggle visible and invisible
+    insert......= return ajax call to this id
+    json........= returns a JSON file set as value
+    fs-opts.....= JSON headers for AJAX implementation
+    headers.....= headers in CSS markup-style-attribute
+    link........= class for operating tag as clickable link
     !!! ALL HEADERS FOR AJAX are available. They will use defaults to
     !!! go on if there is no input to replace them.
 */
