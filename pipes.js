@@ -1,5 +1,8 @@
  /*
+    use:        onclick="pipes(this)"
+    to begin using the PipesJS code.
     Usable DOM Attributes:
+    Attribute   |   Use Case
     query       = default query string associated with url
     pipe        = name of id
     goto        = URI to go to
@@ -17,9 +20,9 @@
     replace     = insert ajax callback return in this id
     insert      = same as replace
     json        = returning a JSON
-    getOptions  = prepare for fs-opts options
-    fs-opts     = headers for AJAX implementation
+    fs-opts     = JSON headers for AJAX implementation
     headers     = headers in CSS markup-style-attribute
+    link        = class for operating tag as clickable link
     !!! ALL HEADERS FOR AJAX are available. They will use defaults to
     !!! go on if there is no input to replace them.
 */
@@ -116,37 +119,39 @@ function pipes(el) {
         }
         if (elem.hasAttribute("pipes"))
         {
-            var opts = new Map();
-
             var optsArray = elem.getAttribute("pipes").split(";");
 
+            var p = document.createElement("p");
             optsArray.forEach((e,f) => {
                 var g = e.split(":");
-                opts.set(g[0], g[1]);
+                p.setAttribute(g[0], g[1]);
             });
 
-            var headers = new Map();
             if (elem.hasAttribute("headers"))
             {
                 var optsArray = elem.getAttribute("headers").split(";");
                 optsArray.forEach((e,f) => {
                     var g = e.split(":");
-                    headers.set(g[0], g[1]);
+                    p.setAttribute(g[0], g[1]);
                 });
             }
 
-            navigate(elem, headers, opts);
+            p.click();
+            navigate(p);
+            p.remove();
             return;
         }
         if (elem.hasAttribute("headers"))
         {
-            var opts = new Map();
             var optsArray = elem.getAttribute("headers").split(";");
             optsArray.forEach((e,f) => {
                 var g = e.split(":");
-                opts.set(g[0], g[1]);
+                p.setAttribute(g[0], g[1]);
             });
-            navigate(elem, headers);
+
+            p.click();
+            navigate(p);
+            return;
         }
         if (elem.hasAttribute("fs-opts"))
         {
@@ -155,7 +160,7 @@ function pipes(el) {
             var data=fs.readFileSync(json, 'utf8');
             var words=JSON.parse(data);
             var opts = setAJAXOpts(words);
-            captureAJAXResponse(elem, opts);
+            navigate(elem, opts, null);
         }
         if (elem.hasAttribute("json") && elem.getAttribute("json"))
         {
@@ -243,7 +248,7 @@ function navigate(ev, opts = [], headers = [])
         window.location.href = ev.getAttribute("ajax") + (ev.hasAttribute("query")) ? "?" + ev.getAttribute("query") : "";
     }
     const elem = ev;
-    classToAJAX(elem);
+    classToAJAX(elem, opts, headers);
 }
 
 function captureAJAXResponse(elem, opts)
@@ -337,9 +342,10 @@ function notify(targetname) {
     __grab(opts_req, opts);
 }
 
-function classToAJAX(elem) {
+function classToAJAX(elem, opts = null, headers = null) {
 
-    opts = new Map();
+    if (opts == null)
+        opts = new Map();
     f = 0;
 
     elem_qstring = "";
