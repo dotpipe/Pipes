@@ -110,11 +110,26 @@ function navigate(el) {
     
     if (elem.hasAttribute("link"))
     {
-        window.location.replace = elem.getAttribute("link").toString();
+        if (elem.hasAttribute("window"))
+        {
+            var newWindow = elem.getAttribute("window").toString();
+            if (newWindow !== undefined)
+                window.open(elem.getAttribute("link").toString(), newWindow);
+            else
+                window.open(elem.getAttribute("link").toString(), "_new");
+        }
+        else
+            window.location.replace = elem.getAttribute("link").toString();
     }
     else if (elem.hasAttribute("ajax") && elem.getAttribute("ajax"))
     {
-        if (elem.hasAttribute("getOptions") && elem.getAttribute("getOptions"))
+        if (elem.classList.contains("getOptions") && elem.hasAttribute("options"))
+        {
+            var optsArray = elem.getAttribute("options").split(";");
+            var opts = setAJAXOpts(optsArray);
+            captureAJAXResponse(elem, opts);
+        }
+        if (elem.classList.contains("getOptions") && elem.hasAttribute("options"))
         {
             var fs=require('fs');
             var json = elem.getAttribute("opts").toString();
