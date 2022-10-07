@@ -78,14 +78,14 @@ function remove(elem)
 function setAJAXOpts(elem, opts)
 {
     // communicate properties of Fetch Request
-    var method_thru = (opts["method"] !== undefined) ? opts["method"] : (elem == undefined || !elem.hasAttribute("method")) ? "GET" : elem.getAttribute("method").toString();
-    var mode_thru = (opts["mode"] !== undefined) ? opts["mode"]: (elem == undefined || !elem.hasAttribute("mode")) ? "no-cors" : elem.getAttribute("mode").toString();
-    var cache_thru = (opts["cache"] !== undefined) ? opts["cache"]: (elem == undefined || !elem.hasAttribute("cred")) ? "no-cache" : elem.getAttribute("cache").toString();
-    var cred_thru = (opts["cred"] !== undefined) ? opts["cred"]: (elem == undefined || !elem.hasAttribute("cred")) ? "same-origin" : elem.getAttribute("cred").toString();
+    var method_thru = (opts["method"] !== undefined) ? opts["method"] : (elem == undefined || !elem.hasAttribute("method")) ? "GET" : elem.getAttribute("method");
+    var mode_thru = (opts["mode"] !== undefined) ? opts["mode"]: (elem == undefined || !elem.hasAttribute("mode")) ? "no-cors" : elem.getAttribute("mode");
+    var cache_thru = (opts["cache"] !== undefined) ? opts["cache"]: (elem == undefined || !elem.hasAttribute("cred")) ? "no-cache" : elem.getAttribute("cache");
+    var cred_thru = (opts["cred"] !== undefined) ? opts["cred"]: (elem == undefined || !elem.hasAttribute("cred")) ? "same-origin" : elem.getAttribute("cred");
     // updated "headers" attribute to more friendly "content-type" attribute
-    var content_thru = (opts["headers"] !== undefined) ? opts["headers"]: (elem.hasAttribute("headers")) ? '{"Access-Control-Allow-Origin":"*","Content-Type":"text/html"}' : elem.getAttribute("headers").toString();
-    var redirect_thru = (opts["redirect"] !== undefined) ? opts["redirect"]: (elem == undefined || !elem.hasAttribute("redirect")) ? "manual" : elem.getAttribute("redirect").toString();
-    var refer_thru = (opts["referrer"] !== undefined) ? opts["referrer"]: (elem == undefined || !elem.hasAttribute("referrer")) ? "client" : elem.getAttribute("referrer").toString();
+    var content_thru = (opts["headers"] !== undefined) ? opts["headers"]: (elem == undefined || elem.hasAttribute("headers")) ? '{"Access-Control-Allow-Origin":"*","Content-Type":"text/html"}' : elem.getAttribute("headers");
+    var redirect_thru = (opts["redirect"] !== undefined) ? opts["redirect"]: (elem == undefined || !elem.hasAttribute("redirect")) ? "manual" : elem.getAttribute("redirect");
+    var refer_thru = (opts["referrer"] !== undefined) ? opts["referrer"]: (elem == undefined || !elem.hasAttribute("referrer")) ? "client" : elem.getAttribute("referrer");
     opts = new Map();
     opts.set("method", method_thru); // *GET, POST, PUT, DELETE, etc.
     opts.set("mode", mode_thru); // no-cors, cors, *same-origin
@@ -204,11 +204,11 @@ function collectURLData(el)
 function pipe(ev)
 {
     // This is a quick if to make a downloadable link in an href
-    if (ev.target.classList.contains("download"))
+    if (ev.classList.contains("download"))
     {
-        var text = ev.target.getAttribute("file");
+        var text = ev.getAttribute("file");
         var element = document.createElement('a');
-        var location = ev.target.getAttribute("directory");
+        var location = ev.getAttribute("directory");
         element.setAttribute('href', location + encodeURIComponent(text));
 
         element.style.display = 'none';
@@ -220,7 +220,7 @@ function pipe(ev)
 
         return;
     }
-    const elem = ev.target;
+    const elem = ev;
     classToAJAX(elem);
 }
 
@@ -317,15 +317,12 @@ function notify(targetname) {
 
 function classToAJAX(elem) {
 
-
-    if (!elem)
-    return;
-
     opts = new Map();
     f = 0;
 
-
-    elem_qstring = elem.getAttribute("query").toString();
+    elem_qstring = "";
+    if (elem.hasAttribute("query"))
+        elem_qstring = elem.getAttribute("query");
 
     var elem_values = document.getElementsByClassName("data-pipe");
 
