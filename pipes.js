@@ -1,55 +1,51 @@
  /*
-    use:        onclick="pipes(this)"
-    to begin using the PipesJS code.
-    Usable DOM Attributes:
-    Attribute   |   Use Case
-    -------------------------------------------------------------
-    query.......= default query string associated with url
-    pipe........= name of id
-    goto........= URI to go to
-    ajax........= calls and returns this files output
-    fileOrder...= ajax to these files, iterating [0,1,2,3]%array.length per call
-    index.......= counter of which index to use with file-order to go with ajax
-    incrIndex...= increment thru index of file-order (0 moves once) (default: 1)
-    decrIndex...= decrement thru index of file-order (0 moves once) (default: 1)
-    redirect....= "follow" the ajax call in POST or GET mode
-    mode........= "POST" or "GET" (default: "POST")
-    data-pipe...= name of class for multi-tag data (augment with pipe)
-    multiple....= states that this object has two or more key/value pairs
-    remove......= remove element in tag
-    display.....= toggle visible and invisible
-    insert......= return ajax call to this id
-    json........= returns a JSON file set as value
-    fs-opts.....= JSON headers for AJAX implementation
-    headers.....= headers in CSS markup-style-attribute
-    link........= class for operating tag as clickable link
-    !!! ALL HEADERS FOR AJAX are available. They will use defaults to
-    !!! go on if there is no input to replace them.
+    Tags in script:
+        pipe        = name of id
+        ajax        = calls and returns this file's ouput
+        file-order  = data-ajax to these files, iterating [0,1,2,3]%array.length
+        index       = counter of which index to use with file-order to go with data-ajax
+        redirect    = "follow" to go where the data-ajax says
+        data-pipe   = name of class for multi-tag data (augment with pipe)
+        multiple    = states that this object has two or more key/value pairs
+        remove      = remove element in tag
+        display     = toggle visible and invisible
+        replace     = data-insert data-ajax callback return in this id
+        data-insert      = same as replace
+        json        = returning a JSON
+        !!! ALL HEADERS FOR data-AJAX are available. They will use defaults to
+        !!! go on if there is no input to replace them.
 */
 
-function fileOrder(elem)
+
+/**
+ * 
+ * @param {this} elem 
+ * @param {string} target_id 
+ * 
+ * elem is a source for the list of ; delimited files to be used
+ * 
+ * target_id is the endpoint for the output of the indexed file
+ */
+function fileOrder(elem, target_id)
 {
-    arr = elem.getAttribute("file-order").split(",");
+    arr = elem.getAttribute("file-order").split(";");
     index = parseInt(elem.getAttribute("index").toString());
-    arr[index];
-    if (elem.hasAttribute("incrIndex"))
-        index += parseInt(elem.getAttribute("incrIndex").toString()) + 1;
-    if (elem.hasAttribute("decrIndex"))
-        index -= Math.abs(parseInt(elem.getAttribute("decrIndex").toString())) - 1;
-    if (index < 0)
-        index = arr.length-1;
+    index++;
     index = index%arr.length;
-    elem.setAttribute("index",index.toString());
-    pfc = elem.firstChild;
-    console.log(pfc);
     console.log(index);
-    ppfc = pfc.nextElementSibling;
-    ppfc.setAttribute("src",arr[index]);
+    elem.setAttribute("index",index.toString());
+    document.getElementById(target_id).setAttribute("src",arr[index]);
 }
 
+/**
+ * 
+ * @param {this} elem 
+ * 
+ * Toggle display on or of
+ */
 function display(elem)
 {
-    // Toggle visibility of CSS display style of object
+            // Toggle visibility of CSS display style of object
     if (elem.hasOwnProperty("display"))
     {
         var toggle = elem.getAttribute("display");
@@ -64,6 +60,13 @@ function display(elem)
     }
 }
 
+
+/**
+ * 
+ * @param {this} elem 
+ * 
+ * Remove the current element from the DOM
+ */
 function remove(elem)
 {
     // Remove Object
@@ -75,21 +78,33 @@ function remove(elem)
             doc_set.remove();
         }
         doc_set.parentNode.removeChild(doc_set);
-        
+            
     }
 }
 
-function setAJAXOpts(elem, opts)
+/**
+ * 
+ * @param {this} el 
+ * @returns Map
+ * 
+ * Private function associated with get an element holding all header information
+ * 
+ * deprecated
+ * 
+ */
+function setAJAXOpts(el)
 {
+    elem = document.getElementById(el.id);
+
     // communicate properties of Fetch Request
-    var method_thru = (opts["method"] !== undefined) ? opts["method"] : (elem == undefined || !elem.hasAttribute("method")) ? "GET" : elem.getAttribute("method");
-    var mode_thru = (opts["mode"] !== undefined) ? opts["mode"]: (elem == undefined || !elem.hasAttribute("mode")) ? "no-cors" : elem.getAttribute("mode");
-    var cache_thru = (opts["cache"] !== undefined) ? opts["cache"]: (elem == undefined || !elem.hasAttribute("cred")) ? "no-cache" : elem.getAttribute("cache");
-    var cred_thru = (opts["cred"] !== undefined) ? opts["cred"]: (elem == undefined || !elem.hasAttribute("cred")) ? "same-origin" : elem.getAttribute("cred");
+    var method_thru = (opts["method"] !== undefined) ? opts["method"] : (!elem.hasAttribute("method")) ? "GET" : elem.getAttribute("method").toString();
+    var mode_thru = (opts["mode"] !== undefined) ? opts["mode"]: (!elem.hasAttribute("mode")) ? "no-cors" : elem.getAttribute("mode").toString();
+    var cache_thru = (opts["cache"] !== undefined) ? opts["cache"]: (!elem.hasAttribute("cred")) ? "no-cache" : elem.getAttribute("cache").toString();
+    var cred_thru = (opts["cred"] !== undefined) ? opts["cred"]: (!elem.hasAttribute("cred")) ? "same-origin" : elem.getAttribute("cred").toString();
     // updated "headers" attribute to more friendly "content-type" attribute
-    var content_thru = (opts["headers"] !== undefined) ? opts["headers"]: (elem == undefined || !elem.hasAttribute("headers")) ? '{"Access-Control-Allow-Origin":"*","Content-Type":"text/html"}' : elem.getAttribute("headers");
-    var redirect_thru = (opts["redirect"] !== undefined) ? opts["redirect"]: (elem == undefined || !elem.hasAttribute("redirect")) ? "manual" : elem.getAttribute("redirect");
-    var refer_thru = (opts["referrer"] !== undefined) ? opts["referrer"]: (elem == undefined || !elem.hasAttribute("referrer")) ? "client" : elem.getAttribute("referrer");
+    var content_thru = (opts["headers"] !== undefined) ? opts["headers"]: (elem.hasAttribute("headers")) ? '{"Access-Control-Allow-Origin":"*","Content-Type":"text/html"}' : elem.getAttribute("headers").toString();
+    var redirect_thru = (opts["redirect"] !== undefined) ? opts["redirect"]: (!elem.hasAttribute("redirect")) ? "manual" : elem.getAttribute("redirect").toString();
+    var refer_thru = (opts["referrer"] !== undefined) ? opts["referrer"]: (!elem.hasAttribute("referrer")) ? "client" : elem.getAttribute("referrer").toString();
     opts = new Map();
     opts.set("method", method_thru); // *GET, POST, PUT, DELETE, etc.
     opts.set("mode", mode_thru); // no-cors, cors, *same-origin
@@ -105,62 +120,31 @@ function setAJAXOpts(elem, opts)
     return opts;
 }
 
-function pipes(el) {
+/**
+ * 
+ * @param {this} el 
+ * @returns 
+ */
+function navigate(el) {
+
+    if (!document.body.contains(el))
+        return;
 
     elem = document.getElementById(el.id);
-    opts = new Map();
-
-    if (elem.hasAttribute("ajax") && elem.getAttribute("ajax"))
+    
+    if (elem.hasAttribute("link"))
     {
-        if (elem.classList.contains("link"))
-        {
-            window.location.href = elem.getAttribute("ajax");
-            return;
-        }
-        if (elem.hasAttribute("pipes"))
-        {
-            var optsArray = elem.getAttribute("pipes").split(";");
-
-            var p = document.createElement("p");
-            optsArray.forEach((e,f) => {
-                var g = e.split(":");
-                p.setAttribute(g[0], g[1]);
-            });
-
-            if (elem.hasAttribute("headers"))
-            {
-                var optsArray = elem.getAttribute("headers").split(";");
-                optsArray.forEach((e,f) => {
-                    var g = e.split(":");
-                    p.setAttribute(g[0], g[1]);
-                });
-            }
-
-            p.click();
-            navigate(p);
-            p.remove();
-            return;
-        }
-        if (elem.hasAttribute("headers"))
-        {
-            var optsArray = elem.getAttribute("headers").split(";");
-            optsArray.forEach((e,f) => {
-                var g = e.split(":");
-                p.setAttribute(g[0], g[1]);
-            });
-
-            p.click();
-            navigate(p);
-            return;
-        }
-        if (elem.hasAttribute("fs-opts"))
+        window.location.replace = elem.getAttribute("link").toString();
+    }
+    else if (elem.hasAttribute("ajax") && elem.getAttribute("ajax"))
+    {
+        if (elem.hasAttribute("getOptions") && elem.getAttribute("getOptions"))
         {
             var fs=require('fs');
-            var json = elem.getAttribute("fs-opts").toString();
+            var json = elem.getAttribute("opts").toString();
             var data=fs.readFileSync(json, 'utf8');
             var words=JSON.parse(data);
-            var opts = setAJAXOpts(words);
-            navigate(elem, opts, null);
+            return setAJAXOpts(words);
         }
         if (elem.hasAttribute("json") && elem.getAttribute("json"))
         {
@@ -172,10 +156,11 @@ function pipes(el) {
         }
         if (elem.hasAttribute("insert") && elem.getAttribute("insert"))
         {
-            document.getElementById(elem.getAttribute("insert").toString()).innerHTML = navigate(elem); // elem.getAttribute("ajax");
+            var url = collectURLData(el).toString();
+            document.getElementById(el.getElementById("insert").toString()).innerHTML = captureAJAXResponse(elem.getAttribute("ajax").toString());
         }
     }
-    // This is a quick way to make a downloadable link in an href
+// This is a quick if to make a downloadable link in an href
     else if (ev.target.classList == "download")
     {
         var text = ev.target.getAttribute("file");
@@ -192,26 +177,26 @@ function pipes(el) {
 
         return;
     }
-    navigate(elem);
 }
 
 function collectURLData(el)
 {
+    if (!document.body.contains(el))
+        return;
     elem = document.getElementById(el.id);
     //use 'data-pipe' as the classname to include its value
     // specify which pipe with pipe="target.id"
     var elem_values = document.getElementsByClassName("data-pipe");
-    var elem_qstring = (elem.hasAttribute("query")) ? elem.getAttribute("query").toString() : "";
+    var elem_qstring = "";
 
     // No, 'pipe' means it is generic. This means it is open season for all with this class
     for (var i = 0; i < elem_values.length; i++) {
-    //if this is designated as belonging to another pipe, it won't be passed in the url
+        //if this is designated as belonging to another pipe, it won't be passed in the url
         if (elem_values && !elem_values[i].hasOwnProperty("pipe") || elem_values[i].getAttribute("pipe") == elem.id)
             elem_qstring = elem_qstring + elem_values[i].name + "=" + elem_values[i].value + "&";
         // Multi-select box
         console.log(".");
-        if (elem_values[i].hasOwnProperty("multiple"))
-        {
+        if (elem_values[i].hasOwnProperty("multiple")) {
             for (var o of elem_values.options) {
                 if (o.selected) {
                     elem_qstring = elem_qstring + "&" + elem_values[i].name + "=" + o.value;
@@ -219,44 +204,64 @@ function collectURLData(el)
             }
         }
     }
+
     console.log(elem.getAttribute("ajax") + "?" + elem_qstring.substr(1));
     elem_qstring = elem.getAttribute("ajax") + "?" + elem_qstring.substr(1);
     return encodeURI(elem_qstring);
 }
 
-function navigate(ev, opts = [], headers = [])
+function pipe(ev)
 {
-    // This is a quick if to make a downloadable link in an href
-    if (ev.classList.contains("download"))
-    {
-        var text = ev.getAttribute("file");
-        var element = document.createElement('a');
-        var location = ev.getAttribute("directory");
-        element.setAttribute('href', location + encodeURIComponent(text));
 
-        element.style.display = 'none';
-        document.body.appendChild(element);
+        // This is a quick if to make a downloadable link in an href
+        if (ev.target.classList == "download")
+        {
+            var text = ev.target.getAttribute("file");
+            var element = document.createElement('a');
+            var location = ev.target.getAttribute("directory");
+            element.setAttribute('href', location + encodeURIComponent(text));
 
-        element.click();
+            element.style.display = 'none';
+            document.body.appendChild(element);
 
-        document.body.removeChild(element);
+            element.click();
 
-        return;
-    }
-    if (ev.classList.contains("redirect"))
-    {
-        window.location.href = ev.getAttribute("ajax") + (ev.hasAttribute("query")) ? "?" + ev.getAttribute("query") : "";
-    }
-    const elem = ev;
-    classToAJAX(elem, opts, headers);
+            document.body.removeChild(element);
+
+            return;
+        }
+        const elem = ev.target;
+        console.log(ev);
+        if (-1 == (elem))
+            classToAJAX(elem);
 }
 
-function captureAJAXResponse(elem, opts)
+    function makeCarousel (file)
 {
+    // give the current elem a chance to figure its link
+    var carousl = document.getElementById("carousel");
+    
+    if (carousl == undefined)
+        return;
+    
+    var carousel = document.getElementById("carousel");
+
+    carousel.innerHTML = '<table style="width:500;height:150;background-color:black;color:white;" id="carousel-table" ajax="' + file + '"><tr></tr></table>';
+    return;
+}
+
+function captureAJAXResponse(elem, opts) {
+
     f = 0;
 
-    opts = setAJAXOpts(elem, opts);
+    opts.forEach((e,f) => {
+        let header_array = ["method","mode","cache","credentials","content-type","redirect","referrer"];
 
+        opts.set(e, header_array[f]);
+        
+    });
+
+   
     var opts_req = new Request(elem.getAttribute("ajax").toString());
     const abort_ctrl = new AbortController();
     const signal = abort_ctrl.signal;
@@ -264,31 +269,35 @@ function captureAJAXResponse(elem, opts)
     fetch(opts_req, {
         signal
     });
-
+    
     setTimeout(() => abort_ctrl.abort(), 10 * 1000);
     const __grab = async (opts_req, opts) => {
-    return fetch(opts_req, opts)
-        .then(function(response) {
-            return response.text().then(function(text) {
-                if (response.status == 404)
-                    return;
-                return text;
+        return fetch(opts_req, opts)
+            .then(function(response) {
+                return response.text().then(function(text) {
+                    if (response.status == 404)
+                        return;
+                    return text;
+                });
             });
-        });
     }
     return __grab(opts_req, opts);
 }
 
-function notify(targetname) {
+function notify() {
 
-    elem = document.getElementsByTagName(targetname)[0];
+    elem = document.getElementsByTagName("blinkbox")[0];
 
+    if (!elem)
+        return;
     opts = new Map();
     f = 0;
 
-    collectURLData(elem).forEach((e,f) => {
+    ["method","mode","cache","credentials","content-type","redirect","referrer"].forEach((e,f) => {
         let header_array = ["POST","no-cors","no-cache"," ",'{"Access-Control-Allow-Origin":"*","Content-Type":"text/html"}', "manual", "client"];
+
         opts.set(e, header_array[f]);
+        
     });
 
     content_thru = '{"Access-Control-Allow-Origin":"*","Content-Type":"text/html"}';
@@ -301,63 +310,63 @@ function notify(targetname) {
         signal
     });
 
-    target__ = targetname;
-
+    target__ = "blinkbox";
+    
     setTimeout(() => abort_ctrl.abort(), 10 * 1000);
     const __grab = async (opts_req, opts) => {
-    return fetch(opts_req, opts)
-        .then(function(response) {
-            if (response.status == 404)
-                    return;
-            return response.text().then(function(text) {
-                
-                    if (undefined == document.getElementsByTagName(targetname)[0]) {
+        return fetch(opts_req, opts)
+            .then(function(response) {
+                if (response.status == 404)
+                        return;
+                return response.text().then(function(text) {
+                    
+                        if (undefined == document.getElementsByTagName("blinkbox")[0]) {
 
-                        ppr = document.createElement(targetname);
-                        ppr.style.position = "absolute";
-                        ppr.style.backgroundColor = "navy";
-                        ppr.style.wordwrap = true;
-                        ppr.style.width = window.innerWidth / 4;
-                        ppr.style.zIndex = 3;
-                        p.innerText = text;
-                        p.style.position = "relative";
-                        ppr.setAttribute("notify-ms",3000);
-                        document.body.insertBefore(ppr,document.body.firstChild);
-                    }
-                    else {
-                        ppr = document.getElementsByTagName(targetname)[0];
-                    }
-                        let p = document.createElement("p");
-                        p.innerText = text;
-                        p.style.position = "relative";
-                        ppr.insertBefore(p,ppr.firstChild);
-                    var xy = parseInt(elem.getAttribute("notify-ms"));
-                    setTimeout(function(){
-                        ppr.removeChild(ppr.lastChild);
-                    }, xy);
-                return;
+                            ppr = document.createElement("blinkbox");
+                            ppr.style.position = "absolute";
+                            ppr.style.backgroundColor = "navy";
+                            ppr.style.wordwrap = true;
+                            ppr.style.width = window.innerWidth / 4;
+                            ppr.style.zIndex = 3;
+                            p.innerText = text;
+                            p.style.position = "relative";
+                            ppr.setAttribute("notify-ms",3000);
+                            document.body.data-insertBefore(ppr,document.body.firstChild);
+                        }
+                        else {
+                            ppr = document.getElementsByTagName("blinkbox")[0];
+                        }
+                            let p = document.createElement("p");
+                            p.innerText = text;
+                            p.style.position = "relative";
+                            ppr.data-insertBefore(p,ppr.firstChild);
+                        var xy = parseInt(elem.getAttribute("notify-ms"));
+                        setTimeout(function(){
+                            ppr.removeChild(ppr.lastChild);
+                        }, xy);
+                    return;
+                });
             });
-        });
     }
     __grab(opts_req, opts);
 }
 
-function classToAJAX(elem, opts = null, headers = null) {
+function classToAJAX(elem) {
 
-    if (opts == null)
-        opts = new Map();
+    
+    if (!elem)
+        return;
+
+    opts = new Map();
     f = 0;
 
-    elem_qstring = "";
-    if (elem.hasAttribute("query"))
-        elem_qstring = elem.getAttribute("query");
-
+    let elem_qstring = "";
     var elem_values = document.getElementsByClassName("data-pipe");
-
-    // 'pipe', alone, means it is generic. This means it is open season for all with this class
+    
+    // No, 'pipe' means it is generic. This means it is open season for all with this class
     for (var i = 0; i < elem_values.length; i++) {
         //if this is designated as belonging to another pipe, it won't be passed in the url
-        if (elem_values && (elem_values[i].hasOwnProperty("pipe") ^ elem_values[i].getAttribute("pipe") == elem.id))
+        if (elem_values && !elem_values[i].hasOwnProperty("pipe") || elem_values[i].getAttribute("pipe") == elem.id)
             elem_qstring = elem_qstring + elem_values[i].name + "=" + elem_values[i].value + "&";
         // Multi-select box
         console.log(".");
@@ -371,35 +380,42 @@ function classToAJAX(elem, opts = null, headers = null) {
     }
 
     elem_qstring = elem_qstring + "&" + elem.name + "=" + elem.value;
-    console.log(elem.getAttribute("ajax") + "?" + elem_qstring);
-    elem_qstring = elem.getAttribute("ajax") + "?" + elem_qstring;
+    console.log(elem.getAttribute("ajax") + "?" + elem_qstring.substr(1));
+    elem_qstring = elem.getAttribute("ajax") + "?" + elem_qstring.substr(1);
     elem_qstring = encodeURI(elem_qstring);
 
-    opts = setAJAXOpts(elem, opts);
+    ["Referrer-Policy","Strict","GET","no-cors","no-cache"," ",'{"Access-Control-Allow-Origin":"*","Content-Type":"text/html"}', "manual", "client"]
+    .forEach((e,f) => {
+        let header_array =["strict-origin-when-cross-origin","SameSite","method","mode","cache","credentials","content-type","redirect","referrer"] ;
+
+        opts.set(header_array[f], e);
+        
+    });
+
     content_thru = '{"Access-Control-Allow-Origin":"*","Content-Type":"text/html"}';
     var opts_req = new Request(elem_qstring);
     opts.set('body', JSON.stringify({"Access-Control-Allow-Origin":"*","Content-Type":"text/html"}));
     const abort_ctrl = new AbortController();
     const signal = abort_ctrl.signal;
-
+    
     fetch(opts_req, {
         signal
     });
-
+    
     setTimeout(() => abort_ctrl.abort(), 10 * 1000);
     const __grab =  (opts_req, opts) => {
-    return fetch(opts_req, opts)
-        .then(function(response) {
-            if (response.status == 404)
-                return;
-            return response.text().then(function(text) {
-                {
-                    let td = '<p>' + text + '</p>';
-                    document.getElementById(elem.getAttribute("insert").toString()).innerHTML = td;
-                }
-                return;
+        return fetch(opts_req, opts)
+            .then(function(response) {
+                if (response.status == 404)
+                    return;
+                return response.text().then(function(text) {
+                    {
+                        let td = '<p>' + text + '</p>';
+                        document.getElementById(elem.getAttribute("insert").toString()).innerHTML = td;
+                    }
+                    return;
+                });
             });
-        });
     }
     __grab(opts_req, opts);
 }
@@ -407,4 +423,20 @@ function classToAJAX(elem, opts = null, headers = null) {
 function rem(elem)
 {
     elem.remove();
+}
+
+function carouselScrollLeft(elem,pixels) {
+
+    elem.scrollX -= pixels;
+
+}
+
+function carouselScrollRight(elem,pixels) {
+
+    elem.scrollX += pixels;
+
+}
+
+function carouselXPos(elem) {
+    return elem.offsetLeft;
 }
