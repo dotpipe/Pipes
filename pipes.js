@@ -8,7 +8,7 @@
     pipe........= name of id
     goto........= URI to go to
     ajax........= calls and returns this files output
-    fileOrder...= ajax to these files, iterating [0,1,2,3]%array.length per call
+    file-order..= ajax to these files, iterating [0,1,2,3]%array.length per call
     index.......= counter of which index to use with file-order to go with ajax
     incrIndex...= increment thru index of file-order (0 moves once) (default: 1)
     decrIndex...= decrement thru index of file-order (0 moves once) (default: 1)
@@ -29,15 +29,13 @@
 
 function fileOrder(elem)
 {
-    arr = elem.getAttribute("file-order").split(";");
+    arr = elem.getAttribute("file-order").split(",");
     index = parseInt(elem.getAttribute("index").toString());
     arr[index];
     if (elem.hasAttribute("incrIndex"))
         index += parseInt(elem.getAttribute("incrIndex").toString()) + 1;
-    else if (elem.hasAttribute("decrIndex"))
+    if (elem.hasAttribute("decrIndex"))
         index -= Math.abs(parseInt(elem.getAttribute("decrIndex").toString())) - 1;
-    else
-	index++;
     if (index < 0)
         index = arr.length-1;
     index = index%arr.length;
@@ -110,10 +108,13 @@ function setAJAXOpts(elem, opts)
 function pipes(el) {
 
     elem = document.getElementById(el.id);
-    opts = new Map();
-
+    var opts = new Map();
+    var query = new Map();
+    var headers = new Map();
+    var form_ids = new Map();
     if (elem.hasAttribute("ajax") && elem.getAttribute("ajax"))
     {
+
         if (elem.classList.contains("link"))
         {
             window.location.href = elem.getAttribute("ajax");
@@ -123,50 +124,32 @@ function pipes(el) {
         {
             var optsArray = elem.getAttribute("query").split(";");
 
-            var p = document.createElement("p");
             optsArray.forEach((e,f) => {
                 var g = e.split(":");
-                p.setAttribute(g[0], g[1]);
+                query.set(g[0], g[1]);
             });
 
-            if (elem.hasAttribute("headers"))
+        }
+        if (elem.hasAttribute("headers"))
+        {
             {
                 var optsArray = elem.getAttribute("headers").split(";");
                 optsArray.forEach((e,f) => {
                     var g = e.split(":");
-                    p.setAttribute(g[0], g[1]);
+                    headers.set(g[0], g[1]);
                 });
             }
-
-            p.click();
-            navigate(p);
-            p.remove();
-            return;
         }
-        if (elem.hasAttribute("headers"))
+        if (elem.hasAttribute("form-ids"))
         {
-            var optsArray = elem.getAttribute("headers").split(";");
-            optsArray.forEach((e,f) => {
-                var g = e.split(":");
-                p.setAttribute(g[0], g[1]);
-            });
-
-            p.click();
-            navigate(p);
-            return;
+            {
+                var optsArray = elem.getAttribute("form-ids").split(";");
+                optsArray.forEach((e,f) => {
+                    form_ids.set(f, document.getElementById(e));
+                });
+            }
         }
-        if (elem.hasAttribute("query"))
-        {
-            var optsArray = elem.getAttribute("query").split(";");
-            optsArray.forEach((e,f) => {
-                var g = e.split(":");
-                p.setAttribute(g[0], g[1]);
-            });
-
-            p.click();
-            navigate(p);
-            return;
-        }
+        // Use a JSON to hold Header information
         if (elem.hasAttribute("fs-opts"))
         {
             var fs=require('fs');
@@ -174,7 +157,6 @@ function pipes(el) {
             var data=fs.readFileSync(json, 'utf8');
             var words=JSON.parse(data);
             var opts = setAJAXOpts(words);
-            navigate(elem, opts, null);
         }
         if (elem.hasAttribute("json") && elem.getAttribute("json"))
         {
@@ -182,12 +164,12 @@ function pipes(el) {
             var json = elem.getAttribute("json").toString();
             var data=fs.readFileSync(json, 'utf8');
             var words=JSON.parse(data);
-            return words;
         }
         if (elem.hasAttribute("insert") && elem.getAttribute("insert"))
         {
             document.getElementById(elem.getAttribute("insert").toString()).innerHTML = navigate(elem); // elem.getAttribute("ajax");
         }
+        navigate(p, opts, headers, query, form_ids);
     }
     // This is a quick way to make a downloadable link in an href
     else if (ev.target.classList == "download")
@@ -209,16 +191,16 @@ function pipes(el) {
     navigate(elem);
 }
 
-function formAJAX(el)
+function formAJAX(el, elem_values)
 {
     elem = document.getElementById(el.id);
     //use 'data-pipe' as the classname to include its value
     // specify which pipe with pipe="target.id"
-    var elem_values = document.getElementsByClassName("data-pipe");
     var elem_qstring = (elem.hasAttribute("query")) ? elem.getAttribute("query").toString() : "";
 
     // No, 'pipe' means it is generic. This means it is open season for all with this class
-    for (var i = 0; i < elem_values.length; i++) {
+    for (var i = 0; i < elem_values.length; i++)
+    {
     //if this is designated as belonging to another pipe, it won't be passed in the url
         if (elem_values && !elem_values[i].hasOwnProperty("pipe") || elem_values[i].getAttribute("pipe") == elem.id)
             elem_qstring = elem_qstring + elem_values[i].name + "=" + elem_values[i].value + "&";
@@ -233,12 +215,12 @@ function formAJAX(el)
             }
         }
     }
-    console.log(elem.getAttribute("ajax") + "?" + elem_qstring.substr(1));
-    elem_qstring = elem.getAttribute("ajax") + "?" + elem_qstring.substr(1);
+    console.log(elem_qstring.substr(1));
+    elem_qstring = "?" + elem_qstring;
     return encodeURI(elem_qstring);
 }
 
-function navigate(ev, opts = [], headers = [])
+function navigate(ev, opts = [], headers = [], query = "", form_ids = [])
 {
     // This is a quick if to make a downloadable link in an href
     if (ev.classList.contains("download"))
@@ -262,37 +244,8 @@ function navigate(ev, opts = [], headers = [])
         window.location.href = ev.getAttribute("ajax") + (ev.hasAttribute("query")) ? "?" + ev.getAttribute("query") : "";
     }
     const elem = ev;
-    classToAJAX(elem, opts, headers);
+    classToAJAX(elem, opts, headers, query);
 }
-
-// deprecated
-// function captureAJAXResponse(elem, opts)
-// {
-//     f = 0;
-
-//     opts = setAJAXOpts(elem, opts);
-
-//     var opts_req = new Request(elem.getAttribute("ajax").toString());
-//     const abort_ctrl = new AbortController();
-//     const signal = abort_ctrl.signal;
-
-//     fetch(opts_req, {
-//         signal
-//     });
-
-//     setTimeout(() => abort_ctrl.abort(), 10 * 1000);
-//     const __grab = async (opts_req, opts) => {
-//     return fetch(opts_req, opts)
-//         .then(function(response) {
-//             return response.text().then(function(text) {
-//                 if (response.status == 404)
-//                     return;
-//                 return text;
-//             });
-//         });
-//     }
-//     return __grab(opts_req, opts);
-// }
 
 function notify(targetname) {
 
@@ -357,10 +310,10 @@ function notify(targetname) {
     __grab(opts_req, opts);
 }
 
-function classToAJAX(elem, opts = null, headers = null)
+function classToAJAX(elem, opts = null, headers = null, query = "")
 {
 	//formAJAX at the end of this line
-	elem_qstring = elem_qstring + "&" + elem.name + "=" + elem.value + "&" + formAJAX(elem, opts, headers);
+	elem_qstring = query + formAJAX(elem, opts, headers);
     console.log(elem.getAttribute("ajax") + "?" + elem_qstring);
     elem_qstring = elem.getAttribute("ajax") + "?" + elem_qstring;
     elem_qstring = encodeURI(elem_qstring);
