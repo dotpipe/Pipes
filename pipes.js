@@ -29,7 +29,7 @@
 
 function fileOrder(elem)
 {
-    arr = elem.getAttribute("file-order").split(",");
+    arr = elem.getAttribute("file-order").split(";");
     index = parseInt(elem.getAttribute("index").toString());
     arr[index];
     if (elem.hasAttribute("incrIndex"))
