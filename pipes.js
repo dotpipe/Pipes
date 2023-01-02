@@ -37,7 +37,7 @@ function fileOrder(elem)
     if (elem.hasAttribute("decrIndex"))
         index -= Math.abs(parseInt(elem.getAttribute("decrIndex").toString())) - 1;
     if (index < 0)
-        index = arr.length-1;
+        index++;
     index = index%arr.length;
     elem.setAttribute("index",index.toString());
     pfc = elem.firstChild;
