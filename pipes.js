@@ -60,7 +60,6 @@ function remove(elem)
             doc_set.remove();
         }
         doc_set.parentNode.removeChild(doc_set);
-        
     }
 }
 
@@ -94,86 +93,84 @@ function pipes(elem) {
 
 //     elem = document.getElementById(el.id);
     var opts = new Map();
-    var display = new Map();
     var query = new Map();
     var headers = new Map();
     var form_ids = new Map();
-//     if (elem.hasAttribute("ajax") && elem.getAttribute("ajax"))
     {
 
 	if (elem.hasAttribute("display") && elem.getAttribute("display"))
 	{
-            var optsArray = elem.getAttribute("display").split(";");
-            optsArray.forEach((e,f) => {
+	    var optsArray = elem.getAttribute("display").split(";");
+	    optsArray.forEach((e,f) => {
 		var x = document.getElementById(e);
 		if (x.style.display !== "none")
 		    x.style.display = "none";
 		else
 		    x.style.display = "block";
-            });
+	    });
 	}
 	if (elem.hasAttribute("remove") && elem.getAttribute("remove"))
 	{
-            var optsArray = elem.getAttribute("remove").split(";");
-            optsArray.forEach((e,f) => {
+	    var optsArray = elem.getAttribute("remove").split(";");
+	    optsArray.forEach((e,f) => {
 		var x = document.getElementById(e);
 		x.remove();
-            });
+	    });
 	}
-        if (elem.classList.contains("link"))
-        {
-            window.location.href = elem.getAttribute("ajax");
-            return;
-        }
-        if (elem.hasAttribute("query"))
-        {
-            var optsArray = elem.getAttribute("query").split(";");
+	if (elem.classList.contains("link"))
+	{
+	    window.location.href = elem.getAttribute("ajax");
+	    return;
+	}
+	if (elem.hasAttribute("query"))
+	{
+	    var optsArray = elem.getAttribute("query").split(";");
 
-            optsArray.forEach((e,f) => {
-                var g = e.split(":");
-                query.set(g[0], g[1]);
-            });
-        }
-        if (elem.hasAttribute("headers"))
-        {
-            {
-                var optsArray = elem.getAttribute("headers").split(";");
-                optsArray.forEach((e,f) => {
-                    var g = e.split(":");
-                    headers.set(g[0], g[1]);
-                });
-            }
-        }
-        if (elem.hasAttribute("form-ids"))
-        {
-            {
-                var optsArray = elem.getAttribute("form-ids").split(";");
-                optsArray.forEach((e,f) => {
-                    form_ids.set(f, document.getElementById(e));
-                });
-            }
-        }
-        // Use a JSON to hold Header information
-        if (elem.hasAttribute("fs-opts"))
-        {
-            var fs=require('fs');
-            var json = elem.getAttribute("fs-opts").toString();
-            var data=fs.readFileSync(json, 'utf8');
-            var words=JSON.parse(data);
-            var opts = setAJAXOpts(words);
-        }
-        if (elem.hasAttribute("json") && elem.getAttribute("json"))
-        {
-            var fs=require('fs');
-            var json = elem.getAttribute("json").toString();
-            var data=fs.readFileSync(json, 'utf8');
-            var words=JSON.parse(data);
-        }
-        if (elem.hasAttribute("insert") && elem.getAttribute("insert"))
-        {
-            document.getElementById(elem.getAttribute("insert").toString()).innerHTML = navigate(elem); // elem.getAttribute("ajax");
-        }
-        navigate(elem, opts, headers, query, form_ids);
+	    optsArray.forEach((e,f) => {
+		var g = e.split(":");
+		query.set(g[0], g[1]);
+	    });
+	}
+	if (elem.hasAttribute("headers"))
+	{
+	    {
+		var optsArray = elem.getAttribute("headers").split(";");
+		optsArray.forEach((e,f) => {
+		    var g = e.split(":");
+		    headers.set(g[0], g[1]);
+		});
+	    }
+	}
+	if (elem.hasAttribute("form-ids"))
+	{
+	    {
+		var optsArray = elem.getAttribute("form-ids").split(";");
+		optsArray.forEach((e,f) => {
+		    form_ids.set(f, document.getElementById(e));
+		});
+	    }
+	}
+	// Use a JSON to hold Header information
+	if (elem.hasAttribute("fs-opts"))
+	{
+	    var fs=require('fs');
+	    var json = elem.getAttribute("fs-opts").toString();
+	    var data=fs.readFileSync(json, 'utf8');
+	    var words=JSON.parse(data);
+	    var opts = setAJAXOpts(words);
+	}
+	if (elem.hasAttribute("json") && elem.getAttribute("json"))
+	{
+	    var fs=require('fs');
+	    var json = elem.getAttribute("json").toString();
+	    var data=fs.readFileSync(json, 'utf8');
+	    var words=JSON.parse(data);
+	}
+	if (elem.hasAttribute("insert") && elem.getAttribute("insert"))
+	{
+	    document.getElementById(elem.getAttribute("insert").toString()).innerHTML = navigate(elem); // elem.getAttribute("ajax");
+	}
+	navigate(elem, opts, headers, query, form_ids);
     }
     // This is a quick way to make a downloadable link in an href
 //     else
