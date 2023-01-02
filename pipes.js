@@ -244,7 +244,7 @@ function navigate(ev, opts = [], headers = [], query = "", form_ids = [])
         window.location.href = ev.getAttribute("ajax") + (ev.hasAttribute("query")) ? "?" + ev.getAttribute("query") : "";
     }
     const elem = ev;
-    classToAJAX(elem, opts, headers, query);
+    classToAJAX(elem, opts, headers, query, form_ids);
 }
 
 function notify(targetname) {
@@ -310,10 +310,10 @@ function notify(targetname) {
     __grab(opts_req, opts);
 }
 
-function classToAJAX(elem, opts = null, headers = null, query = "")
+function classToAJAX(elem, opts = null, headers = null, query = "", form_ids)
 {
 	//formAJAX at the end of this line
-	elem_qstring = query + formAJAX(elem, opts, headers);
+	elem_qstring = query + formAJAX(elem, form_ids);
     console.log(elem.getAttribute("ajax") + "?" + elem_qstring);
     elem_qstring = elem.getAttribute("ajax") + "?" + elem_qstring;
     elem_qstring = encodeURI(elem_qstring);
