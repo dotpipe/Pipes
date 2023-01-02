@@ -17,7 +17,7 @@
   *  data-pipe...= name of class for multi-tag data (augment with pipe)
   *  multiple....= states that this object has two or more key/value pairs
   *  remove......= remove element in tag
-  *  display.....= toggle visible and invisible
+  *  display.....= toggle visible and invisible of anything in the value (delimited by ';') this attribute
   *  insert......= return ajax call to this id
   *  json........= returns a JSON file set as value
   *  fs-opts.....= JSON headers for AJAX implementation
@@ -47,23 +47,6 @@ function fileOrder(elem)
     console.log(index);
     ppfc = pfc.nextElementSibling;
     ppfc.setAttribute("src",arr[index]);
-}
-
-function display(elem)
-{
-    // Toggle visibility of CSS display style of object
-    if (elem.hasOwnProperty("display"))
-    {
-        var toggle = elem.getAttribute("display");
-        doc_set = document.getElementById(toggle);
-        if (document.getElementById(toggle) && doc_set.style.display !== "none"){
-            doc_set.style.display = "none";
-        }
-        else if (document.getElementById(toggle) && doc_set.style.display === "none")
-        {
-            doc_set.style.display = "block";
-        }
-    }
 }
 
 function remove(elem)
@@ -127,6 +110,14 @@ function pipes(elem) {
 		    x.style.display = "none";
 		else
 		    x.style.display = "block";
+            });
+	}
+	if (elem.hasAttribute("remove") && elem.getAttribute("remove"))
+	{
+            var optsArray = elem.getAttribute("remove").split(";");
+            optsArray.forEach((e,f) => {
+		var x = document.getElementById(e);
+		x.remove();
             });
 	}
         if (elem.classList.contains("link"))
