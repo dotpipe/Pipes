@@ -34,10 +34,12 @@ function fileOrder(elem)
     arr[index];
     if (elem.hasAttribute("incrIndex"))
         index += parseInt(elem.getAttribute("incrIndex").toString()) + 1;
-    if (elem.hasAttribute("decrIndex"))
+    else if (elem.hasAttribute("decrIndex"))
         index -= Math.abs(parseInt(elem.getAttribute("decrIndex").toString())) - 1;
+    else
+	index++;
     if (index < 0)
-        index++;
+        index = 0;
     index = index%arr.length;
     elem.setAttribute("index",index.toString());
     pfc = elem.firstChild;
