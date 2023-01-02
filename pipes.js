@@ -42,7 +42,7 @@ function fileOrder(elem)
         index = 0;
     index = index%arr.length;
     elem.setAttribute("index",index.toString());
-    ppfc = document.getElementById(elem.getAttribute("target").toString());
+    ppfc = document.getElementById(elem.getAttribute("insert").toString());
     ppfc.setAttribute("src",arr[index]);
 }
 
