@@ -5,9 +5,9 @@
   *  Attribute   |   Use Case
   *  -------------------------------------------------------------
   *  query.......= default query string associated with url
-  *  pipe........= name of id
+  *  pipe........= name of id // Possible deprecation
   *  goto........= URI to go to
-  *  ajax........= calls and returns this files output
+  *  ajax........= calls and returns the value file's output
   *  file-order..= ajax to these files, iterating [0,1,2,3]%array.length per call
   *  index.......= counter of which index to use with file-order to go with ajax
   *  incrIndex...= increment thru index of file-order (0 moves once) (default: 1)
@@ -107,16 +107,28 @@ function setAJAXOpts(elem, opts)
     return opts;
 }
 
-function pipes(el) {
+function pipes(elem) {
 
-    elem = document.getElementById(el.id);
+//     elem = document.getElementById(el.id);
     var opts = new Map();
+    var display = new Map();
     var query = new Map();
     var headers = new Map();
     var form_ids = new Map();
-    if (elem.hasAttribute("ajax") && elem.getAttribute("ajax"))
+//     if (elem.hasAttribute("ajax") && elem.getAttribute("ajax"))
     {
 
+	if (elem.hasAttribute("display") && elem.getAttribute("display"))
+	{
+            var optsArray = elem.getAttribute("display").split(";");
+            optsArray.forEach((e,f) => {
+		var x = document.getElementById(e);
+		if (x.style.display !== "none")
+		    x.style.display = "none";
+		else
+		    x.style.display = "block";
+            });
+	}
         if (elem.classList.contains("link"))
         {
             window.location.href = elem.getAttribute("ajax");
@@ -130,7 +142,6 @@ function pipes(el) {
                 var g = e.split(":");
                 query.set(g[0], g[1]);
             });
-
         }
         if (elem.hasAttribute("headers"))
         {
@@ -171,10 +182,11 @@ function pipes(el) {
         {
             document.getElementById(elem.getAttribute("insert").toString()).innerHTML = navigate(elem); // elem.getAttribute("ajax");
         }
-        navigate(p, opts, headers, query, form_ids);
+        navigate(elem, opts, headers, query, form_ids);
     }
     // This is a quick way to make a downloadable link in an href
-    else if (ev.target.classList == "download")
+//     else
+    if (ev.target.classList == "download")
     {
         var text = ev.target.getAttribute("file");
         var element = document.createElement('a');
