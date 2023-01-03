@@ -92,7 +92,7 @@
       return opts;
   }
   
-  function pipes(elem, index_elem = "") {
+  function pipes(elem) {
   
   //     elem = document.getElementById(el.id);
       var opts = new Map();
