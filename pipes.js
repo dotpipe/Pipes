@@ -5,7 +5,7 @@
   *  Attribute   |   Use Case
   *  -------------------------------------------------------------
   *  query.......= default query string associated with url
-  *  pipe........= name of id // Possible deprecation
+  *  pipe........= name of id // deprecated
   *  goto........= URI to go to
   *  ajax........= calls and returns the value file's output
   *  file-order..= ajax to these files, iterating [0,1,2,3]%array.length per call
@@ -14,17 +14,17 @@
   *  decrIndex...= decrement thru index of file-order (0 moves once) (default: 1)
   *  redirect....= "follow" the ajax call in POST or GET mode
   *  mode........= "POST" or "GET" (default: "POST")
-  *  data-pipe...= name of class for multi-tag data (augment with pipe)
-  *  multiple....= states that this object has two or more key/value pairs
-  *  remove......= remove element in tag
-  *  display.....= toggle visible and invisible of anything in the value (delimited by ';') this attribute
+  *  data-pipe...= name of class for multi-tag data (augment with pipe) // deprecated
+  *  remove......= remove elements in value * from body tag
+  *  display.....= toggle visible and invisible of anything in the value * attribute
   *  insert......= return ajax call to this id
   *  json........= returns a JSON file set as value
-  *  fs-opts.....= JSON headers for AJAX implementation
-  *  headers.....= headers in CSS markup-style-attribute
-  *  link........= class for operating tag as clickable link
+  *  fs-opts.....= JSON header file for AJAX implementation
+  *  headers.....= headers in CSS markup-style-attribute *
+  *  link........= classname for operating tag as a clickable link
   **** ALL HEADERS FOR AJAX are available. They will use defaults to
   **** go on if there is no input to replace them.
+  * * (delimited by ';')
   */
 
   function fileOrder(elem)
