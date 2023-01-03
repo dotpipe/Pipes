@@ -48,8 +48,7 @@
           ppfc.setAttribute("src",arr[index]);
       else
       {
-          elem.setAttribute("ajax",arr[index]);
-          pipes(elem);
+          return arr[index];
       }
   }
   
@@ -101,6 +100,11 @@
       var headers = new Map();
       var form_ids = new Map();
   
+      if (elem.hasAttribute("file-order") && elem.getAttribute("file-order"))
+      {
+          var curr_file = fileOrder(elem);
+          elem.setAttribute('ajax', curr_file);
+      }
       if (elem.hasAttribute("display") && elem.getAttribute("display"))
       {
           var optsArray = elem.getAttribute("display").split(";");
