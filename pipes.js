@@ -48,7 +48,8 @@
           ppfc.setAttribute("src",arr[index]);
       else
       {
-          pipes(elem, arr[index]);
+          elem.setAttribute("ajax",arr[index]);
+          pipes(elem);
       }
   }
   
