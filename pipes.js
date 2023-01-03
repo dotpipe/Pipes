@@ -44,7 +44,7 @@
       elem.setAttribute("index",index.toString());
       ppfc = document.getElementById(elem.getAttribute("insert").toString());
       
-      if (ppfc.tagName == "video" || ppfc.tagName == "img")
+      if (ppfc.hasAttribute("src"))
           ppfc.setAttribute("src",arr[index]);
       else
       {
