@@ -205,7 +205,6 @@
           if (elem_values && !elem_values[i].hasOwnProperty("pipe") || elem_values[i].getAttribute("pipe") == elem.id)
               elem_qstring = elem_qstring + elem_values[i].name + "=" + elem_values[i].value + "&";
           // Multi-select box
-          console.log(".");
           if (elem_values[i].hasOwnProperty("multiple"))
           {
               for (var o of elem_values.options) {
@@ -232,7 +231,7 @@
   
           element.style.display = 'none';
           document.body.appendChild(element);
-  
+       
           element.click();
   
           document.body.removeChild(element);
