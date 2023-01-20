@@ -1,6 +1,7 @@
  /**
-  * only usage:        onclick="pipes(this)"
+  *  only usage: onclick="pipes(this)"
   *  to begin using the PipesJS code.
+  *  Use DOM attributes to encapsulate AJAX calls
   *  Usable DOM Attributes:
   *  Attribute   |   Use Case
   *  -------------------------------------------------------------
