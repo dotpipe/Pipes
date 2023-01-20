@@ -9,8 +9,9 @@
   *  goto........= URI to go to
   *  ajax........= calls and returns the value file's output
   *  file-order..= ajax to these files, iterating [0,1,2,3]%array.length per call (delimited by ';')
+  *  file-index..= counter of which index to use with file-order to go with ajax (automatically set on first use)
   *  class-order.= iterate through class sets, iterating [0,1,2,3]%array.length per call (delimited by ';')
-  *  file-index.......= counter of which index to use with file-order to go with ajax
+  *  class-index.= counter of which index to use with file-order to go with ajax (automatically set on first use)
   *  incrIndex...= increment thru index of file-order (0 moves once) (default: 1)
   *  decrIndex...= decrement thru index of file-order (0 moves once) (default: 1)
   *  redirect....= "follow" the ajax call in POST or GET mode
