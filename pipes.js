@@ -5,7 +5,7 @@
   *  Attribute   |   Use Case
   *  -------------------------------------------------------------
   *  query.......= default query string associated with url
-  *  pipe........= name of id // deprecated
+  *  pipe........= name of id // Possible deprecation
   *  goto........= URI to go to
   *  ajax........= calls and returns the value file's output
   *  file-order..= ajax to these files, iterating [0,1,2,3]%array.length per call
@@ -14,42 +14,64 @@
   *  decrIndex...= decrement thru index of file-order (0 moves once) (default: 1)
   *  redirect....= "follow" the ajax call in POST or GET mode
   *  mode........= "POST" or "GET" (default: "POST")
-  *  data-pipe...= name of class for multi-tag data (augment with pipe) // deprecated
-  *  remove......= remove elements in value * from body tag
-  *  display.....= toggle visible and invisible of anything in the value * attribute
+  *  data-pipe...= name of class for multi-tag data (augment with pipe)
+  *  multiple....= states that this object has two or more key/value pairs
+  *  remove......= remove element in tag
+  *  display.....= toggle visible and invisible of anything in the value (delimited by ';') this attribute
   *  insert......= return ajax call to this id
   *  json........= returns a JSON file set as value
-  *  fs-opts.....= JSON header file for AJAX implementation
-  *  headers.....= headers in CSS markup-style-attribute *
-  *  link........= classname for operating tag as a clickable link
+  *  fs-opts.....= JSON headers for AJAX implementation
+  *  headers.....= headers in CSS markup-style-attribute
+  *  link........= class for operating tag as clickable link
   **** ALL HEADERS FOR AJAX are available. They will use defaults to
   **** go on if there is no input to replace them.
-  * * (delimited by ';')
   */
 
   function fileOrder(elem)
   {
       arr = elem.getAttribute("file-order").split(";");
-      index = parseInt(elem.getAttribute("index").toString());
-      arr[index];
+      if (!elem.hasAttribute("file-index"))
+        elem.setAttribute("file-index", "0");
+      index = parseInt(elem.getAttribute("file-index").toString());
       if (elem.hasAttribute("incrIndex"))
-          index += parseInt(elem.getAttribute("incrIndex").toString()) + 1;
+          index = parseInt(elem.getAttribute("incrIndex").toString()) + 1;
       else if (elem.hasAttribute("decrIndex"))
-          index -= Math.abs(parseInt(elem.getAttribute("decrIndex").toString())) - 1;
+          index = Math.abs(parseInt(elem.getAttribute("decrIndex").toString())) - 1;
       else
           index++;
       if (index < 0)
           index = 0;
       index = index%arr.length;
-      elem.setAttribute("index",index.toString());
+      elem.setAttribute("file-index",index.toString());
       ppfc = document.getElementById(elem.getAttribute("insert").toString());
       
       if (ppfc.hasAttribute("src"))
           ppfc.setAttribute("src",arr[index]);
       else
       {
-          return arr[index];
+          elem.setAttribute("ajax",arr[index]);
+          pipes(elem);
       }
+  }
+  
+  function classOrder(elem)
+  {
+      arr = elem.getAttribute("class-switch").split(";");
+      if (!elem.hasAttribute("class-index"))
+        elem.setAttribute("class-index", "0");
+      index = parseInt(elem.getAttribute("class-index").toString());
+      if (elem.hasAttribute("incrIndex"))
+          index = parseInt(elem.getAttribute("incrIndex").toString()) + 1;
+      else if (elem.hasAttribute("decrIndex"))
+          index = Math.abs(parseInt(elem.getAttribute("decrIndex").toString())) - 1;
+      else
+          index++;
+      if (index < 0)
+          index = 0;
+      index = index%arr.length;
+      elem.setAttribute("class-index",index.toString());
+      ppfc = document.getElementById(elem.getAttribute("insert").toString());
+      elem.classList = arr[index];
   }
   
   function remove(elem)
@@ -92,19 +114,15 @@
       return opts;
   }
   
-  function pipes(elem) {
+  function pipes(elem, index_elem = "") {
   
   //     elem = document.getElementById(el.id);
       var opts = new Map();
       var query = new Map();
       var headers = new Map();
       var form_ids = new Map();
+      var file_order = new Map();
   
-      if (elem.hasAttribute("file-order") && elem.getAttribute("file-order"))
-      {
-          var curr_file = fileOrder(elem);
-          elem.setAttribute('ajax', curr_file);
-      }
       if (elem.hasAttribute("display") && elem.getAttribute("display"))
       {
           var optsArray = elem.getAttribute("display").split(";");
@@ -152,6 +170,14 @@
           optsArray.forEach((e,f) => {
               form_ids.set(f, document.getElementById(e));
           });
+      }
+      if (elem.hasAttribute("class-switch"))
+      {
+          classOrder(elem);
+      }
+      if (elem.hasAttribute("file-order"))
+      {
+          fileOrder(elem);
       }
       // Use a JSON to hold Header information
       if (elem.hasAttribute("fs-opts"))
@@ -205,6 +231,7 @@
           if (elem_values && !elem_values[i].hasOwnProperty("pipe") || elem_values[i].getAttribute("pipe") == elem.id)
               elem_qstring = elem_qstring + elem_values[i].name + "=" + elem_values[i].value + "&";
           // Multi-select box
+          console.log(".");
           if (elem_values[i].hasOwnProperty("multiple"))
           {
               for (var o of elem_values.options) {
@@ -219,7 +246,7 @@
       return encodeURI(elem_qstring);
   }
   
-  function navigate(ev, opts = [], headers = [], query = "", form_ids = [])
+  function navigate(ev, opts = [], headers = [], query = "", form_ids = [], class_switch = [])
   {
       // This is a quick if to make a downloadable link in an href
       if (ev.classList.contains("download"))
@@ -231,7 +258,7 @@
   
           element.style.display = 'none';
           document.body.appendChild(element);
-       
+  
           element.click();
   
           document.body.removeChild(element);
@@ -243,7 +270,7 @@
           window.location.href = ev.getAttribute("ajax") + (ev.hasAttribute("query")) ? "?" + ev.getAttribute("query") : "";
       }
       const elem = ev;
-      classToAJAX(elem, opts, headers, query, form_ids);
+      classToAJAX(elem, opts, headers, query, form_ids, class_switch);
   }
   
   function notify(targetname) {
@@ -309,7 +336,7 @@
       __grab(opts_req, opts);
   }
   
-  function classToAJAX(elem, opts = null, headers = null, query = "", form_ids)
+  function classToAJAX(elem, opts = null, headers = null, query = "", form_ids = [], class_switch = [])
   {
       //formAJAX at the end of this line
       elem_qstring = query + formAJAX(elem, form_ids);
@@ -345,8 +372,4 @@
       }
       __grab(opts_req, opts);
   }
-  
-  function rem(elem)
-  {
-      elem.remove();
-  }
+ 
