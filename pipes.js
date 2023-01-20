@@ -71,7 +71,6 @@
           index = 0;
       index = index%arr.length;
       elem.setAttribute("class-index",index.toString());
-      ppfc = document.getElementById(elem.getAttribute("insert").toString());
       elem.classList = arr[index];
   }
   
