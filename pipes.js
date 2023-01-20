@@ -24,6 +24,9 @@
   *  fs-opts.....= JSON headers for AJAX implementation
   *  headers.....= headers in CSS markup-style-attribute
   *  link........= class for operating tag as clickable link
+  *  download....= class for downloading files
+  *  file........= filename to download
+  *  directory...= relative or full path of 'file'
   **** ALL HEADERS FOR AJAX are available. They will use defaults to
   **** go on if there is no input to replace them.
   */
@@ -88,17 +91,17 @@
       }
   }
   
-  function setAJAXOpts(elem, opts)
+  function setAJAXOpts(opts)
   {
       // communicate properties of Fetch Request
-      var method_thru = (opts["method"] !== undefined) ? opts["method"] : (elem == undefined || !elem.hasAttribute("method")) ? "GET" : elem.getAttribute("method");
-      var mode_thru = (opts["mode"] !== undefined) ? opts["mode"]: (elem == undefined || !elem.hasAttribute("mode")) ? "no-cors" : elem.getAttribute("mode");
-      var cache_thru = (opts["cache"] !== undefined) ? opts["cache"]: (elem == undefined || !elem.hasAttribute("cred")) ? "no-cache" : elem.getAttribute("cache");
-      var cred_thru = (opts["cred"] !== undefined) ? opts["cred"]: (elem == undefined || !elem.hasAttribute("cred")) ? "same-origin" : elem.getAttribute("cred");
+      var method_thru = (opts["method"] !== undefined) ? opts["method"] : "POST";
+      var mode_thru = (opts["mode"] !== undefined) ? opts["mode"]: "no-cors";
+      var cache_thru = (opts["cache"] !== undefined) ? opts["cache"]: "no-cache";
+      var cred_thru = (opts["cred"] !== undefined) ? opts["cred"]: "same-origin";
       // updated "headers" attribute to more friendly "content-type" attribute
-      var content_thru = (opts["headers"] !== undefined) ? opts["headers"]: (elem == undefined || !elem.hasAttribute("headers")) ? '{"Access-Control-Allow-Origin":"*","Content-Type":"text/html"}' : elem.getAttribute("headers");
-      var redirect_thru = (opts["redirect"] !== undefined) ? opts["redirect"]: (elem == undefined || !elem.hasAttribute("redirect")) ? "manual" : elem.getAttribute("redirect");
-      var refer_thru = (opts["referrer"] !== undefined) ? opts["referrer"]: (elem == undefined || !elem.hasAttribute("referrer")) ? "client" : elem.getAttribute("referrer");
+      var content_thru = (opts["headers"] !== undefined) ? opts["headers"]: '{"Access-Control-Allow-Origin":"*","Content-Type":"text/html"}';
+      var redirect_thru = (opts["redirect"] !== undefined) ? opts["redirect"]: "manual";
+      var refer_thru = (opts["referrer"] !== undefined) ? opts["referrer"]: "client";
       opts = new Map();
       opts.set("method", method_thru); // *GET, POST, PUT, DELETE, etc.
       opts.set("mode", mode_thru); // no-cors, cors, *same-origin
@@ -121,8 +124,11 @@
       var query = new Map();
       var headers = new Map();
       var form_ids = new Map();
-      var file_order = new Map();
   
+      if (ev.classList.contains("redirect"))
+      {
+          window.location.href = ev.getAttribute("ajax") + ((ev.hasAttribute("query")) ? "?" + ev.getAttribute("query") : "");
+      }
       if (elem.hasAttribute("display") && elem.getAttribute("display"))
       {
           var optsArray = elem.getAttribute("display").split(";");
@@ -163,6 +169,7 @@
               var g = e.split(":");
               headers.set(g[0], g[1]);
           });
+          setAJAXOpts(headers)
       }
       if (elem.hasAttribute("form-ids"))
       {
@@ -222,14 +229,12 @@
       elem = document.getElementById(el.id);
       //use 'data-pipe' as the classname to include its value
       // specify which pipe with pipe="target.id"
-      var elem_qstring = (elem.hasAttribute("query")) ? elem.getAttribute("query").toString() : "";
+      var elem_qstring = (elem.hasAttribute("query")) ? "?" + elem.getAttribute("query").toString() : "";
   
       // No, 'pipe' means it is generic. This means it is open season for all with this class
       for (var i = 0; i < elem_values.length; i++)
       {
-      //if this is designated as belonging to another pipe, it won't be passed in the url
-          if (elem_values && !elem_values[i].hasOwnProperty("pipe") || elem_values[i].getAttribute("pipe") == elem.id)
-              elem_qstring = elem_qstring + elem_values[i].name + "=" + elem_values[i].value + "&";
+          elem_qstring = elem_qstring + elem_values[i].name + "=" + elem_values[i].value + "&";
           // Multi-select box
           console.log(".");
           if (elem_values[i].hasOwnProperty("multiple"))
@@ -241,36 +246,9 @@
               }
           }
       }
-      console.log(elem_qstring.substr(1));
-      elem_qstring = "?" + elem_qstring;
+      console.log(elem_qstring);
+      elem_qstring = elem_qstring;
       return encodeURI(elem_qstring);
-  }
-  
-  function navigate(ev, opts = [], headers = [], query = "", form_ids = [], class_switch = [])
-  {
-      // This is a quick if to make a downloadable link in an href
-      if (ev.classList.contains("download"))
-      {
-          var text = ev.getAttribute("file");
-          var element = document.createElement('a');
-          var location = ev.getAttribute("directory");
-          element.setAttribute('href', location + encodeURIComponent(text));
-  
-          element.style.display = 'none';
-          document.body.appendChild(element);
-  
-          element.click();
-  
-          document.body.removeChild(element);
-  
-          return;
-      }
-      if (ev.classList.contains("redirect"))
-      {
-          window.location.href = ev.getAttribute("ajax") + (ev.hasAttribute("query")) ? "?" + ev.getAttribute("query") : "";
-      }
-      const elem = ev;
-      classToAJAX(elem, opts, headers, query, form_ids, class_switch);
   }
   
   function notify(targetname) {
@@ -336,7 +314,7 @@
       __grab(opts_req, opts);
   }
   
-  function classToAJAX(elem, opts = null, headers = null, query = "", form_ids = [], class_switch = [])
+  function navigate(elem, opts = null, headers = null, query = "", form_ids = [])
   {
       //formAJAX at the end of this line
       elem_qstring = query + formAJAX(elem, form_ids);
@@ -363,7 +341,7 @@
                   return;
               return response.text().then(function(text) {
                   {
-                      let td = '<p>' + text + '</p>';
+                      let td = text;
                       document.getElementById(elem.getAttribute("insert").toString()).innerHTML = td;
                   }
                   return;
