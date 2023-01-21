@@ -1,5 +1,5 @@
  /**
-  * only usage:        onclick="pipes(this)"
+  *  only usage: onclick="pipes(this)"
   *  to begin using the PipesJS code.
   *  Usable DOM Attributes:
   *  Attribute   |   Use Case
@@ -48,12 +48,23 @@
       index = index%arr.length;
       elem.setAttribute("file-index",index.toString());
       ppfc = document.getElementById(elem.getAttribute("insert").toString());
-      
+      console.log(ppfc);
       if (ppfc.hasAttribute("src"))
-          ppfc.setAttribute("src",arr[index]);
+      {
+        try {
+            ppfc.parentNode.pause();
+            ppfc.parentNode.setAttribute("src",arr[index].toString());
+            ppfc.parentNode.load();
+            ppfc.parentNode.play();
+        }
+        catch (e)
+        {
+            ppfc.parentNode.setAttribute("src",arr[index].toString());
+        }
+      }
       else
       {
-          elem.setAttribute("ajax",arr[index]);
+          elem.setAttribute("ajax",arr[index].toString());
           pipes(elem);
       }
   }
@@ -91,49 +102,7 @@
       }
   }
   
-  function setAJAXOpts(opts)
-  {
-    //   // communicate properties of Fetch Request
-    //   var method_thru = (opts["method"] !== undefined) ? opts["method"] : "POST";
-    //   var mode_thru = (opts["mode"] !== undefined) ? opts["mode"]: "no-cors";
-    //   var cache_thru = (opts["cache"] !== undefined) ? opts["cache"]: "no-cache";
-    //   var cred_thru = (opts["credentials"] !== undefined) ? opts["credentials"]: "same-origin";
-    //   // updated "headers" attribute to more friendly "content-type" attribute
-    //   var access_control = (opts["access-control-allow-origin"] !== undefined) ? opts["access-control-allow-origin"]: 'Access-Control-Allow-Origin":"*"';
-    //   var content_thru = (opts["content-type"] !== undefined) ? opts["content-type"]: '"Content-Type":"text/html"';
-    //   var accept = (opts["accept"] !== undefined) ? opts["accept"]: "text/html";
-    //   var charset = (opts["accept-charset"] !== undefined) ? opts["accept-charset"]: "iso-8859-5, Unicode-1-1; q=1.0";
-    //   var accept = (opts["accept"] !== undefined) ? opts["accept"]: "text/html";
-    //   var language = (opts["accept-language"] !== undefined) ? opts["accept-language"]: "en-US; q=0.9";
-    //   var expect = (opts["expect"] !== undefined) ? opts["expect"]: "100-continue";
-    //   var language = (opts["accept-language"] !== undefined) ? opts["from"]: "webmaster";
-    //   var expect = (opts["expect"] !== undefined) ? opts["expect"]: "100-continue";
-
-    //   var redirect_thru = (opts["redirect"] !== undefined) ? opts["redirect"]: "manual";
-    //   var refer_thru = (opts["referrer"] !== undefined) ? opts["referrer"]: "client";
-    //   opts = new Map();
-    //   opts.set("access-control-allow-origin", access_control); // *GET, POST, PUT, DELETE, etc.
-    //   opts.set("accept-charset", charset); // *GET, POST, PUT, DELETE, etc.
-    //   opts.set("accept", accept); // *GET, POST, PUT, DELETE, etc.
-    //   opts.set("accept-language", mode_thru); // no-cors, cors, *same-origin
-    //   opts.set("except", accept); // *GET, POST, PUT, DELETE, etc.
-    //   opts.set("from", mode_thru); // no-cors, cors, *same-origin
-    //   opts.set("accept", accept); // *GET, POST, PUT, DELETE, etc.
-    //   opts.set("mode", mode_thru); // no-cors, cors, *same-origin
-    //   opts.set("cache", cache_thru); // *default, no-cache, reload, force-cache, only-if-cached
-    //   opts.set("credentials", cred_thru); // include, same-origin, *omit
-    //   opts.set("content-type", content_thru); // content-type UPDATED**
-    //   opts.set("redirect", redirect_thru); // manual, *follow, error
-    //   opts.set("referrer", refer_thru); // no-referrer, *client
-    //   opts.set('body', JSON.stringify(content_thru));
-    //   const abort_ctrl = new AbortController();
-    //   const signal = abort_ctrl.signal;
-  
-    //   return opts;
-
-  }
-  
-  function pipes(elem, index_elem = "") {
+  function pipes(elem) {
   
   //     elem = document.getElementById(el.id);
       var opts = new Map();
@@ -141,9 +110,9 @@
       var headers = new Map();
       var form_ids = new Map();
   
-      if (ev.classList.contains("redirect"))
+      if (elem.classList.contains("redirect"))
       {
-          window.location.href = ev.getAttribute("ajax") + ((ev.hasAttribute("query")) ? "?" + ev.getAttribute("query") : "");
+          window.location.href = elem.getAttribute("ajax") + ((elem.hasAttribute("query")) ? "?" + elem.getAttribute("query") : "");
       }
       if (elem.hasAttribute("display") && elem.getAttribute("display"))
       {
@@ -208,7 +177,6 @@
           var json = elem.getAttribute("fs-opts").toString();
           var data=fs.readFileSync(json, 'utf8');
           var words=JSON.parse(data);
-          var opts = setAJAXOpts(words);
       }
       if (elem.hasAttribute("json") && elem.getAttribute("json"))
       {
@@ -239,11 +207,34 @@
       navigate(elem, opts, headers, query, form_ids);
   }
   
-  function formAJAX(el, elem_values)
+  function setAJAXOpts(elem, opts)
   {
-      elem = document.getElementById(el.id);
-      //use 'data-pipe' as the classname to include its value
-      // specify which pipe with pipe="target.id"
+      // communicate properties of Fetch Request
+      var method_thru = (opts["method"] !== undefined) ? opts["method"] : (elem == undefined || !elem.hasAttribute("method")) ? "GET" : elem.getAttribute("method");
+      var mode_thru = (opts["mode"] !== undefined) ? opts["mode"]: (elem == undefined || !elem.hasAttribute("mode")) ? "no-cors" : elem.getAttribute("mode");
+      var cache_thru = (opts["cache"] !== undefined) ? opts["cache"]: (elem == undefined || !elem.hasAttribute("cred")) ? "no-cache" : elem.getAttribute("cache");
+      var cred_thru = (opts["cred"] !== undefined) ? opts["cred"]: (elem == undefined || !elem.hasAttribute("cred")) ? "same-origin" : elem.getAttribute("cred");
+      // updated "headers" attribute to more friendly "content-type" attribute
+      var content_thru = (opts["headers"] !== undefined) ? opts["headers"]: (elem == undefined || !elem.hasAttribute("headers")) ? '{"Access-Control-Allow-Origin":"*","Content-Type":"text/html"}' : elem.getAttribute("headers");
+      var redirect_thru = (opts["redirect"] !== undefined) ? opts["redirect"]: (elem == undefined || !elem.hasAttribute("redirect")) ? "manual" : elem.getAttribute("redirect");
+      var refer_thru = (opts["referrer"] !== undefined) ? opts["referrer"]: (elem == undefined || !elem.hasAttribute("referrer")) ? "client" : elem.getAttribute("referrer");
+      opts = new Map();
+      opts.set("method", method_thru); // *GET, POST, PUT, DELETE, etc.
+      opts.set("mode", mode_thru); // no-cors, cors, *same-origin
+      opts.set("cache", cache_thru); // *default, no-cache, reload, force-cache, only-if-cached
+      opts.set("credentials", cred_thru); // include, same-origin, *omit
+      opts.set("content-type", content_thru); // content-type UPDATED**
+      opts.set("redirect", redirect_thru); // manual, *follow, error
+      opts.set("referrer", refer_thru); // no-referrer, *client
+      opts.set('body', JSON.stringify(content_thru));
+      const abort_ctrl = new AbortController();
+      const signal = abort_ctrl.signal;
+  
+      return opts;
+  }
+
+  function formAJAX(elem, elem_values)
+  {
       var elem_qstring = (elem.hasAttribute("query")) ? "?" + elem.getAttribute("query").toString() : "";
   
       // No, 'pipe' means it is generic. This means it is open season for all with this class
@@ -336,14 +327,11 @@
       console.log(elem.getAttribute("ajax") + "?" + elem_qstring);
       elem_qstring = elem.getAttribute("ajax") + "?" + elem_qstring;
       elem_qstring = encodeURI(elem_qstring);
-  
       opts = setAJAXOpts(elem, opts);
-      content_thru = '{"Access-Control-Allow-Origin":"*","Content-Type":"text/html"}';
       var opts_req = new Request(elem_qstring);
-      opts.set('body', JSON.stringify({"Access-Control-Allow-Origin":"*","Content-Type":"text/html"}));
       const abort_ctrl = new AbortController();
       const signal = abort_ctrl.signal;
-  
+      opts.set("mode",(opts["mode"] !== undefined) ? opts["mode"]: 'Access-Control-Allow-Origin":"*"');
       fetch(opts_req, {
           signal
       });

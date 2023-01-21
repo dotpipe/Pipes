@@ -93,10 +93,12 @@
 
 <body onload="getm()" onmousedown="">
     <br><br><br>
-<store id="videoloops1" target="images" sources="video1.mp4,video2.mp4,video3.mp4,video5.ogg" index="0"></store>
-    <div id="left" store="videoloops1" onclick="carouselMedia(this, 'images')" class="mod-src mod-media decrIndex"><h1>LEFT</h1></div>
-        <video width="620" height="100" loop id="video" preload="auto" onmouseover="this.pause();" onmouseleave="this.play();" onclick="easy(media, m_seek);" poster="fire_crop.jpeg" playsinline>
-            <source id="images" type="video/mp4" src="WIN_20220905_11_36_58_Pro.mp4 "/>
-        </video>
-    <div id="right" store="videoloops1" onclick="carouselMedia(this, 'images')" class="mod-src mod-media incrIndex"><h1>RIGHT</h1></div>
+
+<b onclick="pipes(this)" insert="source" file-order="WIN_20220905_11_36_58_Pro.mp4;lll.bean;WIN_20220905_11_36_58_Pro.mp4" file-index="0">&gt;</b>
+<div>
+    <video width="620" height="100" loop id="video" preload="auto" onmouseover="this.pause();" onmouseleave="this.play();" onclick="easy(media, m_seek);">
+        <source id="source" type="video/mp4" src="WIN_20220905_11_36_58_Pro.mp4"/>
+    </video>
+
+</div>
 </body>
