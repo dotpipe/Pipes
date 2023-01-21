@@ -22,7 +22,7 @@
   *  insert......= return ajax call to this id
   *  json........= returns a JSON file set as value
   *  fs-opts.....= JSON headers for AJAX implementation
-  *  headers.....= headers in CSS markup-style-attribute
+  *  headers.....= headers in CSS markup-style-attribute (delimited by '&')
   *  link........= class for operating tag as clickable link
   *  download....= class for downloading files
   *  file........= filename to download
@@ -93,28 +93,44 @@
   
   function setAJAXOpts(opts)
   {
-      // communicate properties of Fetch Request
-      var method_thru = (opts["method"] !== undefined) ? opts["method"] : "POST";
-      var mode_thru = (opts["mode"] !== undefined) ? opts["mode"]: "no-cors";
-      var cache_thru = (opts["cache"] !== undefined) ? opts["cache"]: "no-cache";
-      var cred_thru = (opts["cred"] !== undefined) ? opts["cred"]: "same-origin";
-      // updated "headers" attribute to more friendly "content-type" attribute
-      var content_thru = (opts["headers"] !== undefined) ? opts["headers"]: '{"Access-Control-Allow-Origin":"*","Content-Type":"text/html"}';
-      var redirect_thru = (opts["redirect"] !== undefined) ? opts["redirect"]: "manual";
-      var refer_thru = (opts["referrer"] !== undefined) ? opts["referrer"]: "client";
-      opts = new Map();
-      opts.set("method", method_thru); // *GET, POST, PUT, DELETE, etc.
-      opts.set("mode", mode_thru); // no-cors, cors, *same-origin
-      opts.set("cache", cache_thru); // *default, no-cache, reload, force-cache, only-if-cached
-      opts.set("credentials", cred_thru); // include, same-origin, *omit
-      opts.set("content-type", content_thru); // content-type UPDATED**
-      opts.set("redirect", redirect_thru); // manual, *follow, error
-      opts.set("referrer", refer_thru); // no-referrer, *client
-      opts.set('body', JSON.stringify(content_thru));
-      const abort_ctrl = new AbortController();
-      const signal = abort_ctrl.signal;
+    //   // communicate properties of Fetch Request
+    //   var method_thru = (opts["method"] !== undefined) ? opts["method"] : "POST";
+    //   var mode_thru = (opts["mode"] !== undefined) ? opts["mode"]: "no-cors";
+    //   var cache_thru = (opts["cache"] !== undefined) ? opts["cache"]: "no-cache";
+    //   var cred_thru = (opts["credentials"] !== undefined) ? opts["credentials"]: "same-origin";
+    //   // updated "headers" attribute to more friendly "content-type" attribute
+    //   var access_control = (opts["access-control-allow-origin"] !== undefined) ? opts["access-control-allow-origin"]: 'Access-Control-Allow-Origin":"*"';
+    //   var content_thru = (opts["content-type"] !== undefined) ? opts["content-type"]: '"Content-Type":"text/html"';
+    //   var accept = (opts["accept"] !== undefined) ? opts["accept"]: "text/html";
+    //   var charset = (opts["accept-charset"] !== undefined) ? opts["accept-charset"]: "iso-8859-5, Unicode-1-1; q=1.0";
+    //   var accept = (opts["accept"] !== undefined) ? opts["accept"]: "text/html";
+    //   var language = (opts["accept-language"] !== undefined) ? opts["accept-language"]: "en-US; q=0.9";
+    //   var expect = (opts["expect"] !== undefined) ? opts["expect"]: "100-continue";
+    //   var language = (opts["accept-language"] !== undefined) ? opts["from"]: "webmaster";
+    //   var expect = (opts["expect"] !== undefined) ? opts["expect"]: "100-continue";
+
+    //   var redirect_thru = (opts["redirect"] !== undefined) ? opts["redirect"]: "manual";
+    //   var refer_thru = (opts["referrer"] !== undefined) ? opts["referrer"]: "client";
+    //   opts = new Map();
+    //   opts.set("access-control-allow-origin", access_control); // *GET, POST, PUT, DELETE, etc.
+    //   opts.set("accept-charset", charset); // *GET, POST, PUT, DELETE, etc.
+    //   opts.set("accept", accept); // *GET, POST, PUT, DELETE, etc.
+    //   opts.set("accept-language", mode_thru); // no-cors, cors, *same-origin
+    //   opts.set("except", accept); // *GET, POST, PUT, DELETE, etc.
+    //   opts.set("from", mode_thru); // no-cors, cors, *same-origin
+    //   opts.set("accept", accept); // *GET, POST, PUT, DELETE, etc.
+    //   opts.set("mode", mode_thru); // no-cors, cors, *same-origin
+    //   opts.set("cache", cache_thru); // *default, no-cache, reload, force-cache, only-if-cached
+    //   opts.set("credentials", cred_thru); // include, same-origin, *omit
+    //   opts.set("content-type", content_thru); // content-type UPDATED**
+    //   opts.set("redirect", redirect_thru); // manual, *follow, error
+    //   opts.set("referrer", refer_thru); // no-referrer, *client
+    //   opts.set('body', JSON.stringify(content_thru));
+    //   const abort_ctrl = new AbortController();
+    //   const signal = abort_ctrl.signal;
   
-      return opts;
+    //   return opts;
+
   }
   
   function pipes(elem, index_elem = "") {
@@ -164,12 +180,11 @@
       }
       if (elem.hasAttribute("headers"))
       {
-          var optsArray = elem.getAttribute("headers").split(";");
+          var optsArray = elem.getAttribute("headers").split("&");
           optsArray.forEach((e,f) => {
               var g = e.split(":");
               headers.set(g[0], g[1]);
           });
-          setAJAXOpts(headers)
       }
       if (elem.hasAttribute("form-ids"))
       {
