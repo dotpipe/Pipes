@@ -110,7 +110,18 @@
       var query = "";
       var headers = new Map();
       var form_ids = new Map();
-  
+      var use_nav = 0;
+      if (elem.classList == "download")
+      {
+          var text = ev.target.getAttribute("file");
+          var element = document.createElement('a');
+          var location = ev.target.getAttribute("directory");
+          element.setAttribute('href', location + encodeURIComponent(text));
+          element.style.display = 'none';
+          document.body.appendChild(element);
+          element.click();
+          document.body.removeChild(element);
+      }
       if (elem.classList.contains("redirect"))
       {
           window.location.href = elem.getAttribute("ajax") + ((elem.hasAttribute("query")) ? "?" + elem.getAttribute("query") : "");
@@ -142,11 +153,11 @@
       if (elem.hasAttribute("query"))
       {
           var optsArray = elem.getAttribute("query").split(";");
-  
           optsArray.forEach((e,f) => {
               var g = e.split(":");
               query = query + g[0] + "=" + g[1] + "&";
           });
+          use_nav = 1;
       }
       if (elem.hasAttribute("headers"))
       {
@@ -155,6 +166,7 @@
               var g = e.split(":");
               headers.set(g[0], g[1]);
           });
+          use_nav = 1;
       }
       if (elem.hasAttribute("form-ids"))
       {
@@ -162,6 +174,7 @@
           optsArray.forEach((e,f) => {
               form_ids.set(f, document.getElementById(e));
           });
+          use_nav = 1;
       }
       if (elem.hasAttribute("class-switch"))
       {
@@ -178,19 +191,8 @@
       }
       // This is a quick way to make a downloadable link in an href
   //     else
-      if (elem.classList == "download")
-      {
-          var text = ev.target.getAttribute("file");
-          var element = document.createElement('a');
-          var location = ev.target.getAttribute("directory");
-          element.setAttribute('href', location + encodeURIComponent(text));
-          element.style.display = 'none';
-          document.body.appendChild(element);
-          element.click();
-          document.body.removeChild(element);
-          return;
-      }
-      navigate(elem, headers, query, form_ids);
+      if (use_nav == 1)
+          navigate(elem, headers, query, form_ids);
   }
   
   function setAJAXOpts(elem, opts)
