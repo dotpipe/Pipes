@@ -61,7 +61,7 @@
         }
         catch (e)
         {
-            ppfc.parentNode.setAttribute("src",arr[index].toString());
+            ppfc.setAttribute("src",arr[index].toString());
         }
       }
       else
