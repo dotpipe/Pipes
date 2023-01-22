@@ -172,19 +172,9 @@
           fileOrder(elem);
       }
       // Use a JSON to hold Header information
-      if (elem.hasAttribute("fs-opts"))
+      if ((elem.hasAttribute("fs-opts") && elem.getAttribute("fs-opts")) || elem.hasAttribute("json") && elem.getAttribute("json"))
       {
-          var fs=require('fs');
-          var json = elem.getAttribute("fs-opts").toString();
-          var data=fs.readFileSync(json, 'utf8');
-          var words=JSON.parse(data);
-      }
-      if (elem.hasAttribute("json") && elem.getAttribute("json"))
-      {
-          var fs=require('fs');
-          var json = elem.getAttribute("json").toString();
-          var data=fs.readFileSync(json, 'utf8');
-          var words=JSON.parse(data);
+          return fetch(elem.getAttribute("json")).json();
       }
       // This is a quick way to make a downloadable link in an href
   //     else
