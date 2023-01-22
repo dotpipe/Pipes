@@ -186,14 +186,9 @@
           var data=fs.readFileSync(json, 'utf8');
           var words=JSON.parse(data);
       }
-      if (elem.hasAttribute("insert") && elem.getAttribute("insert"))
-      {
-          document.getElementById(elem.getAttribute("insert").toString()).innerHTML = navigate(elem, opts, headers, query, form_ids);
-          return;
-      }
       // This is a quick way to make a downloadable link in an href
   //     else
-      if (ev.target.classList == "download")
+      if (elem.classList == "download")
       {
           var text = ev.target.getAttribute("file");
           var element = document.createElement('a');
@@ -211,14 +206,14 @@
   function setAJAXOpts(elem, opts)
   {
       // communicate properties of Fetch Request
-      var method_thru = (opts["method"] !== undefined) ? opts["method"] : (elem == undefined || !elem.hasAttribute("method")) ? "GET" : elem.getAttribute("method");
-      var mode_thru = (opts["mode"] !== undefined) ? opts["mode"]: (elem == undefined || !elem.hasAttribute("mode")) ? "no-cors" : elem.getAttribute("mode");
-      var cache_thru = (opts["cache"] !== undefined) ? opts["cache"]: (elem == undefined || !elem.hasAttribute("cred")) ? "no-cache" : elem.getAttribute("cache");
-      var cred_thru = (opts["cred"] !== undefined) ? opts["cred"]: (elem == undefined || !elem.hasAttribute("cred")) ? "same-origin" : elem.getAttribute("cred");
+      var method_thru = (opts["method"] !== undefined) ? opts["method"] : "GET";
+      var mode_thru = (opts["mode"] !== undefined) ? opts["mode"]: "no-cors";
+      var cache_thru = (opts["cache"] !== undefined) ? opts["cache"]: "no-cache";
+      var cred_thru = (opts["cred"] !== undefined) ? opts["cred"]: '{"Access-Control-Allow-Origin":"*"}';
       // updated "headers" attribute to more friendly "content-type" attribute
-      var content_thru = (opts["headers"] !== undefined) ? opts["headers"]: (elem == undefined || !elem.hasAttribute("headers")) ? '{"Access-Control-Allow-Origin":"*","Content-Type":"text/html"}' : elem.getAttribute("headers");
-      var redirect_thru = (opts["redirect"] !== undefined) ? opts["redirect"]: (elem == undefined || !elem.hasAttribute("redirect")) ? "manual" : elem.getAttribute("redirect");
-      var refer_thru = (opts["referrer"] !== undefined) ? opts["referrer"]: (elem == undefined || !elem.hasAttribute("referrer")) ? "client" : elem.getAttribute("referrer");
+      var content_thru = (opts["content-type"] !== undefined) ? opts["content-type"]: '{"Content-Type":"text/html"}';
+      var redirect_thru = (opts["redirect"] !== undefined) ? opts["redirect"]: "manual";
+      var refer_thru = (opts["referrer"] !== undefined) ? opts["referrer"]: "referrer";
       opts.set("method", method_thru); // *GET, POST, PUT, DELETE, etc.
       opts.set("mode", mode_thru); // no-cors, cors, *same-origin
       opts.set("cache", cache_thru); // *default, no-cache, reload, force-cache, only-if-cached
@@ -233,124 +228,51 @@
       return opts;
   }
 
-  function formAJAX(elem, elem_values)
+  function formAJAX(elem, elem_names)
   {
-      var elem_qstring = (elem.hasAttribute("query")) ? "?" + elem.getAttribute("query").toString() : "";
-  
+      var elem_qstring = "";
+
       // No, 'pipe' means it is generic. This means it is open season for all with this class
-      for (var i = 0; i < elem_values.length; i++)
+      for (var i = 0; i < elem_names.length; i++)
       {
-          elem_qstring = elem_qstring + elem_values[i].name + "=" + elem_values[i].value + "&";
+          var elem_value = document.getElementById(elem_names[i]);
+          elem_qstring = elem_qstring + elem_value.name + "=" + elem_value.value + "&";
           // Multi-select box
           console.log(".");
-          if (elem_values[i].hasOwnProperty("multiple"))
+          if (elem_value.hasOwnProperty("multiple"))
           {
-              for (var o of elem_values.options) {
+              for (var o of elem_value.options) {
                   if (o.selected) {
-                      elem_qstring = elem_qstring + "&" + elem_values[i].name + "=" + o.value;
+                      elem_qstring = elem_qstring + "&" + elem_value.name + "=" + o.value;
                   }
               }
           }
       }
       console.log(elem_qstring);
-      elem_qstring = elem_qstring;
-      return encodeURI(elem_qstring);
-  }
-  
-  function notify(targetname) {
-  
-      elem = document.getElementsByTagName(targetname)[0];
-  
-      opts = new Map();
-      f = 0;
-  
-      collectURLData(elem).forEach((e,f) => {
-          let header_array = ["POST","no-cors","no-cache"," ",'{"Access-Control-Allow-Origin":"*","Content-Type":"text/html"}', "manual", "client"];
-          opts.set(e, header_array[f]);
-      });
-  
-      content_thru = '{"Access-Control-Allow-Origin":"*","Content-Type":"text/html"}';
-      var opts_req = new Request(elem.getAttribute("ajax"));
-      opts.set('body', JSON.stringify({"Access-Control-Allow-Origin":"*","Content-Type":"text/html"}));
-      const abort_ctrl = new AbortController();
-      const signal = abort_ctrl.signal;
-  
-      fetch(opts_req, {
-          signal
-      });
-  
-      target__ = targetname;
-  
-      setTimeout(() => abort_ctrl.abort(), 10 * 1000);
-      const __grab = async (opts_req, opts) => {
-      return fetch(opts_req, opts)
-          .then(function(response) {
-              if (response.status == 404)
-                      return;
-              return response.text().then(function(text) {
-                  
-                      if (undefined == document.getElementsByTagName(targetname)[0]) {
-  
-                          ppr = document.createElement(targetname);
-                          ppr.style.position = "absolute";
-                          ppr.style.backgroundColor = "navy";
-                          ppr.style.wordwrap = true;
-                          ppr.style.width = window.innerWidth / 4;
-                          ppr.style.zIndex = 3;
-                          p.innerText = text;
-                          p.style.position = "relative";
-                          ppr.setAttribute("notify-ms",3000);
-                          document.body.insertBefore(ppr,document.body.firstChild);
-                      }
-                      else {
-                          ppr = document.getElementsByTagName(targetname)[0];
-                      }
-                          let p = document.createElement("p");
-                          p.innerText = text;
-                          p.style.position = "relative";
-                          ppr.insertBefore(p,ppr.firstChild);
-                      var xy = parseInt(elem.getAttribute("notify-ms"));
-                      setTimeout(function(){
-                          ppr.removeChild(ppr.lastChild);
-                      }, xy);
-                  return;
-              });
-          });
-      }
-      __grab(opts_req, opts);
+      return (elem_qstring);
   }
   
   function navigate(elem, opts = null, headers = null, query = "", form_ids = [])
   {
       //formAJAX at the end of this line
-      elem_qstring = query + formAJAX(elem, form_ids);
-      console.log(elem.getAttribute("ajax") + "?" + elem_qstring);
-      elem_qstring = elem.getAttribute("ajax") + "?" + elem_qstring;
+      
+      elem_qstring = query + (form_ids.length > 0) ? formAJAX(elem, form_ids) : "";
+      console.log(elem_qstring);
+      elem_qstring = elem.getAttribute("ajax") + (elem_qstring.length > 0) ? "?" + elem_qstring : "";
       elem_qstring = encodeURI(elem_qstring);
       opts = setAJAXOpts(elem, opts);
       var opts_req = new Request(elem_qstring);
       const abort_ctrl = new AbortController();
       const signal = abort_ctrl.signal;
-      opts.set("mode",(opts["mode"] !== undefined) ? opts["mode"]: 'Access-Control-Allow-Origin":"*"');
+      opts.set("mode",(opts["mode"] !== undefined) ? opts["mode"]: '"Access-Control-Allow-Origin":"*"');
       fetch(opts_req, {
           signal
       });
   
       setTimeout(() => abort_ctrl.abort(), 10 * 1000);
-      const __grab =  (opts_req, opts) => {
-      return fetch(opts_req, opts)
-          .then(function(response) {
-              if (response.status == 404)
-                  return;
-              return response.text().then(function(text) {
-                  {
-                      let td = text;
-                      document.getElementById(elem.getAttribute("insert").toString()).innerHTML = td;
-                  }
-                  return;
-              });
-          });
-      }
-      __grab(opts_req, opts);
+      let fetch_res = fetch(elem_qstring);           //api for the get request
+      fetch_res
+      .then(response => response.json())
+      .then(data => document.getElementById(elem.getAttribute("ajax")).innerHTML = data.text());
   }
   
