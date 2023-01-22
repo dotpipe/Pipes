@@ -107,7 +107,7 @@
   function pipes(elem) {
   
       var opts = new Map();
-      var query = new Map();
+      var query = "";
       var headers = new Map();
       var form_ids = new Map();
   
@@ -145,7 +145,7 @@
   
           optsArray.forEach((e,f) => {
               var g = e.split(":");
-              query.set(g[0], g[1]);
+              query = query + g[0] + "=" + g[1] + "&";
           });
       }
       if (elem.hasAttribute("headers"))
@@ -200,7 +200,7 @@
           document.body.removeChild(element);
           return;
       }
-      navigate(elem, opts, headers, query, form_ids);
+      navigate(elem, headers, query, form_ids);
   }
   
   function setAJAXOpts(elem, opts)
@@ -252,27 +252,27 @@
       return (elem_qstring);
   }
   
-  function navigate(elem, opts = null, headers = null, query = "", form_ids = [])
+  function navigate(elem, opts = null, query = "", form_ids = [])
   {
       //formAJAX at the end of this line
       
-      elem_qstring = query + (form_ids.length > 0) ? formAJAX(elem, form_ids) : "";
-      console.log(elem_qstring);
-      elem_qstring = elem.getAttribute("ajax") + (elem_qstring.length > 0) ? "?" + elem_qstring : "";
-      elem_qstring = encodeURI(elem_qstring);
-      opts = setAJAXOpts(elem, opts);
-      var opts_req = new Request(elem_qstring);
-      const abort_ctrl = new AbortController();
-      const signal = abort_ctrl.signal;
-      opts.set("mode",(opts["mode"] !== undefined) ? opts["mode"]: '"Access-Control-Allow-Origin":"*"');
-      fetch(opts_req, {
-          signal
-      });
-  
-      setTimeout(() => abort_ctrl.abort(), 10 * 1000);
-      let fetch_res = fetch(elem_qstring);           //api for the get request
-      fetch_res
-      .then(response => response.json())
-      .then(data => document.getElementById(elem.getAttribute("ajax")).innerHTML = data.text());
+        elem_qstring = query + ((form_ids.length > 0) ? formAJAX(elem, form_ids) : "");
+        elem_qstring = elem.getAttribute("ajax") + ((elem_qstring.length > 0) ? "?" + elem_qstring : "");
+        elem_qstring = encodeURI(elem_qstring);
+        opts = setAJAXOpts(elem, opts);
+        var opts_req = new Request(elem_qstring);
+        const abort_ctrl = new AbortController();
+        const signal = abort_ctrl.signal;
+        opts.set("mode",(opts["mode"] !== undefined) ? opts["mode"]: '"Access-Control-Allow-Origin":"*"');
+
+        var rawFile = new XMLHttpRequest();
+        rawFile.open(opts.get("method"), elem_qstring, true);
+        rawFile.onreadystatechange = function() {
+            if (rawFile.readyState === 4) {
+            var allText = rawFile.responseText;
+            document.getElementById(elem.getAttribute("insert")).innerHTML = allText;
+            }
+        }
+        rawFile.send();
   }
   
