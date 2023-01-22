@@ -52,6 +52,8 @@
       if (ppfc.hasAttribute("src"))
       {
         try {
+            // <Source> tag's parentNode will need to be paused and resumed
+            // to switch the video
             ppfc.parentNode.pause();
             ppfc.parentNode.setAttribute("src",arr[index].toString());
             ppfc.parentNode.load();
@@ -104,7 +106,6 @@
   
   function pipes(elem) {
   
-  //     elem = document.getElementById(el.id);
       var opts = new Map();
       var query = new Map();
       var headers = new Map();
@@ -218,7 +219,6 @@
       var content_thru = (opts["headers"] !== undefined) ? opts["headers"]: (elem == undefined || !elem.hasAttribute("headers")) ? '{"Access-Control-Allow-Origin":"*","Content-Type":"text/html"}' : elem.getAttribute("headers");
       var redirect_thru = (opts["redirect"] !== undefined) ? opts["redirect"]: (elem == undefined || !elem.hasAttribute("redirect")) ? "manual" : elem.getAttribute("redirect");
       var refer_thru = (opts["referrer"] !== undefined) ? opts["referrer"]: (elem == undefined || !elem.hasAttribute("referrer")) ? "client" : elem.getAttribute("referrer");
-      opts = new Map();
       opts.set("method", method_thru); // *GET, POST, PUT, DELETE, etc.
       opts.set("mode", mode_thru); // no-cors, cors, *same-origin
       opts.set("cache", cache_thru); // *default, no-cache, reload, force-cache, only-if-cached
