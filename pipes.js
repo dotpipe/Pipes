@@ -196,24 +196,22 @@
   function setAJAXOpts(elem, opts)
   {
       // communicate properties of Fetch Request
-      var method_thru = (opts["method"] !== undefined) ? opts["method"] : "GET";
-      var mode_thru = (opts["mode"] !== undefined) ? opts["mode"]: "no-cors";
-      var cache_thru = (opts["cache"] !== undefined) ? opts["cache"]: "no-cache";
-      var cred_thru = (opts["cred"] !== undefined) ? opts["cred"]: '{"Access-Control-Allow-Origin":"*"}';
-      // updated "headers" attribute to more friendly "content-type" attribute
-      var content_thru = (opts["content-type"] !== undefined) ? opts["content-type"]: '{"Content-Type":"text/html"}';
-      var redirect_thru = (opts["redirect"] !== undefined) ? opts["redirect"]: "manual";
-      var refer_thru = (opts["referrer"] !== undefined) ? opts["referrer"]: "referrer";
-      opts.set("method", method_thru); // *GET, POST, PUT, DELETE, etc.
-      opts.set("mode", mode_thru); // no-cors, cors, *same-origin
-      opts.set("cache", cache_thru); // *default, no-cache, reload, force-cache, only-if-cached
-      opts.set("credentials", cred_thru); // include, same-origin, *omit
-      opts.set("content-type", content_thru); // content-type UPDATED**
-      opts.set("redirect", redirect_thru); // manual, *follow, error
-      opts.set("referrer", refer_thru); // no-referrer, *client
-      opts.set('body', JSON.stringify(content_thru));
-      const abort_ctrl = new AbortController();
-      const signal = abort_ctrl.signal;
+    //   var method_thru = (opts["method"] !== undefined) ? opts["method"] : "GET";
+    //   var mode_thru = (opts["mode"] !== undefined) ? opts["mode"]: "no-cors";
+    //   var cache_thru = (opts["cache"] !== undefined) ? opts["cache"]: "no-cache";
+    //   var cred_thru = (opts["cred"] !== undefined) ? opts["cred"]: '{"Access-Control-Allow-Origin":"*"}';
+    //   // updated "headers" attribute to more friendly "content-type" attribute
+    //   var content_thru = (opts["content-type"] !== undefined) ? opts["content-type"]: '{"Content-Type":"text/html"}';
+    //   var redirect_thru = (opts["redirect"] !== undefined) ? opts["redirect"]: "manual";
+    //   var refer_thru = (opts["referrer"] !== undefined) ? opts["referrer"]: "referrer";
+    //   opts.setRequestHeader("method", method_thru); // *GET, POST, PUT, DELETE, etc.
+    //   opts.setRequestHeader("mode", mode_thru); // no-cors, cors, *same-origin
+    //   opts.setRequestHeader("cache", cache_thru); // *default, no-cache, reload, force-cache, only-if-cached
+    //   opts.setRequestHeader("credentials", cred_thru); // include, same-origin, *omit
+    //   opts.setRequestHeader("content-type", content_thru); // content-type UPDATED**
+    //   opts.setRequestHeader("redirect", redirect_thru); // manual, *follow, error
+    //   opts.setRequestHeader("referrer", refer_thru); // no-referrer, *client
+    //   opts.setRequestHeader('body', JSON.stringify(content_thru));
   
       return opts;
   }
@@ -249,14 +247,16 @@
         elem_qstring = query + ((form_ids.length > 0) ? formAJAX(elem, form_ids) : "");
         elem_qstring = elem.getAttribute("ajax") + ((elem_qstring.length > 0) ? "?" + elem_qstring : "");
         elem_qstring = encodeURI(elem_qstring);
-        opts = setAJAXOpts(elem, opts);
-        var opts_req = new Request(elem_qstring);
-        const abort_ctrl = new AbortController();
-        const signal = abort_ctrl.signal;
-        opts.set("mode",(opts["mode"] !== undefined) ? opts["mode"]: '"Access-Control-Allow-Origin":"*"');
+        // opts.set("mode",(opts["mode"] !== undefined) ? opts["mode"]: '"Access-Control-Allow-Origin":"*"');
+
 
         var rawFile = new XMLHttpRequest();
+        console.log(elem_qstring);
+        console.log(opts);
         rawFile.open(opts.get("method"), elem_qstring, true);
+        opts.forEach((i,f) => {
+            rawFile.setRequestHeader(i.key,i.value);
+        });
         rawFile.onreadystatechange = function() {
             if (rawFile.readyState === 4) {
             var allText = rawFile.responseText;
