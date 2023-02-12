@@ -31,26 +31,26 @@
   **** go on if there is no input to replace them.
   */
 
-  function fileOrder(elem)
-  {
-      arr = elem.getAttribute("file-order").split(";");
-      if (!elem.hasAttribute("file-index"))
-        elem.setAttribute("file-index", "0");
-      index = parseInt(elem.getAttribute("file-index").toString());
-      if (elem.hasAttribute("incrIndex"))
-          index = parseInt(elem.getAttribute("incrIndex").toString()) + 1;
-      else if (elem.hasAttribute("decrIndex"))
-          index = Math.abs(parseInt(elem.getAttribute("decrIndex").toString())) - 1;
-      else
-          index++;
-      if (index < 0)
-          index = 0;
-      index = index%arr.length;
-      elem.setAttribute("file-index",index.toString());
-      ppfc = document.getElementById(elem.getAttribute("insert").toString());
-      console.log(ppfc);
-      if (ppfc.hasAttribute("src"))
-      {
+    function fileOrder(elem)
+    {
+        ppfc = document.getElementById(elem.getAttribute("insert").toString());
+        arr = elem.getAttribute("file-order").split(";");
+        if (!ppfc.hasAttribute("file-index"))
+            ppfc.setAttribute("file-index", "0");
+        index = parseInt(ppfc.getAttribute("file-index").toString());
+        if (elem.hasAttribute("incrIndex"))
+            index = parseInt(ppfc.getAttribute("file-index").toString()) + 1;
+        else if (elem.hasAttribute("decrIndex"))
+            index = Math.abs(parseInt(ppfc.getAttribute("file-index").toString())) - 1;
+        else
+            index++;
+        if (index < 0)
+            index = arr.length - 1;
+        index = index%arr.length;        
+        ppfc.setAttribute("file-index",index.toString());
+        console.log(ppfc);
+        if (ppfc.hasAttribute("src"))
+        {
         try {
             // <Source> tag's parentNode will need to be paused and resumed
             // to switch the video
@@ -61,15 +61,15 @@
         }
         catch (e)
         {
-            ppfc.setAttribute("src",arr[index].toString());
+            ppfc.parentNode.setAttribute("src",arr[index].toString());
         }
-      }
-      else
-      {
-          elem.setAttribute("ajax",arr[index].toString());
-          pipes(elem);
-      }
-  }
+        }
+        else
+        {
+            elem.setAttribute("ajax",arr[index].toString());
+            pipes(elem);
+        }
+    }
   
   function classOrder(elem)
   {
@@ -107,21 +107,10 @@
   function pipes(elem) {
   
       var opts = new Map();
-      var query = "";
+      var query = new Map();
       var headers = new Map();
       var form_ids = new Map();
-      var use_nav = 0;
-      if (elem.classList == "download")
-      {
-          var text = ev.target.getAttribute("file");
-          var element = document.createElement('a');
-          var location = ev.target.getAttribute("directory");
-          element.setAttribute('href', location + encodeURIComponent(text));
-          element.style.display = 'none';
-          document.body.appendChild(element);
-          element.click();
-          document.body.removeChild(element);
-      }
+  
       if (elem.classList.contains("redirect"))
       {
           window.location.href = elem.getAttribute("ajax") + ((elem.hasAttribute("query")) ? "?" + elem.getAttribute("query") : "");
@@ -153,11 +142,11 @@
       if (elem.hasAttribute("query"))
       {
           var optsArray = elem.getAttribute("query").split(";");
+  
           optsArray.forEach((e,f) => {
               var g = e.split(":");
-              query = query + g[0] + "=" + g[1] + "&";
+              query.set(g[0], g[1]);
           });
-          use_nav = 1;
       }
       if (elem.hasAttribute("headers"))
       {
@@ -166,7 +155,6 @@
               var g = e.split(":");
               headers.set(g[0], g[1]);
           });
-          use_nav = 1;
       }
       if (elem.hasAttribute("form-ids"))
       {
@@ -174,7 +162,6 @@
           optsArray.forEach((e,f) => {
               form_ids.set(f, document.getElementById(e));
           });
-          use_nav = 1;
       }
       if (elem.hasAttribute("class-switch"))
       {
@@ -185,35 +172,58 @@
           fileOrder(elem);
       }
       // Use a JSON to hold Header information
-      if ((elem.hasAttribute("fs-opts") && elem.getAttribute("fs-opts")) || elem.hasAttribute("json") && elem.getAttribute("json"))
+      if (elem.hasAttribute("fs-opts"))
       {
-          return fetch(elem.getAttribute("json")).json();
+          var fs=require('fs');
+          var json = elem.getAttribute("fs-opts").toString();
+          var data=fs.readFileSync(json, 'utf8');
+          var words=JSON.parse(data);
+      }
+      if (elem.hasAttribute("json") && elem.getAttribute("json"))
+      {
+          var fs=require('fs');
+          var json = elem.getAttribute("json").toString();
+          var data=fs.readFileSync(json, 'utf8');
+          var words=JSON.parse(data);
       }
       // This is a quick way to make a downloadable link in an href
   //     else
-      if (use_nav == 1)
-          navigate(elem, headers, query, form_ids);
+      if (elem.classList == "download")
+      {
+          var text = ev.target.getAttribute("file");
+          var element = document.createElement('a');
+          var location = ev.target.getAttribute("directory");
+          element.setAttribute('href', location + encodeURIComponent(text));
+          element.style.display = 'none';
+          document.body.appendChild(element);
+          element.click();
+          document.body.removeChild(element);
+          return;
+      }
+      navigate(elem, opts, headers, query, form_ids);
   }
   
   function setAJAXOpts(elem, opts)
   {
       // communicate properties of Fetch Request
-    //   var method_thru = (opts["method"] !== undefined) ? opts["method"] : "GET";
-    //   var mode_thru = (opts["mode"] !== undefined) ? opts["mode"]: "no-cors";
-    //   var cache_thru = (opts["cache"] !== undefined) ? opts["cache"]: "no-cache";
-    //   var cred_thru = (opts["cred"] !== undefined) ? opts["cred"]: '{"Access-Control-Allow-Origin":"*"}';
-    //   // updated "headers" attribute to more friendly "content-type" attribute
-    //   var content_thru = (opts["content-type"] !== undefined) ? opts["content-type"]: '{"Content-Type":"text/html"}';
-    //   var redirect_thru = (opts["redirect"] !== undefined) ? opts["redirect"]: "manual";
-    //   var refer_thru = (opts["referrer"] !== undefined) ? opts["referrer"]: "referrer";
-    //   opts.setRequestHeader("method", method_thru); // *GET, POST, PUT, DELETE, etc.
-    //   opts.setRequestHeader("mode", mode_thru); // no-cors, cors, *same-origin
-    //   opts.setRequestHeader("cache", cache_thru); // *default, no-cache, reload, force-cache, only-if-cached
-    //   opts.setRequestHeader("credentials", cred_thru); // include, same-origin, *omit
-    //   opts.setRequestHeader("content-type", content_thru); // content-type UPDATED**
-    //   opts.setRequestHeader("redirect", redirect_thru); // manual, *follow, error
-    //   opts.setRequestHeader("referrer", refer_thru); // no-referrer, *client
-    //   opts.setRequestHeader('body', JSON.stringify(content_thru));
+      var method_thru = (opts["method"] !== undefined) ? opts["method"] : "GET";
+      var mode_thru = (opts["mode"] !== undefined) ? opts["mode"]: "no-cors";
+      var cache_thru = (opts["cache"] !== undefined) ? opts["cache"]: "no-cache";
+      var cred_thru = (opts["cred"] !== undefined) ? opts["cred"]: '{"Access-Control-Allow-Origin":"*"}';
+      // updated "headers" attribute to more friendly "content-type" attribute
+      var content_thru = (opts["content-type"] !== undefined) ? opts["content-type"]: '{"Content-Type":"text/html"}';
+      var redirect_thru = (opts["redirect"] !== undefined) ? opts["redirect"]: "manual";
+      var refer_thru = (opts["referrer"] !== undefined) ? opts["referrer"]: "referrer";
+      opts.set("method", method_thru); // *GET, POST, PUT, DELETE, etc.
+      opts.set("mode", mode_thru); // no-cors, cors, *same-origin
+      opts.set("cache", cache_thru); // *default, no-cache, reload, force-cache, only-if-cached
+      opts.set("credentials", cred_thru); // include, same-origin, *omit
+      opts.set("content-type", content_thru); // content-type UPDATED**
+      opts.set("redirect", redirect_thru); // manual, *follow, error
+      opts.set("referrer", refer_thru); // no-referrer, *client
+      opts.set('body', JSON.stringify(content_thru));
+      const abort_ctrl = new AbortController();
+      const signal = abort_ctrl.signal;
   
       return opts;
   }
@@ -242,29 +252,27 @@
       return (elem_qstring);
   }
   
-  function navigate(elem, opts = null, query = "", form_ids = [])
+  function navigate(elem, opts = null, headers = null, query = "", form_ids = [])
   {
       //formAJAX at the end of this line
       
-        elem_qstring = query + ((form_ids.length > 0) ? formAJAX(elem, form_ids) : "");
-        elem_qstring = elem.getAttribute("ajax") + ((elem_qstring.length > 0) ? "?" + elem_qstring : "");
-        elem_qstring = encodeURI(elem_qstring);
-        // opts.set("mode",(opts["mode"] !== undefined) ? opts["mode"]: '"Access-Control-Allow-Origin":"*"');
-
-
-        var rawFile = new XMLHttpRequest();
+      elem_qstring = query + (form_ids.length > 0) ? formAJAX(elem, form_ids) : "";
+      elem_qstring = elem.getAttribute("ajax") + (elem_qstring.length > 0) ? "?" + elem_qstring : "";
+      elem_qstring = encodeURI(elem_qstring);
+      opts = setAJAXOpts(elem, opts);
+      var opts_req = new Request(elem_qstring);
+      const abort_ctrl = new AbortController();
+      const signal = abort_ctrl.signal;
+      opts.set("mode",(opts["mode"] !== undefined) ? opts["mode"]: '"Access-Control-Allow-Origin":"*"');
+    //   fetch(opts_req, {
+    //       signal
+    //   });
+  
         console.log(elem_qstring);
-        console.log(opts);
-        rawFile.open(opts.get("method"), elem_qstring, true);
-        opts.forEach((i,f) => {
-            rawFile.setRequestHeader(i.key,i.value);
-        });
-        rawFile.onreadystatechange = function() {
-            if (rawFile.readyState === 4) {
-            var allText = rawFile.responseText;
-            document.getElementById(elem.getAttribute("insert")).innerHTML = allText;
-            }
-        }
-        rawFile.send();
+      setTimeout(() => abort_ctrl.abort(), 10 * 1000);
+      let fetch_res = fetch(elem_qstring);           //api for the get request
+      fetch_res
+      .then(response => response.json())
+      .then(data => document.getElementById(elem.getAttribute("insert")).innerHTML = data.text());
   }
   
