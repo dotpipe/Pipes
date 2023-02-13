@@ -1,6 +1,8 @@
 # Pipes
 JavaScript DOM Handler for Routing
 
+To donate please visit: paypal.me/pirodock
+
 # Threading for PHP via Pipes v2
 
 Pipes v2
