@@ -43,6 +43,12 @@ After all of this, to this point, we see that the articulation of the FLAG bits 
 
 Pipes v3
 
-Now we've come to a new way to understand and make readable the HTML markup. Thanks to the people over there at CSS, who made a lexicon of creating listing values for attributes in markup, PipesJS is now substantially easier to create with. Just plug in your needs to the pipes="name:value;" attribute in the tag you're using. Even headers can be used with it. Go right ahead and dive into this new ability. It is integral and does the work rapidly concerning new use cases. The old legacy code will remain until otherwise explained as to why there would be a reason to abandon it. So, in Pipes v3 you would also set up the list of changed headers to headers="method:get;". It is simply awesome. You may use any headers. If I'm not mistaken you can include ANY header you like. 
+Now we've come to a new way to understand and make readable the HTML markup. Thanks to the people over there at CSS, who made a lexicon of creating listing values for attributes in markup, PipesJS is now substantially easier to create with. Just plug in your needs to the pipes="name:value;" attribute in the tag you're using. Even headers can be used with it. Go right ahead and dive into this new ability. It is integral and does the work rapidly concerning new use cases. The old legacy code will remain until otherwise explained as to why there would be a reason to abandon it. So, in Pipes v3 you would also set up the list of changed headers to headers="method:get&". It is simply awesome. You may use any headers. BTW, thanks to the entropy of using semicolons in headers, you must use ampersands to correctly enumerate the value of 'q'. In version 3.5.2 it should be fine to use something very easy. but as of yet it is in design stages. If I'm not mistaken you can include ANY header you like. 
+
+Pipes v3.5
+
+New to the upgrade:
+   1. Filters are package tools. They are snippet scripts that allow you to use the pre-written code to do as you please.
+   2. <pipe></pipe> tags are now the new jealousy of the Pipes legacy. Using a pipe tag sets it to automatically load when the page loads. Just use ajax and insert. I'm guessing you'll need to use the same id. So there you go.
 
 Have a nice day!
