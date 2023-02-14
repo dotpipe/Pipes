@@ -1,5 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
+
+<html>
 
 
 <script src="pipes.js"></script>
@@ -89,16 +89,12 @@
             y: parseInt(event.pageY + document.body.scrollTop)
         };
     }
+    
+
 </script>
 
-<body onload="getm()" onmousedown="">
+<body onmousedown="">
     <br><br><br>
-
-<b onclick="pipes(this)" insert="source" file-order="WIN_20220905_11_36_58_Pro.mp4;lll.bean;WIN_20220905_11_36_58_Pro.mp4" file-index="0">&gt;</b>
-<div>
-    <video width="620" height="100" loop id="video" preload="auto" onmouseover="this.pause();" onmouseleave="this.play();" onclick="easy(media, m_seek);">
-        <source id="source" type="video/mp4" src="WIN_20220905_11_36_58_Pro.mp4"/>
-    </video>
-
-</div>
+    
+<pipe ajax="./test.html" insert="here" id="here"></pipe>
 </body>

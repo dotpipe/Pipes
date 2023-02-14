@@ -31,26 +31,35 @@
   **** go on if there is no input to replace them.
   */
 
-    function fileOrder(elem)
-    {
-        ppfc = document.getElementById(elem.getAttribute("insert").toString());
-        arr = elem.getAttribute("file-order").split(";");
-        if (!ppfc.hasAttribute("file-index"))
-            ppfc.setAttribute("file-index", "0");
-        index = parseInt(ppfc.getAttribute("file-index").toString());
-        if (elem.hasAttribute("incrIndex"))
-            index = parseInt(ppfc.getAttribute("file-index").toString()) + 1;
-        else if (elem.hasAttribute("decrIndex"))
-            index = Math.abs(parseInt(ppfc.getAttribute("file-index").toString())) - 1;
-        else
-            index++;
-        if (index < 0)
-            index = arr.length - 1;
-        index = index%arr.length;        
-        ppfc.setAttribute("file-index",index.toString());
-        console.log(ppfc);
-        if (ppfc.hasAttribute("src"))
-        {
+
+    document.addEventListener("DOMContentLoaded", function (){
+        doc_set = document.getElementsByTagName("pipe");
+        Array.from(doc_set).forEach(function(elem) {
+                pipes(elem);
+        });
+        
+    });
+    
+  function fileOrder(elem)
+  {
+      arr = elem.getAttribute("file-order").split(";");
+      if (!elem.hasAttribute("file-index"))
+        elem.setAttribute("file-index", "0");
+      index = parseInt(elem.getAttribute("file-index").toString());
+      if (elem.hasAttribute("incrIndex"))
+          index = parseInt(elem.getAttribute("incrIndex").toString()) + 1;
+      else if (elem.hasAttribute("decrIndex"))
+          index = Math.abs(parseInt(elem.getAttribute("decrIndex").toString())) - 1;
+      else
+          index++;
+      if (index < 0)
+          index = 0;
+      index = index%arr.length;
+      elem.setAttribute("file-index",index.toString());
+      ppfc = document.getElementById(elem.getAttribute("insert").toString());
+      console.log(ppfc);
+      if (ppfc.hasAttribute("src"))
+      {
         try {
             // <Source> tag's parentNode will need to be paused and resumed
             // to switch the video
@@ -63,13 +72,13 @@
         {
             ppfc.parentNode.setAttribute("src",arr[index].toString());
         }
-        }
-        else
-        {
-            elem.setAttribute("ajax",arr[index].toString());
-            pipes(elem);
-        }
-    }
+      }
+      else
+      {
+          elem.setAttribute("ajax",arr[index].toString());
+          pipes(elem);
+      }
+  }
   
   function classOrder(elem)
   {
@@ -107,7 +116,7 @@
   function pipes(elem) {
   
       var opts = new Map();
-      var query = new Map();
+      var query = "";
       var headers = new Map();
       var form_ids = new Map();
   
@@ -145,7 +154,7 @@
   
           optsArray.forEach((e,f) => {
               var g = e.split(":");
-              query.set(g[0], g[1]);
+              query = query + g[0] + "=" + g[1] + "&";
           });
       }
       if (elem.hasAttribute("headers"))
@@ -200,7 +209,7 @@
           document.body.removeChild(element);
           return;
       }
-      navigate(elem, opts, headers, query, form_ids);
+      navigate(elem, headers, query, form_ids);
   }
   
   function setAJAXOpts(elem, opts)
@@ -252,27 +261,27 @@
       return (elem_qstring);
   }
   
-  function navigate(elem, opts = null, headers = null, query = "", form_ids = [])
+  function navigate(elem, opts = null, query = "", form_ids = [])
   {
       //formAJAX at the end of this line
       
-      elem_qstring = query + (form_ids.length > 0) ? formAJAX(elem, form_ids) : "";
-      elem_qstring = elem.getAttribute("ajax") + (elem_qstring.length > 0) ? "?" + elem_qstring : "";
-      elem_qstring = encodeURI(elem_qstring);
-      opts = setAJAXOpts(elem, opts);
-      var opts_req = new Request(elem_qstring);
-      const abort_ctrl = new AbortController();
-      const signal = abort_ctrl.signal;
-      opts.set("mode",(opts["mode"] !== undefined) ? opts["mode"]: '"Access-Control-Allow-Origin":"*"');
-    //   fetch(opts_req, {
-    //       signal
-    //   });
-  
-        console.log(elem_qstring);
-      setTimeout(() => abort_ctrl.abort(), 10 * 1000);
-      let fetch_res = fetch(elem_qstring);           //api for the get request
-      fetch_res
-      .then(response => response.json())
-      .then(data => document.getElementById(elem.getAttribute("insert")).innerHTML = data.text());
+        elem_qstring = query + ((form_ids.length > 0) ? formAJAX(elem, form_ids) : "");
+        elem_qstring = elem.getAttribute("ajax") + ((elem_qstring.length > 0) ? "?" + elem_qstring : "");
+        elem_qstring = encodeURI(elem_qstring);
+        opts = setAJAXOpts(elem, opts);
+        var opts_req = new Request(elem_qstring);
+        const abort_ctrl = new AbortController();
+        const signal = abort_ctrl.signal;
+        opts.set("mode",(opts["mode"] !== undefined) ? opts["mode"]: '"Access-Control-Allow-Origin":"*"');
+
+        var rawFile = new XMLHttpRequest();
+        rawFile.open(opts.get("method"), elem_qstring, true);
+        rawFile.onreadystatechange = function() {
+            if (rawFile.readyState === 4) {
+            var allText = rawFile.responseText;
+            document.getElementById(elem.getAttribute("insert")).innerHTML = allText;
+            }
+        }
+        rawFile.send();
   }
   
