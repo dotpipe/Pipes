@@ -97,27 +97,12 @@
       elem.setAttribute("class-index",index.toString());
       elem.classList = arr[index];
   }
-  
-  function remove(elem)
-  {
-      // Remove Object
-      if (elem.hasOwnProperty("remove"))
-      {
-          var rem = elem.getAttribute("remove");
-          if (document.getElementById(rem)) {
-              doc_set = document.getElementById(rem);
-              doc_set.remove();
-          }
-          doc_set.parentNode.removeChild(doc_set);
-      }
-  }
-  
+
   function pipes(elem) {
   
-      var opts = new Map();
       var query = "";
       var headers = new Map();
-      var form_ids = new Map();
+      var formclass = "";
   
       if (elem.classList.contains("redirect"))
       {
@@ -164,12 +149,9 @@
               headers.set(g[0], g[1]);
           });
       }
-      if (elem.hasAttribute("form-ids"))
+      if (elem.hasAttribute("form-class"))
       {
-          var optsArray = elem.getAttribute("form-ids").split(";");
-          optsArray.forEach((e,f) => {
-              form_ids.set(f, document.getElementById(e));
-          });
+            formclass = elem.getAttribute("form-class");
       }
       if (elem.hasAttribute("class-switch"))
       {
@@ -208,7 +190,7 @@
           document.body.removeChild(element);
           return;
       }
-      navigate(elem, headers, query, form_ids);
+      navigate(elem, headers, query, formclass);
   }
   
   function setAJAXOpts(elem, opts)
@@ -234,17 +216,18 @@
       return opts;
   }
 
-  function formAJAX(elem, elem_names)
+  function formAJAX(elem, classname)
   {
       var elem_qstring = "";
 
       // No, 'pipe' means it is generic. This means it is open season for all with this class
-      for (var i = 0; i < elem_names.length; i++)
+      for (var i = 0; i < document.getElementsByClassName(classname).length; i++)
       {
-          var elem_value = document.getElementById(elem_names[i]);
+          var elem_value = document.getElementsByClassName(classname)[i];
+          console.log(classname);
           elem_qstring = elem_qstring + elem_value.name + "=" + elem_value.value + "&";
           // Multi-select box
-          console.log(".");
+          console.log(classname);
           if (elem_value.hasOwnProperty("multiple"))
           {
               for (var o of elem_value.options) {
@@ -258,11 +241,11 @@
       return (elem_qstring);
   }
   
-  function navigate(elem, opts = null, query = "", form_ids = [])
+  function navigate(elem, opts = null, query = "", classname = "")
   {
       //formAJAX at the end of this line
-      
-        elem_qstring = query + ((form_ids.length > 0) ? formAJAX(elem, form_ids) : "");
+
+        elem_qstring = query + ((document.getElementsByClassName(classname).length > 0) ? formAJAX(elem, classname) : "");
         elem_qstring = elem.getAttribute("ajax") + ((elem_qstring.length > 0) ? "?" + elem_qstring : "");
         elem_qstring = encodeURI(elem_qstring);
         opts = setAJAXOpts(elem, opts);
