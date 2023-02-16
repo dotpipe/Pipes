@@ -43,20 +43,19 @@
   function fileOrder(elem)
   {
       arr = elem.getAttribute("file-order").split(";");
-      if (!elem.hasAttribute("file-index"))
-        elem.setAttribute("file-index", "0");
-      index = parseInt(elem.getAttribute("file-index").toString());
-      if (elem.hasAttribute("incrIndex"))
-          index = parseInt(elem.getAttribute("incrIndex").toString()) + 1;
-      else if (elem.hasAttribute("decrIndex"))
-          index = Math.abs(parseInt(elem.getAttribute("decrIndex").toString())) - 1;
-      else
-          index++;
-      if (index < 0)
-          index = 0;
-      index = index%arr.length;
-      elem.setAttribute("file-index",index.toString());
       ppfc = document.getElementById(elem.getAttribute("insert").toString());
+      if (!ppfc.hasAttribute("file-index"))
+        ppfc.setAttribute("file-index", "0");
+      index = parseInt(elem.getAttribute("file-index").toString());
+      if (elem.hasAttribute("decrIndex"))
+          index = Math.abs(parseInt(ppfc.getAttribute("file-index").toString())) - 1;
+      else
+          index = Math.abs(parseInt(ppfc.getAttribute("file-index").toString())) + 1;
+      if (index < 0)
+          index = arr.length - 1;
+      index = index%arr.length;
+      ppfc.setAttribute("file-index",index.toString());
+     
       console.log(ppfc);
       if (ppfc.hasAttribute("src"))
       {
@@ -70,7 +69,7 @@
         }
         catch (e)
         {
-            ppfc.parentNode.setAttribute("src",arr[index].toString());
+            ppfc.setAttribute("src",arr[index].toString());
         }
       }
       else
@@ -231,8 +230,6 @@
       opts.set("redirect", redirect_thru); // manual, *follow, error
       opts.set("referrer", refer_thru); // no-referrer, *client
       opts.set('body', JSON.stringify(content_thru));
-      const abort_ctrl = new AbortController();
-      const signal = abort_ctrl.signal;
   
       return opts;
   }
@@ -270,8 +267,6 @@
         elem_qstring = encodeURI(elem_qstring);
         opts = setAJAXOpts(elem, opts);
         var opts_req = new Request(elem_qstring);
-        const abort_ctrl = new AbortController();
-        const signal = abort_ctrl.signal;
         opts.set("mode",(opts["mode"] !== undefined) ? opts["mode"]: '"Access-Control-Allow-Origin":"*"');
 
         var rawFile = new XMLHttpRequest();
