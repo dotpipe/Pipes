@@ -5,7 +5,7 @@
   *  Attribute   |   Use Case
   *  -------------------------------------------------------------
   *  query.......= default query string associated with url
-  *  pipe........= name of id // Possible deprecation
+  *  <pipe>......= Tag (initiates on DOMContentLoaded Event) // Possible deprecation
   *  goto........= URI to go to
   *  ajax........= calls and returns the value file's output
   *  file-order..= ajax to these files, iterating [0,1,2,3]%array.length per call (delimited by ';')
@@ -227,7 +227,10 @@
           console.log(classname);
           elem_qstring = elem_qstring + elem_value.name + "=" + elem_value.value + "&";
           // Multi-select box
+<<<<<<< HEAD
           console.log(classname);
+=======
+>>>>>>> a25d2cf (Updated the DOM attributes cheatsheet)
           if (elem_value.hasOwnProperty("multiple"))
           {
               for (var o of elem_value.options) {
