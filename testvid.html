@@ -7,21 +7,21 @@
 <script>
     window.m_seek = {"s": 0};
     window.flags = false;
-    window.media = {"m": null};
+    window.media = null;
 
     var xy = {};
 
     function getm() {
-        media["m"] = document.getElementById('video');
-        media["m"].seekable = true;
-        media["m"].currentTime = 1;
-        media["m"].startTime = 1;
-        media["m"].seekable = false;
+        window.media = document.getElementById('video');
+        window.media.seekable = true;
+        window.media.currentTime = 1;
+        window.media.startTime = 1;
+        window.media.seekable = false;
     }
 
     function flag(media)    
     {
-        //media["m"].play();
+        window.media.play();
         if (flags)
         {
             unflag(media);
@@ -34,7 +34,7 @@
     function unflag(media)
     {
         flags = false;
-        media["m"].pause();
+        window.media.pause();
         return false;//flags = false;
     }
     
@@ -43,43 +43,44 @@
 <script>    
     
      //{ right: false, left: false };
-    //var media["m"].mp = document.getElementById('media["m"].mp-video');
+    //var window.media.mp = document.getElementById('window.media.mp-video');
     var t = { x: 0, y: 0};
     function callbackRight(media,m_seek)
     {
 
-        media["m"].seekable = true;
-        media["m"].currentTime += 2;
-        media["m"].seekable = false;
+        window.media.seekable = true;
+        window.media.currentTime += 2;
+        window.media.seekable = false;
     }
 
     function callbackLeft(media, m_seek)
     {
-        media["m"].seekable = true;
-        media["m"].currentTime -= 2;
-        media["m"].seekable = false;
+        window.media.seekable = true;
+        window.media.currentTime -= 2;
+        window.media.seekable = false;
     }
 
     function easy (media, m_seek) {
-        xy = media["m"].getBoundingClientRect();
-        t = { x: getMousePos(media["m"].onmousemove).x, y: getMousePos(media["m"].onmousemove).y };
+        console.log(media);
+        xy = window.media.getBoundingClientRect();
+        t = { x: getMousePos(window.media.onmousemove).x, y: getMousePos(window.media.onmousemove).y };
 
-        console.log(media["m"].currentTime);
-        if (3 < media["m"].currentTime && 0 < media["m"].currentTime && t.x > xy.left && t.x < xy.left + (xy.width / 2) && t.y > xy.top && t.y < xy.top + xy.height)
+        console.log(window.media.currentTime);
+        if (3 < window.media.currentTime && 0 < window.media.currentTime && t.x > xy.left && t.x < xy.left + (xy.width / 2) && t.y > xy.top && t.y < xy.top + xy.height)
             callbackLeft(media,m_seek);
-        else if (media["m"].duration > media["m"].currentTime && 0 < media["m"].currentTime && t.x > xy.left && t.x > xy.left + (xy.width / 2) && t.y > xy.top && t.y < xy.top + xy.height)
+        else if (window.media.duration > window.media.currentTime && 0 < window.media.currentTime && t.x > xy.left && t.x > xy.left + (xy.width / 2) && t.y > xy.top && t.y < xy.top + xy.height)
             callbackRight(media,m_seek);
-        else if (Math.round(media['m'].duration) - 3 < Math.round(media['m'].currentTime))
+        else if (Math.round(window.media.duration) - 3 < Math.round(window.media.currentTime))
         {
-            media['m'].seekable = true;
-            media['m'].currentTime = 1;
-            media['m'].seekable = false;
+            window.media.seekable = true;
+            window.media.currentTime = 1;
+            window.media.seekable = false;
         }
         else
         {
-            media['m'].seekable = true;
-            media['m'].currentTime = media['m'].duration - 3;
-            media['m'].seekable = false;
+            window.media.seekable = true;
+            window.media.currentTime = window.media.duration - 3;
+            window.media.seekable = false;
         }
     }
 
@@ -96,6 +97,6 @@
 <body onmousedown="">
     <br><br><br>
     
-<pipe ajax="./vidiot.php" insert="here" id="here"></pipe>
+<pipe ajax="./cache.php" insert="here" id="here"></pipe>
 <pipe ajax="./preorder.php" insert="there" id="there"></pipe>
 </body>

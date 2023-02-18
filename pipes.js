@@ -35,7 +35,7 @@
     document.addEventListener("DOMContentLoaded", function (){
         doc_set = document.getElementsByTagName("pipe");
         Array.from(doc_set).forEach(function(elem) {
-                pipes(elem);
+                setTimeout(pipes(elem),500);
         });
         
     });
@@ -227,10 +227,7 @@
           console.log(classname);
           elem_qstring = elem_qstring + elem_value.name + "=" + elem_value.value + "&";
           // Multi-select box
-<<<<<<< HEAD
           console.log(classname);
-=======
->>>>>>> a25d2cf (Updated the DOM attributes cheatsheet)
           if (elem_value.hasOwnProperty("multiple"))
           {
               for (var o of elem_value.options) {
@@ -257,10 +254,22 @@
 
         var rawFile = new XMLHttpRequest();
         rawFile.open(opts.get("method"), elem_qstring, true);
-        rawFile.onreadystatechange = function() {
-            if (rawFile.readyState === 4) {
-            var allText = rawFile.responseText;
-            document.getElementById(elem.getAttribute("insert")).innerHTML = allText;
+        if (!elem.hasAttribute("json"))
+        {
+            rawFile.onreadystatechange = function() {
+                if (rawFile.readyState === 4) {
+                var allText = rawFile.responseText;
+                document.getElementById(elem.getAttribute("insert")).innerHTML = allText;
+                }
+            }
+        }
+        else
+        {
+            rawFile.onreadystatechange = function() {
+                if (rawFile.readyState === 4) {
+                    var allText = JSON.parse(rawFile.responseText);
+                    console.log(allText);
+                }
             }
         }
         rawFile.send();

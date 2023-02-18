@@ -1,7 +1,14 @@
-# Pipes
+# Pipes v3.6.2
+
 JavaScript DOM Handler for Routing
 
-To donate please visit: paypal.me/pirodock
+To donate please visit: https://paypal.me/pirodock
+
+Pipes may now be considered a viable and strategic option for the UI/UX developer. It is with great pleasure I introduce the <pipe></pipe> tag that incites automatic inclusion of what I call Filters. These are file getters that produce a script from their PipesJS attributes upon the DOMContentLoaded Event. It is also with more value, that I can kick off a purely JSON setup for pages. It is like includes, but it's a little better, you can have forms on the page take event parameters and use containing tags to write the rest of the page. This can be done with anything in the DOM with an Event on the tag of your choice, or an EventListener. That is now a huge part of this package's breadth. So you can rest assuredly put more to use.
+
+	Coming Soon (expected by Spring 2023): multiple tags initiating at once via a controlled run thru an attribute like this ajax="first.php;second.html;etc-foo.bar"
+
+I want to thank the hundreds of developers out there using this time saving software for their support, and realizing no man is perfect, and neither is code. Thank you thank you thank you, all so much.
 
 # Threading for PHP via Pipes v2
 

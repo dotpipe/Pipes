@@ -10,10 +10,11 @@
 		function __construct($json)
 		{
 			$json = json_decode($json);
+
 			$this->path = $json->path;
 			$this->width = $json->width;
 			$this->height = $json->height;
-			$this->tableClass = $json->classes;
+			$this->tableClass = $json->class;
 			$this->id = $json->id;
 		}
 
@@ -26,7 +27,7 @@
 				if ($file == "vidiot.php" || $file == "pipes.js")
 					continue;
 				if (in_array(substr($file,-4),[".ogg",".mp4"]))
-					$output .= ";$this->path$file";
+					$output .= ";$this->path/$file";
 			}
 			$out = "<table><tr><td><h2 onclick='pipes(this)' incrIndex headers='mode:no-cors' insert='source' file-order='". substr($output,1) ."' file-index='0'>&lt;</h2></td>";
 			$out .= '<td><p id="ths" onclick="pipes(this)" insert="ths"></p>';

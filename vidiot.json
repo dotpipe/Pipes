@@ -3,6 +3,6 @@
 		"path": "./movies/",
 		"width": 620,
 		"height": 200,
-		"classes": "video",
+		"class": "video",
 		"id": "video"
 	}

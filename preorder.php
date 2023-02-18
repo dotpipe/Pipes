@@ -25,7 +25,7 @@ $form .= '<font style=\'font-size:12px\'> Qu: </font><input id="qu" type=\'numbe
 $form .= '&nbsp;<button style=\'background:red;color:black;border-radius:50%;font-size:18px;border-right:1px solid white;\' onclick="removeItem(this)">&times;</button>';
 $form .= '</div></div>';
 $form .= '<div style=\'width:10%;display:table-cell;text-align:left;margin-left:20px;\'><button style=\'color:white:1px solid white;background:blue;border-radius:50%;font-size:18px\' onclick="addNewItem()">+</button></div>';
-$form .= '<div style=\'width:10%;display:table-cell;text-align:left;margin-left:20px\'><button style=\'background:black;color:green;border-radius:50%;font-size:18px;border:2px solid white;\' form-class="item" onclick="pipes(this);makePreorder();menuList(\'preorder.php\')">&check;</button></div>';
+$form .= '<div style=\'width:10%;display:table-cell;text-align:left;margin-left:20px\'><button ajax="./vidiot.json" style=\'background:black;color:green;border-radius:50%;font-size:18px;border:2px solid white;\' form-class="item" json onclick="pipes(this);makePreorder();menuList(\'preorder.php\')">&check;</button></div>';
 $form .= '</div>';
 
 echo $form;
