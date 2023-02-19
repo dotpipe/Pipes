@@ -46,7 +46,7 @@
       ppfc = document.getElementById(elem.getAttribute("insert").toString());
       if (!ppfc.hasAttribute("file-index"))
         ppfc.setAttribute("file-index", "0");
-      index = parseInt(elem.getAttribute("file-index").toString());
+      index = parseInt(ppfc.getAttribute("file-index").toString());
       if (elem.hasAttribute("decrIndex"))
           index = Math.abs(parseInt(ppfc.getAttribute("file-index").toString())) - 1;
       else

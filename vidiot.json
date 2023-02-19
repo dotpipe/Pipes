@@ -1,8 +1,10 @@
 
 	{
+		
 		"path": "./movies/",
 		"width": 620,
 		"height": 200,
 		"class": "video",
-		"id": "video"
+		"id": "video",
+		"exts": [".ogg",".mp4"]
 	}

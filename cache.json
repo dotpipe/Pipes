@@ -1,17 +1,17 @@
 {
 	"vidiot":
 	{
-		"ajax": "vidiot.php",
+		"ajax": "filter.video.carousel.php",
 		"path": "./movies/",
 		"width": 620,
 		"height": 200,
 		"class": "video",
 		"id": "video",
-		"insert": "video"
+		"insert": "video",
+		"exts": [".ogg",".mp4"]
 	},
 	"preorder":
 	{
-		"ajax": "example.txt",
-		"path":"./movies/"
+		"ajax": "preorder.php"
 	}
 }
