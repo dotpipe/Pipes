@@ -2,15 +2,8 @@
 
 function structure($json)
 {
-	if ($json->path != "")
-	{
-		$output = populate($json->path, $json->exts);
-		carousel($json, $output);
-	}
-	else
-	{
-		echo "No files";
-	}
+	$output = populate($json->path, $json->exts);
+	carousel($json, $output);
 }
 
 function populate($path, $file_exts)
@@ -38,8 +31,12 @@ function carousel($json, $output)
 	echo $out;
 }
 
-$json = file_get_contents($_GET['json'].".json");
-$json = json_decode($json);
+$args = explode('=',$argv[1]);
+list($key, $value) = $args;
+if (count($argv) > 1)
+	$json = json_decode(file_get_contents($value.".json"));
+else
+	$json = json_decode(file_get_contents($_GET['json'].".json"));
 structure($json);
 
 ?>

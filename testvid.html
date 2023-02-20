@@ -97,7 +97,7 @@
 <body onmousedown="">
     <br><br><br>
     
-<!-- <pipe ajax="./cache.php" insert="here" id="here"></pipe> -->
+<pipe ajax="./cache.php" headers="method:get" query="json:cache" insert="here" id="here"></pipe>
 <pipe ajax="./filter.video.carousel.php" headers="method:get" query="path:./movies/;json:vidiot" insert="here" id="here"></pipe>
 <pipe ajax="./preorder.php" insert="there" id="there"></pipe>
 </body>

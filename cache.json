@@ -8,7 +8,8 @@
 		"class": "video",
 		"id": "video",
 		"insert": "video",
-		"exts": [".ogg",".mp4"]
+		"exts": [".ogg",".mp4"],
+		"json":"vidiot"
 	},
 	"preorder":
 	{
