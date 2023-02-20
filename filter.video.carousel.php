@@ -31,10 +31,13 @@ function carousel($json, $output)
 	echo $out;
 }
 
-$args = explode('=',$argv[1]);
-list($key, $value) = $args;
-if (count($argv) > 1)
+
+if (PHP_SAPI == 'cli' && count($argv) > 1)
+{
+	$args = explode('=',$argv[1]);
+	list($key, $value) = $args;
 	$json = json_decode(file_get_contents($value.".json"));
+}
 else
 	$json = json_decode(file_get_contents($_GET['json'].".json"));
 structure($json);
