@@ -35,9 +35,22 @@ session_start();
 
 		}
 	}
-	if (isset($_GET))
+	
+	$json = null;
+
+	if (PHP_SAPI == 'cli' && count($argv) > 1)
 	{
-		$json = json_decode(file_get_contents($_GET['json'].".json"));
+		$args = explode('=',$argv[1]);
+		list($key, $value) = $args;
+		$json = json_decode(file_get_contents($value.".json"));
+		new cache($json);
+	}
+	else
+	{
+		if ($_SERVER['REQUEST_METHOD'] == 'POST')
+			$json = json_decode(file_get_contents($_POST['json'].".json"));
+		else if (isset($_GET))
+			$json = json_decode(file_get_contents($_GET['json'].".json"));
 		new cache($json);
 	}
 ?>
