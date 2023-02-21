@@ -5,7 +5,7 @@
   *  Attribute   |   Use Case
   *  -------------------------------------------------------------
   *  query.......= default query string associated with url
-  *  <pipe>......= Tag (initiates on DOMContentLoaded Event) // Possible deprecation
+  *  <pipe>......= Tag (initializes on DOMContentLoaded Event) // Possible deprecation
   *  goto........= URI to go to
   *  ajax........= calls and returns the value file's output
   *  file-order..= ajax to these files, iterating [0,1,2,3]%array.length per call (delimited by ';')
@@ -37,7 +37,6 @@
         Array.from(doc_set).forEach(function(elem) {
                 setTimeout(pipes(elem),500);
         });
-        
     });
     
   function fileOrder(elem)

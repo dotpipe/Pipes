@@ -20,18 +20,17 @@ function populate($path, $file_exts)
 
 function carousel($json, $output)
 {
-	$out = "<table><tr><td><h2 onclick='pipes(this)' incrIndex headers='mode:no-cors' insert='source' file-order='". substr($output,1) ."'>&lt;</h2></td>";
-	$out .= '<td><p id="ths" onclick="pipes(this)" insert="ths"></p>';
-	$out .= '<div> 
+	$out = "<table><tr><td class='".$json->class."'><h2 onclick='pipes(this)' incrIndex headers='mode:no-cors' insert='source' file-order='". substr($output,1) ."'>&lt;</h2></td>";
+	$out .= '<td><div> 
 				<video width="'.$json->width.'" height="'.$json->height.'" loop id="'.$json->id.'" preload="auto" onmouseover="this.pause();" onmouseleave="this.play();" onclick="easy(media, m_seek);">
 					<source id="source" type="video/mp4" src="" file-index="0"/>
 				</video>
 			</div></td>';
-	$out .= "<td><h2 onclick='pipes(this)' decrIndex headers='mode:no-cors' insert='source' file-order='". substr($output,1) ."'>&gt;</h2></td></tr></table>";
+	$out .= "<td class='" . $json->class ."'><h2 onclick='pipes(this)' decrIndex headers='mode:no-cors' insert='source' file-order='". substr($output,1) ."'>&gt;</h2></td></tr></table>";
 	echo $out;
 }
 
-
+$json = null;
 if (PHP_SAPI == 'cli' && count($argv) > 1)
 {
 	$args = explode('=',$argv[1]);
