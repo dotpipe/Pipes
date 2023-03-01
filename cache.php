@@ -47,9 +47,9 @@ session_start();
 	}
 	else
 	{
-		if ($_SERVER['REQUEST_METHOD'] == 'POST')
+		if (isset($_POST['json']))
 			$json = json_decode(file_get_contents($_POST['json'].".json"));
-		else if (isset($_GET))
+		else if (isset($_GET['json']))
 			$json = json_decode(file_get_contents($_GET['json'].".json"));
 		new cache($json);
 	}
