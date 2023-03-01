@@ -2,12 +2,10 @@
 
 class GPG {
 
-	public $JSON;
 	private $id;
 
-	function __invoke(string $json_filename, string $command, $param1 = "", $param2 = "", $param3 = "")
+	function __invoke(string $command, $param1 = "", $param2 = "", $param3 = "")
 	{
-		$this->JSON = json_encode($json_filename);
 		if (!isset($this->id))
 			$this->id = gnupg_init();
 		$tempFuncCall = 'gnu_pg'.$command;
