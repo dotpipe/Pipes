@@ -8,7 +8,7 @@ class GPG {
 	{
 		if (!isset($this->id))
 			$this->id = gnupg_init();
-		$tempFuncCall = 'gnu_pg'.$command;
+		$tempFuncCall = 'gnupg_'.$command;
 
 		$one_string = ["addencryptkey","decrypt","encrypt","encryptsign",
 			"export","gettrustlist","import","keyinfo","listsignatures","setarmor","seterrormode","setsignmode","sign"];
@@ -16,23 +16,23 @@ class GPG {
 		$three_strings = ["verify"];
 		if (in_array($command,$one_string))
 		{
-			return $this->id->$tempFuncCall($this->id, $param1);
+			return $tempFuncCall($this->id, $param1);
 		}
 		else if (in_array($command,$two_strings))
 		{
-			return $this->id->$tempFuncCall($this->id, $param1, $param2);
+			return $tempFuncCall($this->id, $param1, $param2);
 		}
 		else if (in_array($command,$three_strings))
 		{
-			return $this->id->$tempFuncCall($this->id, $param1, $param2, $param3);
+			return $tempFuncCall($this->id, $param1, $param2, $param3);
 		}
 		else if ($command != "init")
 		{
 			try
 			{
-				return $this->id->$tempFuncCall($this->id);
+				return $tempFuncCall($this->id);
 			}
-			catch ($ee)
+			catch (e)
 			{
 				echo "Command does not exist";
 			}
@@ -40,4 +40,11 @@ class GPG {
 	}
 }
 
+$gpg = new GPG();
+$gpg('addencryptkey', "6EB8C56F1C7A0590F8CC11A8234EA1E033ABA635");
+$r = $gpg('encrypt',"this is just some text.");
+$gpg('adddecryptkey',"6EB8C56F1C7A0590F8CC11A8234EA1E033ABA635","RTYfGhVbN!3$");
+echo $gpg('decrypt', $r);
+// $r = $gpg('')
+echo $r;
 ?>
