@@ -6,7 +6,7 @@ class GPG {
 		if ($command === "init")
 		{
 			echo "Cannot invoke object within stdClass";
-			return;
+			return null;
 		}
 		if (!isset($this->id)) { $this->id = gnupg_init(); }
 		$tempFuncCall = 'gnupg_'.$command;
