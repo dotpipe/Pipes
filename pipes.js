@@ -5,7 +5,8 @@
   *  Attribute   |   Use Case
   *  -------------------------------------------------------------
   *  query.......= default query string associated with url
-  *  <pipe>......= Tag (initializes on DOMContentLoaded Event) // Possible deprecation
+  *  <pipe>......= Tag (initializes on DOMContentLoaded Event)
+  *  <dyn>.......= Automatic eventListening tag for onclick="pipes(this)"
   *  goto........= URI to go to
   *  ajax........= calls and returns the value file's output
   *  file-order..= ajax to these files, iterating [0,1,2,3]%array.length per call (delimited by ';')
@@ -27,16 +28,25 @@
   *  download....= class for downloading files
   *  file........= filename to download
   *  directory...= relative or full path of 'file'
+  *  form-class  = class name of devoted form elements
   **** ALL HEADERS FOR AJAX are available. They will use defaults to
   **** go on if there is no input to replace them.
   */
-
 
     document.addEventListener("DOMContentLoaded", function (){
         doc_set = document.getElementsByTagName("pipe");
         Array.from(doc_set).forEach(function(elem) {
                 setTimeout(pipes(elem),500);
         });
+        setTimeout(function() {
+            let elementsArray = document.getElementsByTagName("dyn");
+            Array.from(elementsArray).forEach(function(elem) {
+                console.log(elem);
+                elem.addEventListener("click", function() {
+                    pipes(elem);
+                });
+            });
+        }, doc_set.length*500);
     });
     
   function fileOrder(elem)
@@ -99,98 +109,98 @@
 
   function pipes(elem) {
   
-      var query = "";
-      var headers = new Map();
-      var formclass = "";
-  
-      if (elem.classList.contains("redirect"))
-      {
-          window.location.href = elem.getAttribute("ajax") + ((elem.hasAttribute("query")) ? "?" + elem.getAttribute("query") : "");
-      }
-      if (elem.hasAttribute("display") && elem.getAttribute("display"))
-      {
-          var optsArray = elem.getAttribute("display").split(";");
-          optsArray.forEach((e,f) => {
+        var query = "";
+        var headers = new Map();
+        var formclass = "";
+
+        if (elem.classList.contains("redirect"))
+        {
+            window.location.href = elem.getAttribute("ajax") + ((elem.hasAttribute("query")) ? "?" + elem.getAttribute("query") : "");
+        }
+        if (elem.hasAttribute("display") && elem.getAttribute("display"))
+        {
+            var optsArray = elem.getAttribute("display").split(";");
+            optsArray.forEach((e,f) => {
             var x = document.getElementById(e);
             if (x.style.display !== "none")
                 x.style.display = "none";
             else
                 x.style.display = "block";
-          });
-      }
-      if (elem.hasAttribute("remove") && elem.getAttribute("remove"))
-      {
-          var optsArray = elem.getAttribute("remove").split(";");
-          optsArray.forEach((e,f) => {
-              var x = document.getElementById(e);
-              x.remove();
-          });
-      }
-      if (elem.classList.contains("link"))
-      {
-          window.location.href = elem.getAttribute("ajax");
-          return;
-      }
-      if (elem.hasAttribute("query"))
-      {
-          var optsArray = elem.getAttribute("query").split(";");
-  
-          optsArray.forEach((e,f) => {
-              var g = e.split(":");
-              query = query + g[0] + "=" + g[1] + "&";
-          });
-      }
-      if (elem.hasAttribute("headers"))
-      {
-          var optsArray = elem.getAttribute("headers").split("&");
-          optsArray.forEach((e,f) => {
-              var g = e.split(":");
-              headers.set(g[0], g[1]);
-          });
-      }
-      if (elem.hasAttribute("form-class"))
-      {
+            });
+        }
+        if (elem.hasAttribute("remove") && elem.getAttribute("remove"))
+        {
+            var optsArray = elem.getAttribute("remove").split(";");
+            optsArray.forEach((e,f) => {
+                var x = document.getElementById(e);
+                x.remove();
+            });
+        }
+        if (elem.classList.contains("link"))
+        {
+            window.location.href = elem.getAttribute("ajax");
+            return;
+        }
+        if (elem.hasAttribute("query"))
+        {
+            var optsArray = elem.getAttribute("query").split(";");
+
+            optsArray.forEach((e,f) => {
+                var g = e.split(":");
+                query = query + g[0] + "=" + g[1] + "&";
+            });
+        }
+        if (elem.hasAttribute("headers"))
+        {
+            var optsArray = elem.getAttribute("headers").split("&");
+            optsArray.forEach((e,f) => {
+                var g = e.split(":");
+                headers.set(g[0], g[1]);
+            });
+        }
+        if (elem.hasAttribute("form-class"))
+        {
             formclass = elem.getAttribute("form-class");
-      }
-      if (elem.hasAttribute("class-switch"))
-      {
-          classOrder(elem);
-      }
-      if (elem.hasAttribute("file-order"))
-      {
-          fileOrder(elem);
-      }
-      // Use a JSON to hold Header information
-      if (elem.hasAttribute("fs-opts"))
-      {
-          var fs=require('fs');
-          var json = elem.getAttribute("fs-opts").toString();
-          var data=fs.readFileSync(json, 'utf8');
-          var words=JSON.parse(data);
-      }
-      if (elem.hasAttribute("json") && elem.getAttribute("json"))
-      {
-          var fs=require('fs');
-          var json = elem.getAttribute("json").toString();
-          var data=fs.readFileSync(json, 'utf8');
-          var words=JSON.parse(data);
-      }
-      // This is a quick way to make a downloadable link in an href
-  //     else
-      if (elem.classList == "download")
-      {
-          var text = ev.target.getAttribute("file");
-          var element = document.createElement('a');
-          var location = ev.target.getAttribute("directory");
-          element.setAttribute('href', location + encodeURIComponent(text));
-          element.style.display = 'none';
-          document.body.appendChild(element);
-          element.click();
-          document.body.removeChild(element);
-          return;
-      }
-      navigate(elem, headers, query, formclass);
-  }
+        }
+        if (elem.hasAttribute("class-switch"))
+        {
+            classOrder(elem);
+        }
+        if (elem.hasAttribute("file-order"))
+        {
+            fileOrder(elem);
+        }
+        // Use a JSON to hold Header information
+        if (elem.hasAttribute("fs-opts"))
+        {
+            var fs=require('fs');
+            var json = elem.getAttribute("fs-opts").toString();
+            var data=fs.readFileSync(json, 'utf8');
+            var words=JSON.parse(data);
+        }
+        if (elem.hasAttribute("json") && elem.getAttribute("json"))
+        {
+            var fs=require('fs');
+            var json = elem.getAttribute("json").toString();
+            var data=fs.readFileSync(json, 'utf8');
+            var words=JSON.parse(data);
+        }
+        // This is a quick way to make a downloadable link in an href
+    //     else
+        if (elem.classList == "download")
+        {
+            var text = ev.target.getAttribute("file");
+            var element = document.createElement('a');
+            var location = ev.target.getAttribute("directory");
+            element.setAttribute('href', location + encodeURIComponent(text));
+            element.style.display = 'none';
+            document.body.appendChild(element);
+            element.click();
+            document.body.removeChild(element);
+            return;
+        }
+        navigate(elem, headers, query, formclass);
+    }
   
   function setAJAXOpts(elem, opts)
   {
