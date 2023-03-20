@@ -1,156 +1,112 @@
-<?php
-class CRUD
-{
-    public $ini;
-    public $db; // handle for database
+<?php declare (strict_types = 1);
+	namespace src;
 
-    /**
-     * @method __construct
-     * @param config_filename
-     *     
-     */
-    public function __construct(string $config = "../config/config.json")
-    {
-        $this->ini = json_decode(\file_get_contents($config));
-        $dsn = "mysql:dbname=" . $this->ini->database . ";host=" . $this->ini->host;
-        $dsn = ($this->ini->port == 3306) ? $dsn : $dsn . ":" . $this->ini->port;
-        $this->db = new \PDO($dsn, $this->ini->username, $this->ini->password);
-        $this->db->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-        $this->db->setAttribute(\PDO::MYSQL_ATTR_USE_BUFFERED_QUERY, "true");
-        $this->ini->password = null;
-    }
+	require_once './src/pasm.php';
 
-    /**
-     * @method create
-     * @param values
-     * @param tablename
-     *     
-     * $create([
-     *   col1 => value,
-     *   col2 => value,
-     *   col3 => value
-     *   ], $table)
-     */
-    public function create(array $values, string $table)
-    {
-        $db_msg = "INSERT INTO $table (";
+	class H2No {
 
-        foreach ($values as $k => $v) {
-            $db_msg .= $k . ","; 
-        }
+		public $h2no;
+		public $result;
+		public $res_temp;
+		public $db;
 
-        $db_msg = substr($db_msg, 0, strlen($db_msg) - 1) . ") VALUES (";
+		function __construct(string $file)
+		{	
+			$this->result = [];
+			{
+				try
+				{
+					$temp = json_encode(file_get_contents($file));
+					$this->db = json_decode($temp);
+				}
+				catch (e)
+				{
+					echo $file. " does not exist.";
+					exit(0);
+				}
+			}
+		}
 
-        foreach ($values as $k => $v) {
-            if (!is_string($v) && !\is_numeric($v)) {
-                $db_msg .= "NULL,";
-            } elseif (is_string($v)) {
-                $db_msg .= "'" . $v . "',";
-            } else {
-                $db_msg .= $v . ",";
-            }
-        }
+		public function control_db($res)
+		{
+			if (is_object($res))
+				$res = (json_encode($res));
+			if (!is_array($res))
+				$res = json_decode($res);
+			$this->res_temp = ($res);
+		}
 
-        $db_msg = substr($db_msg, 0, strlen($db_msg) - 1) . ")";
-        $db_ = $this->db->prepare($db_msg);
-        echo $db_msg;
-        $db_->execute() or die(print_r($db_->errorInfo(), true));
+		/**
+		  * Delete
+		  * Match elements from NoSQL
+		  * query and return results.
+		  *
+		  * @method delete
+		  * @param kv key/value array
+		  * @param db H2No Database Name (default: h2no)
+		  * @param c_table name of table (top-level key)
+		 */
+		public function crud($kv, $cmd, $c_table)
+		{
+			$this->control_db($this->db);
+			{
+				$this->result = $this->res_temp;
 
-        return 1;
-    }
+				if ($cmd == "c" && $this->res_temp->$c_table != null)
+				{
+					$ky = array_key_first($kv);
+					$this->res_temp->$c_table->$ky = $kv[$ky];
+					array_merge_recursive(array($this->result),array($this->res_temp->$c_table));
+				}
+				foreach ($this->res_temp as $key => $val)
+				{
+					if ($key != $c_table)
+						continue;
+					$vs = $val;
+					
+					foreach ($val as $k => $v)
+					{
+						if ($kv == $k && $cmd == "d")
+							unset($this->result->$c_table->$k);
+						elseif ($kv != $k && $cmd == "r")
+							unset($this->result->$c_table->$k);
+						elseif (!is_string($kv) && $kv->$k != null && $cmd == "u")
+							$this->result->$c_table->$k = $this->result->$c_table->$k;
+					}
+					array_merge_recursive([$this->result],array($vs));
+				}
+			}
+			return $this->result;
+		}
 
-    /**
-     * @method read
-     * @param values
-     * @param WHERE_clause
-     * 
-     * Use instruction:
-     * $read([
-     *  $table1 => [
-     *      col1,
-     *      col2,
-     *      col3,
-     *      ...,
-     *      coln
-     *      ]
-     *  ], $where)
-     */
+		/**
+		  * Save
+		  * Save Results back to file
+		  *
+		 */
+		public function save($file)
+		{
+			$temp = $this->result;
+			file_put_contents($file, json_encode($temp));
+			return $this->db;
+		}
 
-    public function read(array $ta_ky, string $where)
-    {
-        $db_msg = "SELECT ";
+		public function load_db($file)
+		{
+			$temp = file_get_contents($file);
+			$this->db = json_decode($temp);
+			return $this->db;
+		}
+	}
 
-        foreach ($ta_ky as $ta => $ky) {
-            foreach ($ky as $key) {
-                $db_msg .= "`" . $ta . "`.`$key`,";
-            }
-        }
+/*
+$h2no = new H2No(("./cache.json"));
+($h2no->crud('ajax', 'd', 'vidiot'));
+var_dump($h2no->result);
+$h2no->save("./cash.json");
 
-        $db_msg = substr($db_msg, 0, strlen($db_msg) - 1);
-        $db_msg .= " FROM ";
-        foreach ($ta_ky as $ta => $ky) {
-            $db_msg .= "`$ta`, ";
-        }
-        $db_msg = substr($db_msg, 0, strlen($db_msg) - 2);
-        $db_msg .= " WHERE $where";
-
-        $db_ = $this->db->prepare($db_msg);
-        $db_->execute() or die(print_r($db_->errorInfo(), true));
-        $this->rows = $db_->fetchAll(\PDO::FETCH_BOTH);
-        unset($db_);
-
-        return $this->rows;
-    }
-
-    /**
-     * @method update
-     * @param table
-     * @param values
-     * @param WHERE_CLAUSE
-     * 
-     * Use:
-     *  $update(
-     *      $table,
-     *      [
-     *      key1 => value,
-     *      key2 => value
-     *      ],
-     *      $where
-     *  )
-     */
-    public function update(string $table, array $key_value, string $where)
-    {
-        $db_msg = "UPDATE $table SET ";
-        foreach ($key_value as $ky => $val) {
-            if (is_numeric($val)) {
-                $db_msg .= "`$table`.`$ky` = $val, ";
-            } elseif (!is_numeric($val)) {
-                $db_msg .= "`$table`.`$ky` = \"$val\", ";
-            }
-        }
-        $db_msg = substr($db_msg, 0, strlen($db_msg) - 2);
-        $db_msg .= " WHERE $where";
-        $db_ = $this->db->prepare($db_msg);
-        $db_->execute() or die(print_r($db_->errorInfo(), true));
-
-        return 1;
-    }
-
-    /**
-     * @method delete
-     * @param table
-     * @param WHERE_CLAUSE
-     * 
-     * $delete($table,$where)
-     */
-    public function delete(string $table, string $where)
-    {
-        $db_msg = "DELETE FROM $table WHERE $where";
-
-        $db_ = $this->db->prepare($db_msg);
-        $db_->execute() or die(print_r($db_->errorInfo(), true));
-
-        return 1;
-    }
-}
+var_dump($h2no->crud(['ajax1' => 'cash.json'], 'c', 'vidiot'));
+	
+var_dump($h2no->result);
+*/
 ?>
