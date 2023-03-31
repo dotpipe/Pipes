@@ -1,8 +1,8 @@
 {
         "div": "height:150;width:200;background-color:#abcdef;",
         "gt": {
-                 "innerText": "I was a floating dock",
-                "style":"justify-content:center;background-color:#333333;color:#ffffff;width:98%;border:#ffffff solid;"
+                "innerText": "I was a floating dock",
+                "style":"justify-content:center;background-color:#333333;color:#ffffff;width:96%;border:#ffffff solid;"
         },
         "submit": {
                 "innerText": "Submit",
