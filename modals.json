@@ -1,0 +1,5 @@
+{
+        "div": "height:150;width:200;background-color:#abcdef;",
+        "submit": "background-color:#333333;color:#ffffff;width:50%;border:#ffffff solid;",
+        "cancel": "background-color:#ffffff;width:50%;border:#000000 solid;"
+}
