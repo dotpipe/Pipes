@@ -1,7 +1,7 @@
 <?php
 class GPG {
 	private $id;
-	function __invoke(string $command, string ...$params) : mixed//, $param2 = "", $param3 = "")
+	function __invoke(string $command, string ...$params) //, $param2 = "", $param3 = "")
 	{
 		if ($command === "init")
 		{
@@ -14,7 +14,7 @@ class GPG {
 		{
 			return $tempFuncCall($this->id, ...$params);
 		}
-		catch (e)
+		catch (Exception $e)
 		{
 			echo "Command does not exist";
 		}
