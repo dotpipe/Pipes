@@ -8,7 +8,8 @@ var elemDIVparent = document.createElement("div");
 elemDIVparent.style = cssTxtConst["div"];
 
 var elemText = document.createElement("p");
-elemText.innerText = "Welcome to the PipesJS GridLock"
+
+elemText = Object.assign(elemText,cssTxtConst["div"]);//elemText.innerText = "Welcome to the PipesJS GridLock"
 
 var elemSubmit = document.createElement("button");
 elemSubmit.innerHTML = "Save"

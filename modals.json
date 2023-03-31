@@ -1,5 +1,15 @@
 {
         "div": "height:150;width:200;background-color:#abcdef;",
-        "submit": "background-color:#333333;color:#ffffff;width:50%;border:#ffffff solid;",
-        "cancel": "background-color:#ffffff;width:50%;border:#000000 solid;"
+        "gt": {
+                 "innerText": "I was a floating dock",
+                "style":"justify-content:center;background-color:#333333;color:#ffffff;width:98%;border:#ffffff solid;"
+        },
+        "submit": {
+                "innerText": "Submit",
+                "style": "background-color:#333333;color:#ffffff;width:50%;border:#ffffff solid;"
+        },
+        "cancel":  {
+                "innerText": "Cancel",
+                "style": "background-color:#ffffff;color:#000000;width:50%;border:#333333 solid;"
+        }
 }
