@@ -9,10 +9,10 @@ $background = imagecolorallocate($grid, 26, 143, 186);
 $lines = imagecolorallocatealpha($grid, 0,0,0,0.5); //26, 143, 186);
 //$background = imagecolorallocate($grid, 26, 143, 186);
 
-imagesetthickness($grid, 5);
+imagesetthickness($grid, 2);
 imageline($grid, 2, 2, 2, 2, $lines);
 
-imageline($grid, 2, 0, 2, 4, $lines);
+imageline($grid, 2, 0, 2, 2, $lines);
 
 imagepng($grid, "grid.png");
 
