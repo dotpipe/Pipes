@@ -1,3 +1,47 @@
+<html>
+<head>
+<title>
+</title>
+
+<script>
+
+var cliX = 0;
+var cliY = 0;
+var widthX = 0;
+var heightY = 0;
+function printMousePos(event) {
+//  document.body.textContent =
+    cliX = event.clientX;
+    cliY = event.clientY;
+}
+
+function grow(evd) {
+	evd.target.style.width = evd.clientX
+	evd.target.style.height = evd.clientY
+	//this.removeEventListener("mousemove", grow)
+}
+
+document.addEventListener("mousemove", grow);
+
+document.addEventListener("mousedown", (ev) => {
+	var baseSquare = document.createElement("input");
+	baseSquare.style.border = "10px dashed black";
+	printMousePos(ev);
+	baseSquare.style.clientX = cliX;
+	baseSquare.style.clientY = cliY;
+
+	document.body.appendChild(baseSquare);
+//	this.addEventListener("drag", grow);
+	this.addEventListener("mouseup", () => {
+		this.removeEventListener("mousemove",grow)
+	});
+	
+
+});
+
+</script>
+
+</head>
 <?php
 
 $square = 30;
@@ -26,3 +70,4 @@ body
 </style>
 <body style="background-image:url('./grid.png')">
 </body>
+</html>
