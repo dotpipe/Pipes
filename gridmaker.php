@@ -11,8 +11,8 @@ var widthX = 0;
 var heightY = 0;
 
 function printMousePos(event) {
-    cliX = event.x;
-    cliY = event.y;
+    cliX = Math.round(event.x - event.x%28) + "px";
+    cliY = Math.round(event.y - event.y%28) + "px";
 }
 
 function grow(evd) {
@@ -21,28 +21,16 @@ function grow(evd) {
 }
 
 function mover(evd) {
+	printMousePos(evd.target)
 	evd.target.style.marginLeft = cliX
 	evd.target.style.marginTop = cliY
-	//evd.target.addEventListener("mousemove", mover)
 }
 
-document.addEventListener("drag", mover);
-
-document.addEventListener("dblclick", (ev) => {
-	const baseSquare = document.createElement("input");
-	baseSquare.style.border = "10px dashed black";
-	printMousePos(ev);
-	baseSquare.setAttribute("draggable",true)
-	baseSquare.style.position = "absolute"
-	baseSquare.style.marginLeft = cliX;
-	baseSquare.style.marginTop = cliY;
-	
-	document.body.appendChild(baseSquare);
-	this.addEventListener("dragend", (e) => {
+function dragender(e)
+{
 		printMousePos(e)
-		console.log(e)
-		e.target.style.marginLeft = e.x
-		e.target.style.marginTop = e.y
+		e.target.style.marginLeft = cliX
+		e.target.style.marginTop = cliY
 		document.body.appendChild(e.target)
 		var bases = document.getElementsByTagName("input")
 		
@@ -52,9 +40,20 @@ document.addEventListener("dblclick", (ev) => {
 			ev.style.marginLeft = cliX
 			ev.style.marginTop = cliY
 		});
-	});
-	
+}
 
+document.addEventListener("dragover", mover);
+document.addEventListener("dragend", dragender)
+document.addEventListener("dblclick", (ev) => {
+	const baseSquare = document.createElement("input");
+	baseSquare.style.border = "1px dashed black";
+	baseSquare.setAttribute("draggable",true)
+	baseSquare.style.position = "absolute"
+	printMousePos(baseSquare);
+	baseSquare.style.marginLeft = cliX;
+	baseSquare.style.marginTop = cliY;
+	
+	document.body.appendChild(baseSquare);
 });
 
 </script>
@@ -62,7 +61,7 @@ document.addEventListener("dblclick", (ev) => {
 </head>
 <?php
 
-$square = 30;
+$square = 29;
  
 $grid = @imagecreate($square, $square)
     or die("Cannot Initialize new GD image stream");//creates an image with the resolution of $square 
@@ -72,9 +71,9 @@ $lines = imagecolorallocatealpha($grid, 0,0,0,0.5); //26, 143, 186);
 //$background = imagecolorallocate($grid, 26, 143, 186);
 
 imagesetthickness($grid, 2);
-imageline($grid, 2, 2, 2, 2, $lines);
+imageline($grid, 0, 0, 0, 1, $lines);
 
-imageline($grid, 2, 0, 2, 2, $lines);
+imageline($grid, 0, 0, 0, 1, $lines);
 
 imagepng($grid, "grid.png");
 
