@@ -9,31 +9,49 @@ var cliX = 0;
 var cliY = 0;
 var widthX = 0;
 var heightY = 0;
+
 function printMousePos(event) {
-//  document.body.textContent =
-    cliX = event.clientX;
-    cliY = event.clientY;
+    cliX = event.x;
+    cliY = event.y;
 }
 
 function grow(evd) {
 	evd.target.style.width = evd.clientX
 	evd.target.style.height = evd.clientY
-	//this.removeEventListener("mousemove", grow)
 }
 
-document.addEventListener("mousemove", grow);
+function mover(evd) {
+	evd.target.style.marginLeft = cliX
+	evd.target.style.marginTop = cliY
+	//evd.target.addEventListener("mousemove", mover)
+}
 
-document.addEventListener("mousedown", (ev) => {
-	var baseSquare = document.createElement("input");
+document.addEventListener("drag", mover);
+
+document.addEventListener("dblclick", (ev) => {
+	const baseSquare = document.createElement("input");
 	baseSquare.style.border = "10px dashed black";
 	printMousePos(ev);
-	baseSquare.style.clientX = cliX;
-	baseSquare.style.clientY = cliY;
-
+	baseSquare.setAttribute("draggable",true)
+	baseSquare.style.position = "absolute"
+	baseSquare.style.marginLeft = cliX;
+	baseSquare.style.marginTop = cliY;
+	
 	document.body.appendChild(baseSquare);
-//	this.addEventListener("drag", grow);
-	this.addEventListener("mouseup", () => {
-		this.removeEventListener("mousemove",grow)
+	this.addEventListener("dragend", (e) => {
+		printMousePos(e)
+		console.log(e)
+		e.target.style.marginLeft = e.x
+		e.target.style.marginTop = e.y
+		document.body.appendChild(e.target)
+		var bases = document.getElementsByTagName("input")
+		
+		bases.prototype.foreach((ev) => {
+			document.body.appendChild(ev.cloneNode(false))
+			printMousePos(ev)
+			ev.style.marginLeft = cliX
+			ev.style.marginTop = cliY
+		});
 	});
 	
 
