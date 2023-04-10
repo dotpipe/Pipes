@@ -15,6 +15,8 @@
   *  incrIndex...= increment thru index of file-order (0 moves once) (default: 1)
   *  decrIndex...= decrement thru index of file-order (0 moves once) (default: 1)
   *  redirect....= "follow" the ajax call in POST or GET mode
+  *  attribution.= select class to add new attributes to
+  *  class-attr..= new attributes in CSS markup-style-attribution (REQUIRES attribution)
   *  mode........= "POST" or "GET" (default: "POST")
   *  data-pipe...= name of class for multi-tag data (augment with pipe)
   *  multiple....= states that this object has two or more key/value pairs
@@ -128,6 +130,30 @@
                 x.style.display = "block";
             });
         }
+        if (elem.hasAttribute("setAttr") && elem.getAttribute("setAttr") && !elem.classList.contains("class-attribute-change"))
+        {
+            var optsArray = elem.getAttribute("setAttr").split(";");
+            optsArray.forEach((e,f) => {
+                var g = e.split(":");
+                var x = document.getElementById(e);
+                var ins = elem.getAttribute("insert");
+                document.getElementById(ins).setAttribute(g[0],g[1]);
+            });
+        }
+        if (elem.hasAttribute("attribution") && elem.hasAttribute("class-attr") && elem.getAttribute("class-attr") && elem.classList.contains("class-attribute-change"))
+        {
+            var classAttr = document.getElementsByClassName(elem.getAttribute("attribution"));
+            console.log(classAttr)
+            //var optsArray = elem.getAttribute("class-attr").split(";");
+            Array.from(classAttr).forEach((x,z) => {
+                var optsArray = elem.getAttribute("class-attr").split(";");
+                optsArray.forEach((e,f) => {
+                    var g = e.split(":");
+                    if (g[0] != '' && g[0] != undefined)
+                    x.setAttribute(g[0],g[1]);
+                });
+            });
+       }
         if (elem.hasAttribute("remove") && elem.getAttribute("remove"))
         {
             var optsArray = elem.getAttribute("remove").split(";");
