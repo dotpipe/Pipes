@@ -140,7 +140,7 @@
                 document.getElementById(ins).setAttribute(g[0],g[1]);
             });
         }
-        if (elem.hasAttribute("attribution") && elem.hasAttribute("class-attr") && elem.getAttribute("class-attr") && elem.classList.contains("class-attribute-change"))
+        if (elem.hasAttribute("attribution") && elem.hasAttribute("class-attr") && elem.getAttribute("class-attr"))
         {
             var classAttr = document.getElementsByClassName(elem.getAttribute("attribution"));
             console.log(classAttr)
