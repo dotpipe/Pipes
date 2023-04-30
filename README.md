@@ -1,5 +1,5 @@
 
-JavaScript DOM Handler for Routing
+JavaScript DOM Handler for Routing and API
 
 To donate please visit: https://paypal.me/pirodock
 
