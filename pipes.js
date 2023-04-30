@@ -30,7 +30,7 @@
   *  download....= class for downloading files
   *  file........= filename to download
   *  directory...= relative or full path of 'file'
-  *  form-class  = class name of devoted form elements
+  *  form-class..= class name of devoted form elements
   **** ALL HEADERS FOR AJAX are available. They will use defaults to
   **** go on if there is no input to replace them.
   */
