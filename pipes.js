@@ -272,6 +272,8 @@
               }
           }
       }
+   if (elem.classList.contains("redirect"))
+        window.location.href = elem.getAttribute("ajax") + ((elem_qstring.length > 0) ? "?" + elem_qstring : "");
       console.log(elem_qstring);
       return (elem_qstring);
   }
