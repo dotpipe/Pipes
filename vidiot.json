@@ -6,6 +6,6 @@
 		"height": 200,
 		"class": "video",
 		"id": "video",
-		"exts": [".ogg",".mp4"],
+		
 		"json": "vidiot"
 	}

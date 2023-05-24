@@ -1,0 +1,17 @@
+<body style="background-image:url('./grid.png');color:black">
+<p>Double-click to add element<br>Ctrl+Shift+1 to remove last element<br>Ctrl+Shift+2 to save to disk<br>Ctrl+Shift+3 to redo last element</p>
+<article style="width: 190px; margin-left: 24px; margin-top: 115px;">
+<input name="elemTagName" class="elemCreator" placeholder="Tag Name to Use"></input><br>
+<div class="elemCreator">CSS Style Declaration</div>
+<input name="styleDecl" class="elemCreator"></input><br>
+<div class="elemCreator">Color Picker</div>
+<input name="redColor" id="red" class="elemCreator" type="range" onchange="javascript:changeColor(this)" min="0" value="0" step="1" max="255"></input><br>
+<input name="greenColor" id="green" class="elemCreator" type="range" onchange="javascript:changeColor(this)" min="0" value="0" step="1" max="255"></input><br>
+<input name="blueColor" id="blue" class="elemCreator" type="range" onchange="javascript:changeColor(this)" min="0" value="" step="1" max="255"></input><br>
+<input name="alha" id="alpha" class="elemCreator" type="range" onchange="changeAlpha(this)" value="1" min="0" max="1" step="0.01"></input><br>
+<div id="bgcolor" class="elemCreator">Color Output</div>
+<input name="ajaxAttr" class="elemCreator" placeholder="Pipes Attributes"></input><br>
+<input name="classTagNames" class="elemCreator" placeholder="Class Names"></input><br>
+<input name="formTagId" class="elemCreator" placeholder="#Id"></input>
+<div ajax="creatorEngine.php" form-class="creatorFormSubmit" class="elemCreator" style="width:198px;">Create Element</button>
+</article>

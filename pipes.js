@@ -24,6 +24,7 @@
   *  display.....= toggle visible and invisible of anything in the value (delimited by ';') this attribute
   *  insert......= return ajax call to this id
   *  json........= returns a JSON file set as value
+  *  callback....= calls function set as attribute value
   *  fs-opts.....= JSON headers for AJAX implementation
   *  headers.....= headers in CSS markup-style-attribute (delimited by '&')
   *  link........= class for operating tag as clickable link
@@ -196,20 +197,10 @@
         {
             fileOrder(elem);
         }
-        // Use a JSON to hold Header information
-        if (elem.hasAttribute("fs-opts"))
-        {
-            var fs=require('fs');
-            var json = elem.getAttribute("fs-opts").toString();
-            var data=fs.readFileSync(json, 'utf8');
-            var words=JSON.parse(data);
-        }
         if (elem.hasAttribute("json") && elem.getAttribute("json"))
         {
-            var fs=require('fs');
-            var json = elem.getAttribute("json").toString();
-            var data=fs.readFileSync(json, 'utf8');
-            var words=JSON.parse(data);
+            //
+            //return JSON.parse(data);
         }
         // This is a quick way to make a downloadable link in an href
     //     else
@@ -291,21 +282,37 @@
 
         var rawFile = new XMLHttpRequest();
         rawFile.open(opts.get("method"), elem_qstring, true);
-        if (!elem.hasAttribute("json"))
+        if (!elem.hasAttribute("json") && !elem.hasAttribute("callback"))
         {
             rawFile.onreadystatechange = function() {
                 if (rawFile.readyState === 4) {
-                var allText = rawFile.responseText;
-                document.getElementById(elem.getAttribute("insert")).innerHTML = allText;
+                    var allText = rawFile.responseText;
+                    document.getElementById(elem.getAttribute("insert")).innerHTML = allText;
+                }
+            }
+        }
+        else if (elem.hasAttribute("json"))
+        {
+            rawFile.onreadystatechange = function() {
+                if (rawFile.readyState === 4) {
+                    var allText = JSON.parse(rawFile.responseText);
+                    var func = null;
+                    if (elem.hasAttribute("callback"))
+                    {
+                        func = elem.getAttribute("callback");
+                        window[func](allText);
+                    }
                 }
             }
         }
         else
         {
             rawFile.onreadystatechange = function() {
-                if (rawFile.readyState === 4) {
+                if (rawFile.readyState === 4)
+                {
                     var allText = JSON.parse(rawFile.responseText);
-                    console.log(allText);
+                    var func = elem.getAttribute("callback");
+                    window[func](allText);
                 }
             }
         }
