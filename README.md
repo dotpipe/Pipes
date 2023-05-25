@@ -8,8 +8,8 @@ To donate please visit: https://paypal.me/pirodock
 New tag added this version. Also a callback function attribute. 
 
 <timed delay="x"> where x is the milliseconds between each iteration of loading the Pipe. Like in Node, unless I'm wrong, (never used it) you can now use updated information consistently on your pages. Very easy to use.
-	
-	
+
+callback = "foo" uses any data like json or other data to refurn your page's need.
 	
 
 # Pipes v3.6.6
