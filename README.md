@@ -3,6 +3,15 @@ JavaScript DOM Handler for Routing and API
 
 To donate please visit: https://paypal.me/pirodock
 
+# Pipes v4.0
+
+New tag added this version. Also a callback function attribute. 
+
+<timed delay="x"> where x is the milliseconds between each iteration of loading the Pipe. Like in Node, unless I'm wrong, (never used it) you can now use updated information consistently on your pages. Very easy to use.
+	
+	
+	
+
 # Pipes v3.6.6
 
 The aggregate use of a cache class has been appended to the project! (yeay!) Now you can unroll multiple <pipe> tags and their filters by using this class with a JSON of filter arguments. The JSON can be named anything. In the $_GET you will have no extension of '.json' tho. It is plugged in automatically. If this is an issue, please flag it and I'll change it. As soon as I'm done with this, the $_GET and $_POST will be interchangable in the calls to their respective pages. Also, make sure your filters use JSON for more arbitrary information to come thru. Classes are often very large in importance to looks so that's it! There's better examples in testvid.html now, too. So go look into that, examine the cache.php class file. And that should be all, thanks!
