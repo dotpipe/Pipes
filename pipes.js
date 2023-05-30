@@ -269,10 +269,8 @@
         for (var i = 0; i < document.getElementsByClassName(classname).length; i++)
         {
             var elem_value = document.getElementsByClassName(classname)[i];
-            console.log(classname);
             elem_qstring = elem_qstring + elem_value.name + "=" + elem_value.value + "&";
             // Multi-select box
-            console.log(classname);
             if (elem_value.hasOwnProperty("multiple"))
             {
                 for (var o of elem_value.options) {
@@ -282,8 +280,8 @@
                 }
             }
         }
-    if (elem.classList.contains("redirect"))
-        window.location.href = elem.getAttribute("ajax") + ((elem_qstring.length > 0) ? "?" + elem_qstring : "");
+        if (elem.classList.contains("redirect"))
+            window.location.href = elem.getAttribute("ajax") + ((elem_qstring.length > 0) ? "?" + elem_qstring : "");
         console.log(elem_qstring);
         return (elem_qstring);
     }
