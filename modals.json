@@ -3,6 +3,7 @@
                 "tagname": "div",
                 "style": "height:150;width:200;background-color:#abcdef;", 
                 "textContent": "technically *I* was floating",
+                "class": "oiwfiriro",
                 "guts": {
                         "tagname": "p",
                         "innerText": "eowfwuioe",
