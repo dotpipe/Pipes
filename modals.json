@@ -14,6 +14,17 @@
                                 "value": "eowfwuioe",
                                 "style":"justify-content:center;"
                         }
+                },
+                "guts1": {
+                        "tagname": "p",
+                        "innerText": "eowfwuioe",
+                        "style":"justify-content:center;color:#ffffff;width:96%;border:#ffffff solid;",
+                        "gutty": {
+                                "tagname": "input",
+                                "type": "button",
+                                "value": "eowfwuioe",
+                                "style":"justify-content:center;"
+                        }
                 }
         },
         "g": {

@@ -9,7 +9,7 @@ function forEachElem(value, tempTag)
 		const [k, v] = nest;
 		
 		if (v instanceof Object)
-			forEachElem(v, temp, j);
+			forEachElem(v, temp);
 		else if (k.toLowerCase() != "tagname" && k.toLowerCase() != "textcontent" && k.toLowerCase() != "innerhtml" && k.toLowerCase() != "innertext")
 		{
 			temp.setAttribute(k,v);
@@ -22,4 +22,4 @@ function forEachElem(value, tempTag)
 	tempTag.appendChild(temp);
 }
 
-forEachElem(jsonElems, elemBody, 0);
+forEachElem(jsonElems, elemBody);
