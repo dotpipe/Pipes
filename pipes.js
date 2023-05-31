@@ -56,19 +56,20 @@
     function setTimers()
     {
         let timed = document.getElementsByTagName("timed");
-        Array.from(timed).forEach(function(elem)
+        for (i = 0 ; i < timed.length ; i++)
         {
-            if (elem.hasAttribute("delay") == false)
+            if (timed[i].hasAttribute("delay") == false)
             {
-                console.log(elem.id + " has no delay. Required.");
+                console.log(timed[i].id + " has no delay. Required.");
             }
             else
             {
-                setInterval(function(elem) {
-                    pipes(elem);
-                }, parseInt(elem.getAttribute("delay")));
+                target = document.getElementById(timed[i].id);
+                setInterval(function() {
+                    pipes(target);
+                }, parseInt(timed[i].getAttribute("delay")));
             }
-        });
+        }
     }
 
     function fileOrder(elem)
@@ -135,7 +136,7 @@
         var headers = new Map();
         var formclass = "";
 
-        if (elem.classList.contains("redirect"))
+        if (elem.hasAttribute("class") && elem.classList.contains("redirect"))
         {
             window.location.href = elem.getAttribute("ajax") + ((elem.hasAttribute("query")) ? "?" + elem.getAttribute("query") : "");
         }
