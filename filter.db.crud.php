@@ -52,7 +52,7 @@
 			{
 				$this->result = $this->res_temp;
 
-				if ($cmd == "c" && $this->res_temp->$c_table != null)
+				if ($cmd === 'c' && $this->res_temp->$c_table != null)
 				{
 					$ky = array_key_first($kv);
 					$this->res_temp->$c_table->$ky = $kv[$ky];
@@ -66,11 +66,11 @@
 					
 					foreach ($val as $k => $v)
 					{
-						if ($kv == $k && $cmd == "d")
+						if ($kv == $k && $cmd === 'd')
 							unset($this->result->$c_table->$k);
-						elseif ($kv != $k && $cmd == "r")
+						elseif ($kv != $k && $cmd === 'r')
 							unset($this->result->$c_table->$k);
-						elseif (!is_string($kv) && $kv->$k != null && $cmd == "u")
+						elseif (!is_string($kv) && $kv->$k != null && $cmd === 'u')
 							$this->result->$c_table->$k = $this->result->$c_table->$k;
 					}
 					array_merge_recursive([$this->result],array($vs));

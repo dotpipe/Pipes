@@ -32,19 +32,16 @@ function carousel($json, $output)
 
 $json = null;
 
-if (PHP_SAPI == 'cli' && count($argv) > 1)
+if (PHP_SAPI === 'cli' && count($argv) > 1)
 {
 	$args = explode('=',$argv[1]);
 	list($key, $value) = $args;
 	$json = json_decode(file_get_contents($value.".json"));
 }
-else
-{
-	if ($_SERVER['REQUEST_METHOD'] == 'POST')
-		$json = json_decode(file_get_contents($_POST['json'].".json"));
-	else if (isset($_GET))
-		$json = json_decode(file_get_contents($_GET['json'].".json"));
-}
+else if ($_SERVER['REQUEST_METHOD'] === 'POST')
+	$json = json_decode(file_get_contents($_POST['json'].".json"));
+else if (isset($_GET))
+	$json = json_decode(file_get_contents($_GET['json'].".json"));
 
 structure($json);
 
