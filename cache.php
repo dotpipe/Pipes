@@ -38,7 +38,7 @@ session_start();
 	
 	$json = null;
 
-	if (PHP_SAPI == 'cli' && count($argv) > 1)
+	if (PHP_SAPI === 'cli' && count($argv) > 1)
 	{
 		$args = explode('=',$argv[1]);
 		list($key, $value) = $args;
