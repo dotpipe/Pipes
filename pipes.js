@@ -53,6 +53,27 @@
         });
     });
     
+    // forEachElem(jsonObj,rootNode)
+    function forEachElem (value, tempTag)
+    {
+        var temp = document.createElement(value["tagname"]);
+        Object.entries(value).forEach((nest) => {
+            const [k, v] = nest;
+            
+            if (v instanceof Object)
+                forEachElem(v, temp);
+            else if (k.toLowerCase() != "tagname" && k.toLowerCase() != "textcontent" && k.toLowerCase() != "innerhtml" && k.toLowerCase() != "innertext")
+            {
+                temp.setAttribute(k,v);
+            }
+            else if (k != "tagname" && k.toLowerCase() == "textcontent" || k.toLowerCase() == "innerhtml" || k.toLowerCase() == "innertext")
+            {
+                (k.toLowerCase() == "textcontent") ? temp.textContent = v : (k.toLowerCase() == "innerhtml") ? temp.innerHTML = v : temp.innerText = v;
+            }
+        });
+        tempTag.appendChild(temp);
+    }
+
     function setTimers()
     {
         let timed = document.getElementsByTagName("timed");
@@ -65,8 +86,8 @@
             else
             {
                 target = document.getElementById(timed[i].id);
-                setInterval(function() {
-                    pipes(target);
+                setInterval(function(target) {
+                    pipes(timed[i]);
                 }, parseInt(timed[i].getAttribute("delay")));
             }
         }
@@ -91,18 +112,18 @@
         console.log(ppfc);
         if (ppfc.hasAttribute("src"))
         {
-        try {
-            // <Source> tag's parentNode will need to be paused and resumed
-            // to switch the video
-            ppfc.parentNode.pause();
-            ppfc.parentNode.setAttribute("src",arr[index].toString());
-            ppfc.parentNode.load();
-            ppfc.parentNode.play();
-        }
-        catch (e)
-        {
-            ppfc.setAttribute("src",arr[index].toString());
-        }
+            try {
+                // <Source> tag's parentNode will need to be paused and resumed
+                // to switch the video
+                ppfc.parentNode.pause();
+                ppfc.parentNode.setAttribute("src",arr[index].toString());
+                ppfc.parentNode.load();
+                ppfc.parentNode.play();
+            }
+            catch (e)
+            {
+                ppfc.setAttribute("src",arr[index].toString());
+            }
         }
         else
         {
@@ -136,6 +157,8 @@
         var headers = new Map();
         var formclass = "";
 
+        if (elem === undefined)
+            return;
         if (elem.hasAttribute("class") && elem.classList.contains("redirect"))
         {
             window.location.href = elem.getAttribute("ajax") + ((elem.hasAttribute("query")) ? "?" + elem.getAttribute("query") : "");
@@ -219,7 +242,7 @@
         }
         if (elem.hasAttribute("json") && elem.getAttribute("json"))
         {
-            //
+            
             //return JSON.parse(data);
         }
         // This is a quick way to make a downloadable link in an href
@@ -300,26 +323,21 @@
 
         var rawFile = new XMLHttpRequest();
         rawFile.open(opts.get("method"), elem_qstring, true);
-        if (!elem.hasAttribute("json") && !elem.hasAttribute("callback"))
+        if (elem.classList.contains("modal-json"))
+        {
+            rawFile.onreadystatechange = function() {
+                if (rawFile.readyState === 4) {
+                    var allText = JSON.parse(rawFile.responseText);
+                    forEachElem(allText,document.getElementById(elem.getAttribute("insert")));
+                }
+            }
+        }
+        else if (!elem.hasAttribute("json") && !elem.hasAttribute("callback"))
         {
             rawFile.onreadystatechange = function() {
                 if (rawFile.readyState === 4) {
                     var allText = rawFile.responseText;
                     document.getElementById(elem.getAttribute("insert")).innerHTML = allText;
-                }
-            }
-        }
-        else if (elem.hasAttribute("json"))
-        {
-            rawFile.onreadystatechange = function() {
-                if (rawFile.readyState === 4) {
-                    var allText = JSON.parse(rawFile.responseText);
-                    var func = null;
-                    if (elem.hasAttribute("callback"))
-                    {
-                        func = elem.getAttribute("callback");
-                        window[func](allText);
-                    }
                 }
             }
         }

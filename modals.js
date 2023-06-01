@@ -1,8 +1,4 @@
-import jsonElems from '/modals.json' assert { type: 'json' };
-
-var elemBody = document.getElementsByTagName("body")[0];
-
-function forEachElem(value, tempTag)
+function forEachElem (value, tempTag)
 {
 	var temp = document.createElement(value["tagname"]);
 	Object.entries(value).forEach((nest) => {
@@ -21,5 +17,3 @@ function forEachElem(value, tempTag)
 	});
 	tempTag.appendChild(temp);
 }
-
-forEachElem(jsonElems, elemBody);
