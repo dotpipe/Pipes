@@ -54,14 +54,15 @@
     });
     
     // forEachElem(jsonObj,rootNode)
-    function forEachElem (value, tempTag)
+    function insertJSONElem (value, tempTag, single, root)
     {
         var temp = document.createElement(value["tagname"]);
+        console.log(value);
         Object.entries(value).forEach((nest) => {
             const [k, v] = nest;
             
             if (v instanceof Object)
-                forEachElem(v, temp);
+                insertJSONElem(v, temp, single, root);
             else if (k.toLowerCase() != "tagname" && k.toLowerCase() != "textcontent" && k.toLowerCase() != "innerhtml" && k.toLowerCase() != "innertext")
             {
                 temp.setAttribute(k,v);
@@ -76,7 +77,7 @@
 
     function setTimers()
     {
-        let timed = document.getElementsByTagName("timed");
+        let timed = document.getElementsByClassName("timed");
         for (i = 0 ; i < timed.length ; i++)
         {
             if (timed[i].hasAttribute("delay") == false)
@@ -247,7 +248,7 @@
         }
         // This is a quick way to make a downloadable link in an href
     //     else
-        if (elem.classList == "download")
+        if (elem.classList.contains == "download")
         {
             var text = ev.target.getAttribute("file");
             var element = document.createElement('a');
@@ -328,7 +329,7 @@
             rawFile.onreadystatechange = function() {
                 if (rawFile.readyState === 4) {
                     var allText = JSON.parse(rawFile.responseText);
-                    forEachElem(allText,document.getElementById(elem.getAttribute("insert")));
+                    insertJSONElem(allText,document.getElementById(elem.getAttribute("insert")),elem.classList.contains("modal-single-line"));
                 }
             }
         }

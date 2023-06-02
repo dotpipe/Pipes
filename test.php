@@ -12,6 +12,11 @@
 <span id="hed" style="width:100%"></span><br>
 Modals Demonstration - <dyn class="redirect" ajax="http://www.github.com/wise-penny/pipes"><u>GitHub</u></dyn> +
 <dyn id="donate" class="redirect" ajax="https://paypal.me/thexiv"><u>Donate (I collect $1 donations. It's a hobby!)</u></dyn>
-<timed id="timer1" delay="1000" ajax="./img_src.php" insert="hed"></timed>
+<b id="timer1" delay="3000" ajax="./img_src.php" class="timed modal-json modal-single-line" insert="hed"></b>
 </body>
-<script src="modals.json"></script>
+
+<?php $mod = file_get_contents("./modals.json"); ?>
+<script>
+    var value = <?= $mod ?>;
+	insertJSONElem(value, document.body);
+</script>
