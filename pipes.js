@@ -53,17 +53,23 @@
         });
     });
     
-    // forEachElem(jsonObj,rootNode)
-    function insertJSONElem (value, tempTag, single, root)
+    // modala(jsonObj,rootNode)
+    function modala (value, tempTag, repeat, root)
     {
+        if (tempTag instanceof String)
+        {
+            tempTag = document.getElementById(tempTag);
+        }
+        if (root === undefined)
+            root = tempTag;
         var temp = document.createElement(value["tagname"]);
         console.log(value);
         Object.entries(value).forEach((nest) => {
             const [k, v] = nest;
             
             if (v instanceof Object)
-                insertJSONElem(v, temp, single, root);
-            else if (k.toLowerCase() != "tagname" && k.toLowerCase() != "textcontent" && k.toLowerCase() != "innerhtml" && k.toLowerCase() != "innertext")
+                modala(v, temp, repeat, root);
+            else if (!(k instanceof Number) && k.toLowerCase() != "tagname" && k.toLowerCase() != "textcontent" && k.toLowerCase() != "innerhtml" && k.toLowerCase() != "innertext")
             {
                 temp.setAttribute(k,v);
             }
@@ -75,21 +81,22 @@
         tempTag.appendChild(temp);
     }
 
-    function setTimers()
+    function setTimers(temp)
     {
-        let timed = document.getElementsByClassName("timed");
-        for (i = 0 ; i < timed.length ; i++)
-        {
-            if (timed[i].hasAttribute("delay") == false)
+        let elem = document.getElementsByTagName("timed");
+        for (i = 0 ; i < elem.length ; i++) {
+            if (elem[i].hasAttribute("delay") == false)
             {
-                console.log(timed[i].id + " has no delay. Required.");
+                console.log(elem[i].id + " has no delay. Required.");
             }
             else
             {
-                target = document.getElementById(timed[i].id);
-                setInterval(function(target) {
-                    pipes(timed[i]);
-                }, parseInt(timed[i].getAttribute("delay")));
+                console.log("p");
+                target = document.getElementById(elem[i].id);
+                var timers = parseInt(elem[i].getAttribute("delay"));
+                setInterval(function() {
+                    pipes(target);
+                },timers);
             }
         }
     }
@@ -324,12 +331,19 @@
 
         var rawFile = new XMLHttpRequest();
         rawFile.open(opts.get("method"), elem_qstring, true);
-        if (elem.classList.contains("modal-json"))
+        if (elem.classList.contains("modala"))
         {
             rawFile.onreadystatechange = function() {
                 if (rawFile.readyState === 4) {
-                    var allText = JSON.parse(rawFile.responseText);
-                    insertJSONElem(allText,document.getElementById(elem.getAttribute("insert")),elem.classList.contains("modal-single-line"));
+                    var allText = "";// JSON.parse(rawFile.responseText);
+                    try {
+                        allText = JSON.parse(rawFile.responseText);
+                    }
+                    catch (e)
+                    {
+                        allText = (rawFile.responseText);
+                    }
+                    modala(allText,elem.getAttribute("insert"),elem.classList.contains("modala-repeat"));
                 }
             }
         }
