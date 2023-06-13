@@ -1,0 +1,10 @@
+# Pipes .gitattributes file.
+
+*.png binary
+*.md linguist-documentation
+/.gitattributes export-ignore
+/.gitignore export-ignore
+*.php linguist-language=PHP
+*.js linguist-language=JavaScript
+*.json linguist-language=JSON
+*.html linguist-language=HTML
