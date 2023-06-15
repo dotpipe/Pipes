@@ -7,4 +7,3 @@
         echo time();
         // file_put_contents("./modals.json", json_encode($full));
 ?>
-<script src="pipes.js"></script>

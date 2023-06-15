@@ -7,6 +7,3 @@
         echo "<i style='color:$colored'>".time()."</i>";
         file_put_contents("./modals.json", json_encode($full));
 ?>
-<script src="pipes.js">
-document.getElementById("gutty-button").value=<?= time() ?>;
-</script>

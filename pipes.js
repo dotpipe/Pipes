@@ -95,7 +95,6 @@
 
     function setTimers()
     {
-        
         setInterval(function() {
             let elem = document.getElementsByTagName("timed");
             for (i = 0 ; i < elem.length ; i++) {
@@ -358,11 +357,11 @@
         {
             rawFile.onreadystatechange = function() {
                 if (rawFile.readyState === 4) {
-                    var allText = "";// JSON.parse(rawFile.responseText);
+                    var allText = JSON.parse(rawFile.responseText);
                     try {
-                        if (elem.hasAttribute("set-value"))
+                        // if (elem.hasAttribute("set-value"))
                         {
-                            document.getElementById(elem.getAttribute("insert")).setAttribute(elem.getAttribute("set-attr"),elem.getAttribute("set-value"));
+                            document.getElementById(elem.getAttribute("insert")).setAttribute(elem.getAttribute("set-attr"),allText);//elem.getAttribute("set-value"));
                             //var func = elem.setAttribute(elem.getAttribute("set-attr"),elem.getAttribute("set-value"));
                         }
                     }
