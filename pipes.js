@@ -52,9 +52,9 @@
             });
         });
     });
-    
+
     // modala(jsonObj,rootNode)
-    function modala (value, tempTag, repeat, root)
+    function modala (value, tempTag, repeat, replace, root)
     {
         if (tempTag instanceof String)
         {
@@ -62,43 +62,56 @@
         }
         if (root === undefined)
             root = tempTag;
-        var temp = document.createElement(value["tagname"]);
+        if (tempTag == undefined)
+        {
+            return;
+        }
+        if (value == undefined)
+        {
+            console.error("value of reference incorrect");
+            return;
+        }
+        var temp = document.createElement((value["tagname"]));
         console.log(value);
         Object.entries(value).forEach((nest) => {
             const [k, v] = nest;
-            
             if (v instanceof Object)
                 modala(v, temp, repeat, root);
-            else if (!(k instanceof Number) && k.toLowerCase() != "tagname" && k.toLowerCase() != "textcontent" && k.toLowerCase() != "innerhtml" && k.toLowerCase() != "innertext")
+            else if (!Number(k) && k.toLowerCase() != "tagname" && k.toLowerCase() != "textcontent" && k.toLowerCase() != "innerhtml" && k.toLowerCase() != "innertext")
             {
+                console.log(k + " " + v);
                 temp.setAttribute(k,v);
             }
-            else if (k != "tagname" && k.toLowerCase() == "textcontent" || k.toLowerCase() == "innerhtml" || k.toLowerCase() == "innertext")
+            else if (!Number(k) && k.toLowerCase() != "tagname" && k.toLowerCase() == "textcontent" || k.toLowerCase() == "innerhtml" || k.toLowerCase() == "innertext")
             {
                 (k.toLowerCase() == "textcontent") ? temp.textContent = v : (k.toLowerCase() == "innerhtml") ? temp.innerHTML = v : temp.innerText = v;
             }
         });
+        if (replace == true)
+            tempTag.innerHTML = "";
+        
         tempTag.appendChild(temp);
     }
 
-    function setTimers(temp)
+    function setTimers()
     {
-        let elem = document.getElementsByTagName("timed");
-        for (i = 0 ; i < elem.length ; i++) {
-            if (elem[i].hasAttribute("delay") == false)
-            {
-                console.log(elem[i].id + " has no delay. Required.");
-            }
-            else
-            {
-                console.log("p");
-                target = document.getElementById(elem[i].id);
-                var timers = parseInt(elem[i].getAttribute("delay"));
-                setInterval(function() {
+        
+        setInterval(function() {
+            let elem = document.getElementsByTagName("timed");
+            for (i = 0 ; i < elem.length ; i++) {
+                if (elem[i].hasAttribute("delay") == false)
+                {
+                    console.log(elem[i].id + " has no delay. Required.");
+                }
+                else
+                {
+                    console.log("p");
+                    target = document.getElementById(elem[i].id);
+                    // var timers = parseInt(elem[i].getAttribute("delay"));
                     pipes(target);
-                },timers);
+                }
             }
-        }
+        },4000);
     }
 
     function fileOrder(elem)
@@ -182,17 +195,7 @@
                 x.style.display = "block";
             });
         }
-        if (elem.hasAttribute("setAttr") && elem.getAttribute("setAttr") && !elem.classList.contains("class-attribute-change"))
-        {
-            var optsArray = elem.getAttribute("setAttr").split(";");
-            optsArray.forEach((e,f) => {
-                var g = e.split(":");
-                var x = document.getElementById(e);
-                var ins = elem.getAttribute("insert");
-                document.getElementById(ins).setAttribute(g[0],g[1]);
-            });
-        }
-        if (elem.hasAttribute("attribution") && elem.hasAttribute("class-attr") && elem.getAttribute("class-attr"))
+        if (elem.hasAttribute("class-attr") && elem.getAttribute("class-attr"))
         {
             var classAttr = document.getElementsByClassName(elem.getAttribute("attribution"));
             console.log(classAttr)
@@ -250,7 +253,6 @@
         }
         if (elem.hasAttribute("json") && elem.getAttribute("json"))
         {
-            
             //return JSON.parse(data);
         }
         // This is a quick way to make a downloadable link in an href
@@ -331,7 +333,47 @@
 
         var rawFile = new XMLHttpRequest();
         rawFile.open(opts.get("method"), elem_qstring, true);
-        if (elem.classList.contains("modala"))
+        if (elem.classList.contains("json"))
+        {
+            rawFile.onreadystatechange = function() {
+                if (rawFile.readyState === 4) {
+                    var allText = "";// JSON.parse(rawFile.responseText);
+                    try {
+                        allText = JSON.parse(rawFile.responseText);
+                        if (elem.hasAttribute("callback"))
+                        {
+                            var func = elem.getAttribute("callback");
+                            window[func](allText);
+                        }
+                        return allText;
+                    }
+                    catch (e)
+                    {
+                        console.log("Response not a JSON");
+                    }
+                }
+            }
+        }
+        else if (elem.classList.contains("set-attr"))
+        {
+            rawFile.onreadystatechange = function() {
+                if (rawFile.readyState === 4) {
+                    var allText = "";// JSON.parse(rawFile.responseText);
+                    try {
+                        if (elem.hasAttribute("set-value"))
+                        {
+                            document.getElementById(elem.getAttribute("insert")).setAttribute(elem.getAttribute("set-attr"),elem.getAttribute("set-value"));
+                            //var func = elem.setAttribute(elem.getAttribute("set-attr"),elem.getAttribute("set-value"));
+                        }
+                    }
+                    catch (e)
+                    {
+                        console.error(e);
+                    }
+                }
+            }
+        }
+        else if (elem.classList.contains("modala"))
         {
             rawFile.onreadystatechange = function() {
                 if (rawFile.readyState === 4) {
@@ -343,7 +385,12 @@
                     {
                         allText = (rawFile.responseText);
                     }
-                    modala(allText,elem.getAttribute("insert"),elem.classList.contains("modala-repeat"));
+                    modala(allText,elem.getAttribute("insert"),elem.classList.contains("modala-repeat"),elem.classList.contains("modala-replace"));
+                    if (elem.hasAttribute("callback"))
+                    {
+                        var func = elem.getAttribute("callback");
+                        window[func](allText);
+                    }
                 }
             }
         }

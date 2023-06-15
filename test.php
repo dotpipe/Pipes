@@ -4,10 +4,6 @@
 
 <body>
 <script>
-        function didSomething(r)
-        {
-                console.log("HELLO!");
-        }
 </script>
 <span id="hed" style="width:100%"></span><br>
 Modals Demonstration - <dyn class="redirect" ajax="http://www.github.com/wise-penny/pipes"><u>GitHub</u></dyn> +
@@ -19,5 +15,6 @@ Modals Demonstration - <dyn class="redirect" ajax="http://www.github.com/wise-pe
 
 <script>
     var value = <?= $mod ?>;
-        modala(value, document.body);
+    modala(value, document.body);
 </script>
+<textarea> <?= $mod ?></textarea>
