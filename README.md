@@ -3,7 +3,19 @@ JavaScript DOM Handler for Routing and API
 
 To donate please visit: https://paypal.me/pirodock
 
-# Pipes v4.0
+# Modala v1.0
+
+Modala is a JSON structure mapped HTML page where you can create templates, and offer more pages to users with less code. It's a run away hit if you just trust. Used with PipesJS it's as perfectly harmonizing as any other framework. Give it a go. It's at least worthy of a look. Just clone and use PipesJS. Affix the JSON of HTML to the function
+
+modala({"key": "pair",...}, rootNode);
+
+and run it on the page you want. Due to JS, all timer delays will be ignored. Each will run as a 3 second timer. The issue is that JS has only one thread to work with. So, they all need to run under that one thread. Therefore, for now, I'm bypassing the delay attribute. Soon we will have a init value for all timers. That said, you will need to make one value, at the upper point of the JSON state that you want your timers all under x milliseconds. This will be that state of all timers. And all timers will need to be native to PipesJS. (<timed>) 
+
+At that point in Modala, PipesJS will have a future of being created in Modala. But this is far off. The Modala package, as it sets, is a rich and heavily blendable template. This is because you can write JSONs in such languages as PHP, and it can be given to the Modala interpretor. Very keen I think. 
+
+Another problem with Modala, though, is that it doesn't create subpages from the function. It strictly sticks to the first page. Again, this is JS's fault and if I find another way, I will. But you can call and replace more than one DOM Node at a time. This is seen in test.php. The example shows more than one timed function going on. And as it is, the templates can work with changing data. So, no loss of utility really happening within Modalas huge exterior from nesting out of the box information when trying to scale for template use. That means we have a great ability to give you complete control over your coding. Your wish is in a command. It's a strong adversary compared to the others out there. With a tenth of the learning time. Honestly? it's as always HTML with more specs you know you need in a way you love. Thanks for choosing PipesJS. I appreciate it.
+
+# PipesJS v4.0
 
 New tag added this version. Also a callback function attribute. 
 
