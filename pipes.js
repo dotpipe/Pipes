@@ -17,8 +17,7 @@
   *  incrIndex...= increment thru index of file-order (0 moves once) (default: 1)
   *  decrIndex...= decrement thru index of file-order (0 moves once) (default: 1)
   *  redirect....= "follow" the ajax call in POST or GET mode
-  *  attribution.= select class to add new attributes to
-  *  class-attr..= new attributes in CSS markup-style-attribution (REQUIRES attribution)
+  *  set-attr....= attribute to set in target HTML tag
   *  mode........= "POST" or "GET" (default: "POST")
   *  data-pipe...= name of class for multi-tag data (augment with pipe)
   *  multiple....= states that this object has two or more key/value pairs
@@ -37,7 +36,7 @@
   **** ALL HEADERS FOR AJAX are available. They will use defaults to
   **** go on if there is no input to replace them.
   */
-
+  
     document.addEventListener("DOMContentLoaded", function (){
         doc_set = document.getElementsByTagName("pipe");
         Array.from(doc_set).forEach(function(elem) {
@@ -94,7 +93,7 @@
     }
 
     function setTimers()
-    {
+    {   
         setInterval(function() {
             let elem = document.getElementsByTagName("timed");
             for (i = 0 ; i < elem.length ; i++) {
@@ -107,7 +106,7 @@
                     console.log("p");
                     target = document.getElementById(elem[i].id);
                     // var timers = parseInt(elem[i].getAttribute("delay"));
-                    pipes(target);
+                        pipes(target);
                 }
             }
         },4000);
@@ -194,13 +193,10 @@
                 x.style.display = "block";
             });
         }
-        if (elem.hasAttribute("class-attr") && elem.getAttribute("class-attr"))
+        if (elem.hasAttribute("set-attr") && elem.getAttribute("set-attr"))
         {
-            var classAttr = document.getElementsByClassName(elem.getAttribute("attribution"));
-            console.log(classAttr)
-            //var optsArray = elem.getAttribute("class-attr").split(";");
             Array.from(classAttr).forEach((x,z) => {
-                var optsArray = elem.getAttribute("class-attr").split(";");
+                var optsArray = elem.getAttribute("set-attr").split(";");
                 optsArray.forEach((e,f) => {
                     var g = e.split(":");
                     if (g[0] != '' && g[0] != undefined)
