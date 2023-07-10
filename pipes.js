@@ -1,38 +1,37 @@
  /**
   *  only usage: onclick="pipes(this)"
-  *  to begin using the PipesJS code.
-  *  Usable DOM Attributes:
-  *  Attribute   |   Use Case
+  *  to begin using the PipesJS code in other ways than <dyn> <pipe> and <timed>.
+  *  Usable DOM Attributes (almost all are optional
+  *  upto x > 134,217,000 different configurations 
+  *  with unlimited inputs/outputs):
+  *  Attribute/Tag   |   Use Case
   *  -------------------------------------------------------------
-  *  query.......= default query string associated with url
-  *  <pipe>......= Tag (initializes on DOMContentLoaded Event)
-  *  <dyn>.......= Automatic eventListening tag for onclick="pipes(this)"
-  *  <timed>.....= Timed result refreshing tags (Keep up-to-date handling on page) (same as any other Pipes tag)
-  *  delay.......= delay between <timed> tag refreshes (required for <timed> tag)
-  *  goto........= URI to go to
-  *  ajax........= calls and returns the value file's output
-  *  file-order..= ajax to these files, iterating [0,1,2,3]%array.length per call (delimited by ';')
-  *  class-switch= iterate through class sets, iterating [0,1,2,3]%array.length per call (delimited by ';')
-  *  file-index..= counter of which index to use with file-order to go with ajax
-  *  incrIndex...= increment thru index of file-order (0 moves once) (default: 1)
-  *  decrIndex...= decrement thru index of file-order (0 moves once) (default: 1)
-  *  redirect....= "follow" the ajax call in POST or GET mode
-  *  set-attr....= attribute to set in target HTML tag
-  *  mode........= "POST" or "GET" (default: "POST")
-  *  data-pipe...= name of class for multi-tag data (augment with pipe)
-  *  multiple....= states that this object has two or more key/value pairs
-  *  remove......= remove element in tag
-  *  display.....= toggle visible and invisible of anything in the value (delimited by ';') this attribute
-  *  insert......= return ajax call to this id
-  *  json........= returns a JSON file set as value
-  *  callback....= calls function set as attribute value
-  *  fs-opts.....= JSON headers for AJAX implementation
-  *  headers.....= headers in CSS markup-style-attribute (delimited by '&')
-  *  link........= class for operating tag as clickable link
-  *  download....= class for downloading files
-  *  file........= filename to download
-  *  directory...= relative or full path of 'file'
-  *  form-class..= class name of devoted form elements
+  *  insert..........= return ajax call to this id
+  *  ajax............= calls and returns the value file's output ex: <pipe ajax="foo.bar" query="key0:value0;" insert="someID">
+  *  query...........= default query string associated with url ex: <anyTag query="key0:value0;key1:value2;" ajax="page.foo">
+  *  <download>......= tag for downloading files ex: <download file="foo.zip" directory="/home/bar/"> (needs ending with slash)
+  *  file............= filename to download
+  *  directory.......= relative or full path of 'file'
+  *  redirect........= "follow" the ajax call in POST or GET mode ex: <pipe ajax="foo.bar" redirect query="key0:value0;" insert="someID">
+  *  <link>..........= tag for clickable link <link ajax="goinghere.html" query="key0:value0;">
+  *  <pipe>..........= Tag (initializes on DOMContentLoaded Event) ex: <pipe ajax="foo.bar" query="key0:value0;" insert="someID">
+  *  <dyn>...........= Automatic eventListening tag for onclick="pipes(this)" ex: <dyn ajax="foo.bar" query="key0:value0;" insert="someID">
+  *  <timed>.........= Timed result refreshing tags (Keep up-to-date handling on page) ex: <timed ajax="foo.bar" delay="3000" query="key0:value0;" insert="someID">
+  *  delay...........= delay between <timed> tag refreshes (required for <timed> tag) ex: see <timed>
+  *  file-order......= ajax to these files, iterating [0,1,2,3]%array.length per call (delimited by ';') ex: <pipe query="key0:value0;" file-order="foo.bar;bar.foo;foobar.barfoo" insert="someID">
+  *  file-index......= counter of which index to use with file-order to go with ajax ex: <pipe ajax="foo.bar" query="key0:value0;" insert="someID">
+  *  incrIndex.......= increment thru index of file-order (0 moves once) (default: 1) ex: <pipe ajax="foo.bar" incrIndex="2" file-order="foo.bar;bar.foo;foobar.barfoo" insert="someID">
+  *  decrIndex.......= decrement thru index of file-order (0 moves once) (default: 1) ex: <pipe ajax="foo.bar" decrIndex="3" file-order="foo.bar;bar.foo;foobar.barfoo" insert="someID">
+  *  set-attr........= attribute to set in target HTML tag ex: <pipe set-attr="value" ajax="foo.bar" query="key0:value0;" insert="thisOrSomeID">
+  *  mode............= "POST" or "GET" (default: "POST") ex: <pipe mode="POST" set-attr="value" ajax="foo.bar" query="key0:value0;" insert="thisOrSomeID">
+  *  data-pipe.......= name of class for multi-tag data (augment with pipe) *** obfuscated to be reoriented
+  *  multiple........= states that this object has two or more key/value pairs use: states this is a multi-select form box
+  *  remove..........= remove element in tag ex: <anyTag remove="someID;someOtherId;">
+  *  display.........= toggle visible and invisible of anything in the value ex: <anyTag display="someID;someOtherId;">
+  *  json............= returns a JSON file set as value *** obfuscated for now
+  *  callback........= calls function set as attribute value
+  *  headers.........= headers in CSS markup-style-attribute (delimited by '&') <pipe ajax="foo.bar" headers="foobar:boo&barfoo:barfoo;q:9&" insert="someID">
+  *  form-class......= class name of devoted form elements
   **** ALL HEADERS FOR AJAX are available. They will use defaults to
   **** go on if there is no input to replace them.
   */
@@ -81,7 +80,7 @@
                 console.log(k + " " + v);
                 temp.setAttribute(k,v);
             }
-            else if (!Number(k) && k.toLowerCase() != "tagname" && k.toLowerCase() == "textcontent" || k.toLowerCase() == "innerhtml" || k.toLowerCase() == "innertext")
+            else if (!Number(k) && k.toLowerCase() != "tagname" && (k.toLowerCase() == "textcontent" || k.toLowerCase() == "innerhtml" || k.toLowerCase() == "innertext"))
             {
                 (k.toLowerCase() == "textcontent") ? temp.textContent = v : (k.toLowerCase() == "innerhtml") ? temp.innerHTML = v : temp.innerText = v;
             }
@@ -178,9 +177,10 @@
 
         if (elem === undefined)
             return;
-        if (elem.hasAttribute("class") && elem.classList.contains("redirect"))
+        // obfuscated logic
+        if (elem.tagName == "link" && elem.hasAttribute("redirect"))
         {
-            window.location.href = elem.getAttribute("ajax") + ((elem.hasAttribute("query")) ? "?" + elem.getAttribute("query") : "");
+            // window.location.href = elem.getAttribute("ajax") + ((elem.hasAttribute("query")) ? "?" + elem.getAttribute("query") : "");
         }
         if (elem.hasAttribute("display") && elem.getAttribute("display"))
         {
@@ -211,11 +211,6 @@
                 var x = document.getElementById(e);
                 x.remove();
             });
-        }
-        if (elem.classList.contains("link"))
-        {
-            window.location.href = elem.getAttribute("ajax");
-            return;
         }
         if (elem.hasAttribute("query"))
         {
@@ -252,7 +247,7 @@
         }
         // This is a quick way to make a downloadable link in an href
     //     else
-        if (elem.classList.contains == "download")
+        if (elem.tagName == "download")
         {
             var text = ev.target.getAttribute("file");
             var element = document.createElement('a');
