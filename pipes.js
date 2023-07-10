@@ -30,7 +30,7 @@
   *  display.........= toggle visible and invisible of anything in the value ex: <anyTag display="someID;someOtherId;">
   *  json............= returns a JSON file set as value *** obfuscated for now
   *  callback........= calls function set as attribute value
-  *  headers.........= headers in CSS markup-style-attribute (delimited by '&') <pipe ajax="foo.bar" headers="foobar:boo&barfoo:barfoo;q:9&" insert="someID">
+  *  headers.........= headers in CSS markup-style-attribute (delimited by '&') <any ajax="foo.bar" headers="foobar:boo&barfoo:barfoo;q:9&" insert="someID">
   *  form-class......= class name of devoted form elements
   **** ALL HEADERS FOR AJAX are available. They will use defaults to
   **** go on if there is no input to replace them.
@@ -42,8 +42,15 @@
                 setTimeout(pipes(elem),200);
         });
         setTimers();
-        let elementsArray = document.getElementsByTagName("dyn");
-        Array.from(elementsArray).forEach(function(elem) {
+        let elementsArray_dyn = document.getElementsByTagName("dyn");
+        Array.from(elementsArray_dyn).forEach(function(elem) {
+            console.log(elem);
+            elem.addEventListener("click", function() {
+                pipes(elem);
+            });
+        });
+        let elementsArray_link = document.getElementsByTagName("link");
+        Array.from(elementsArray_link).forEach(function(elem) {
             console.log(elem);
             elem.addEventListener("click", function() {
                 pipes(elem);
