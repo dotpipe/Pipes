@@ -39,7 +39,7 @@
     document.addEventListener("DOMContentLoaded", function (){
         doc_set = document.getElementsByTagName("pipe");
         Array.from(doc_set).forEach(function(elem) {
-                setTimeout(pipes(elem),200);
+            setTimeout(pipes(elem),200);
         });
         setTimers();
         let elementsArray_dyn = document.getElementsByTagName("dyn");
@@ -48,6 +48,11 @@
             elem.addEventListener("click", function() {
                 pipes(elem);
             });
+        });
+        let elements_Carousel = document.getElementsByTagName("carousel");
+        Array.from(elements_Carousel).forEach(function(elem) {
+            console.log(elem);
+            setInterval(carousel(elem),700);
         });
         let elementsArray_link = document.getElementsByTagName("link");
         Array.from(elementsArray_link).forEach(function(elem) {
@@ -123,7 +128,7 @@
         arr = elem.getAttribute("file-order").split(";");
         ppfc = document.getElementById(elem.getAttribute("insert").toString());
         if (!ppfc.hasAttribute("file-index"))
-        ppfc.setAttribute("file-index", "0");
+            ppfc.setAttribute("file-index", "0");
         index = parseInt(ppfc.getAttribute("file-index").toString());
         if (elem.hasAttribute("decrIndex"))
             index = Math.abs(parseInt(ppfc.getAttribute("file-index").toString())) - 1;
@@ -155,6 +160,51 @@
             elem.setAttribute("ajax",arr[index].toString());
             pipes(elem);
         }
+    }
+
+    function carousel(elem)
+    {
+
+        x = document.getElementById(elem.getAttribute("insert"));
+        var imgArray = elem.getAttribute("file-order").split(";");
+        var y = x.firstElementChild;
+        while (typeof(x.firstElementChild) == Node)
+            x.removeChild(x.firstElementChild);
+        for (j = elem.getAttribute("file-index") ; x.children.length < elem.getAttribute("boxes"); j++)
+        {
+            img = document.createElement("img");
+            console.log(j%elem.getAttribute("boxes"));
+            img.src = imgArray[j%imgArray.length];
+            img.style.height = elem.getAttribute("height");
+            img.style.width = elem.getAttribute("width");
+            x.append(img);
+            img = null;
+        }
+        fileShift(elem);
+        var delay = elem.getAttribute("delay");
+        setTimeout(() => {elem.removeChild(elem.firstElementChild)},delay);
+        setTimeout(() => {carousel(elem)},delay);
+    }
+
+    function fileShift(elem)
+    {
+        if (elem == null || elem == undefined)
+            return;
+        
+        var arr = elem.getAttribute("file-order").split(";");
+        var ppfc = document.getElementById(elem.getAttribute("insert").toString());
+        if (!ppfc.hasAttribute("file-index"))
+            ppfc.setAttribute("file-index", "0");
+        var index = parseInt(ppfc.getAttribute("file-index").toString());
+        if (elem.hasAttribute("decrIndex"))
+            index = Math.abs(parseInt(ppfc.getAttribute("file-index").toString())) - 1;
+        else
+            index = Math.abs(parseInt(ppfc.getAttribute("file-index").toString())) + 1;
+        if (index < 0)
+            index = arr.length - 1;
+        index = index%arr.length;
+        ppfc.setAttribute("file-index",index.toString());
+        
     }
 
     function classOrder(elem)
@@ -202,13 +252,11 @@
         }
         if (elem.hasAttribute("set-attr") && elem.getAttribute("set-attr"))
         {
-            Array.from(classAttr).forEach((x,z) => {
-                var optsArray = elem.getAttribute("set-attr").split(";");
-                optsArray.forEach((e,f) => {
-                    var g = e.split(":");
-                    if (g[0] != '' && g[0] != undefined)
-                    x.setAttribute(g[0],g[1]);
-                });
+            var optsArray = elem.getAttribute("set-attr").split(";");
+            optsArray.forEach((e,f) => {
+                var g = e.split(":");
+                if (g[0] != '' && g[0] != undefined)
+                document.getElementById(elem.getAttribute("insert")).setAttribute(g[0],g[1]);
             });
         }
         if (elem.hasAttribute("remove") && elem.getAttribute("remove"))
@@ -244,13 +292,13 @@
         {
             classOrder(elem);
         }
-        if (elem.hasAttribute("file-order"))
+        if (elem.tagName != "carousel" && elem.hasAttribute("file-order"))
         {
             fileOrder(elem);
         }
-        if (elem.hasAttribute("json") && elem.getAttribute("json"))
+        if (elem.tagName == "carousel")
         {
-            //return JSON.parse(data);
+            // carousel(elem);
         }
         // This is a quick way to make a downloadable link in an href
     //     else
