@@ -55,10 +55,23 @@
             console.log(elem);
             setInterval(carousel(elem),700);
         });
-        let elementsArray_link = document.getElementsByTagName("link");
+        let elementsArray_link = document.getElementsByTagName("lnk");
         Array.from(elementsArray_link).forEach(function(elem) {
             console.log(elem);
             elem.addEventListener("click", function() {
+                console.log("C!");
+                pipes(elem);
+            });
+        });
+        let elementsArray_mouseOver = document.getElementsByClassName("mouse-over");
+        Array.from(elementsArray_mouseOver).forEach(function(elem) {
+            console.log(elem);
+            elem.addEventListener("mouseover", function() {
+                console.log("C!");
+                pipes(elem);
+            });
+            elem.addEventListener("mouseout", function() {
+                console.log("C!");
                 pipes(elem);
             });
         });
@@ -235,9 +248,9 @@
         if (elem === undefined)
             return;
         // obfuscated logic
-        if (elem.tagName == "link" && elem.hasAttribute("redirect"))
+        if (elem.tagName == "lnk")
         {
-            // window.location.href = elem.getAttribute("ajax") + ((elem.hasAttribute("query")) ? "?" + elem.getAttribute("query") : "");
+            window.location.href = elem.getAttribute("ajax") + (elem.hasAttribute("query") ? "?" + elem.getAttribute("query") : "");
         }
         if (elem.hasAttribute("display") && elem.getAttribute("display"))
         {

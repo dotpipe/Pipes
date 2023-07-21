@@ -6,8 +6,8 @@
 <script>
 </script>
 <span id="hed" style="width:100%"></span><br>
-Modals Demonstration - <dyn class="redirect" ajax="http://www.github.com/wise-penny/pipes"><u>GitHub</u></dyn> +
-<dyn id="donate" class="redirect" ajax="https://paypal.me/thexiv"><u>Donate (I collect $1 donations. It's a hobby!)</u></dyn>
+Modala Demonstration - <link ajax="http://www.github.com/wise-penny/pipes"><u>GitHub</u></dyn> +
+<link id="donate" ajax="https://paypal.me/thexiv"><u>Donate (I collect $1 donations. It's a hobby!)</u></dyn>
 
 </body>
 
