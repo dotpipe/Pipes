@@ -4,16 +4,16 @@
         "ajax": "https:\/\/github.com\/wise-penny\/pipes",
         "textContent": "GitHub + ",
         "class": "redirect",
-        "id": "necessary"
+        "id": "necessary1"
     },
     "lnk2": {
         "tagname": "lnk",
         "ajax": "https:\/\/paypal.me\/pirodock",
         "textContent": "Donate",
         "class": "redirect",
-        "id": "ids-required"
+        "id": "ids-required1"
     },
-    "card": {
+    "card2": {
         "tagname": "carousel",
         "style": "height:200;width:400;",
         "file-index": "0",
@@ -21,11 +21,11 @@
         "delay": "5000",
         "height": "200",
         "width": "200",
-        "file-order": "grid2.png;grid.png;grid2.png",
-        "insert": "carousel1",
-        "id": "carousel1"
+        "file-order": "grid2.png;grid.png;grid2.png;",
+        "insert": "carousel11",
+        "id": "carousel11"
     },
-    "car": {
+    "card1": {
         "tagname": "carousel",
         "style": "height:100;width:200;",
         "file-index": "0",
@@ -33,16 +33,16 @@
         "delay": "5000",
         "height": "100",
         "width": "100",
-        "file-order": "grid.png;grid2.png",
-        "insert": "carousel",
-        "id": "carousel"
+        "file-order": "grid.png;grid2.png;",
+        "insert": "carousel2",
+        "id": "carousel2"
     },
     "hk": {
         "tagname": "timed",
         "delay": "3000",
         "ajax": "img_src.php",
         "insert": "hed",
-        "id": "timer2",
+        "id": "timer22",
         "textContent": 1689294415
     },
     "gk": {
@@ -51,8 +51,8 @@
         "set-attr": "value",
         "delay": "3000",
         "ajax": "button_src.php",
-        "insert": "gutty-button",
-        "id": "timer1"
+        "insert": "gutty-button2",
+        "id": "timer11"
     },
     "h": {
         "tagname": "div",
@@ -65,7 +65,7 @@
             "style": "justify-content:center;color:#ffffff;width:96%;border:#ffffff solid;",
             "gutty": {
                 "tagname": "input",
-                "id": "gutty-button",
+                "id": "gutty-button2",
                 "type": "button",
                 "value": "eowfwuioe",
                 "style": "justify-content:center;"
@@ -102,13 +102,16 @@
     "mo": {
         "tagname": "span",
         "display": "mo-id",
+	"class": "mouse-over",
         "textContent": "It was somewhere over here",
+	"id": "mo-init1",
         "guts": {
-            "tagname": "a",
+            "tagname": "dyn",
             "innerText": "Donate",
-            "ajax": "http://www.paypal.me/pirodock",
+	    "class": "redirect",
+            "ajax": "https://www.paypal.me/pirodock",
             "style": "display:none",
-            "id": "mo-id"
+            "id": "mo-id1"
         }
     }
 }
