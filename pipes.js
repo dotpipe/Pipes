@@ -287,14 +287,10 @@
         var headers = new Map();
         var formclass = "";
 
-        if (elem.id === null)
+        if (elem === undefined)
             return;
-        if (elem.tagName == "lnk" && elem.classList.contains("new-win"))
-        {
-            let lnk_win = (elem.hasAttribute("win-name") && elem.getAttribute("win-name")) ? elem.getAttribute("win-name") : "_blank";
-            window.open(elem.getAttribute("ajax") + (elem.hasAttribute("query") ? "?" + elem.getAttribute("query") : ""), lnk_win);
-        }
-        if (elem.tagName == "lnk" || elem.classList.contains("redirect"))
+        // obfuscated logic
+        if (elem.tagName == "lnk" || elem.hasAttribute("redirect"))
         {
             window.location.href = elem.getAttribute("ajax") + (elem.hasAttribute("query") ? "?" + elem.getAttribute("query") : "");
         }
@@ -355,11 +351,6 @@
         {
             fileOrder(elem);
         }
-        if (elem.tagName == "carousel")
-        {
-            // carousel(elem);
-                return;
-        }
         // This is a quick way to make a downloadable link in an href
     //     else
         if (elem.tagName == "download")
@@ -381,8 +372,6 @@
 
     function setAJAXOpts(elem, opts)
     {
-        if (typeof(opts) !== Map)
-            opts = new Map();
         // communicate properties of Fetch Request
         var method_thru = (opts["method"] !== undefined) ? opts["method"] : "GET";
         var mode_thru = (opts["mode"] !== undefined) ? opts["mode"]: "no-cors";
@@ -493,13 +482,7 @@
             rawFile.onreadystatechange = function() {
                 if (rawFile.readyState === 4) {
                     var allText = ""; // JSON.parse(rawFile.responseText);
-//                    try {
-                        allText = JSON.parse(rawFile.responseText);
-//                    }
-//                    catch (e)
-                    {
-//                        allText = (rawFile.responseText);
-                    }
+                    allText = JSON.parse(rawFile.responseText);
                     var x = document.getElementById(elem.getAttribute("insert"));
                     x.innerHTML = "";
                     modala(allText, x);
@@ -511,12 +494,11 @@
                 }
             }
         }
-        else if (!elem.hasAttribute("json") && !elem.hasAttribute("callback") )
+        else if (!elem.hasAttribute("json") && !elem.hasAttribute("callback"))
         {
             rawFile.onreadystatechange = function() {
                 if (rawFile.readyState === 4) {
                     var allText = rawFile.responseText;
-                    if (document.getElementById(elem.getAttribute("insert") !== null))
                     document.getElementById(elem.getAttribute("insert")).innerHTML = allText;
                 }
             }
@@ -532,11 +514,6 @@
                 }
             }
         }
-        try{
                 rawFile.send();
-        } catch(e)
-        {
-                console.log(e);
-        }
     }
 
