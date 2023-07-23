@@ -38,482 +38,496 @@
   **** go on if there is no input to replace them.
   */
   
-    document.addEventListener("DOMContentLoaded", function () {
-        domContentLoad();
-        return;
-        doc_set = document.getElementsByTagName("pipe");
-        Array.from(doc_set).forEach(function(elem) {
-            setTimeout(pipes(elem),200);
-        });
-        setTimers();
-        let elementsArray_dyn = document.getElementsByTagName("dyn");
-        Array.from(elementsArray_dyn).forEach(function(elem) {
-            console.log(elem);
-            elem.addEventListener("click", function() {
-                pipes(elem);
-            });
-        });
-        let elements_Carousel = document.getElementsByTagName("carousel");
-        Array.from(elements_Carousel).forEach(function(elem) {
-            console.log(elem);
-            setInterval(carousel(elem),700);
-        });
-        let elementsArray_link = document.getElementsByTagName("lnk");
-        Array.from(elementsArray_link).forEach(function(elem) {
-            console.log(elem);
-            elem.addEventListener("click", function() {
-                console.log("C!");
-                pipes(elem);
-            });
-        });
-        let elementsArray_mouseOver = document.getElementsByClassName("mouse-over");
-        Array.from(elementsArray_mouseOver).forEach(function(elem) {
-            console.log(elem);
-            elem.addEventListener("mouseover", function() {
-                console.log("C!");
-                pipes(elem);
-            });
-            elem.addEventListener("mouseout", function() {
-                console.log("C!");
-                pipes(elem);
-            });
+  document.addEventListener("DOMContentLoaded", function () {
+    domContentLoad();
+    return;
+    doc_set = document.getElementsByTagName("pipe");
+    Array.from(doc_set).forEach(function(elem) {
+        setTimeout(pipes(elem),200);
+    });
+    setTimers();
+    let elementsArray_dyn = document.getElementsByTagName("dyn");
+    Array.from(elementsArray_dyn).forEach(function(elem) {
+        console.log(elem);
+        elem.addEventListener("click", function() {
+            pipes(elem);
         });
     });
+    let elements_Carousel = document.getElementsByTagName("carousel");
+    Array.from(elements_Carousel).forEach(function(elem) {
+        console.log(elem);
+        setInterval(carousel(elem),700);
+    });
+    let elementsArray_link = document.getElementsByTagName("lnk");
+    Array.from(elementsArray_link).forEach(function(elem) {
+        console.log(elem);
+        elem.addEventListener("click", function() {
+            console.log("C!");
+            pipes(elem);
+        });
+    });
+    let elementsArray_mouseOver = document.getElementsByClassName("mouse-over");
+    Array.from(elementsArray_mouseOver).forEach(function(elem) {
+        console.log(elem);
+        elem.addEventListener("mouseover", function() {
+            console.log("C!");
+            pipes(elem);
+        });
+        elem.addEventListener("mouseout", function() {
+            console.log("C!");
+            pipes(elem);
+        });
+    });
+});
 
-    let domContentLoad = () => {
-        doc_set = document.getElementsByTagName("pipe");
+let domContentLoad = (again = false) => {
+    doc_set = document.getElementsByTagName("pipe");
+if (again == false)
+{
         Array.from(doc_set).forEach(function(elem) {
-                try
-                {
-                        pipes(elem);
-                }
-                catch (e) {
-                        //setTimeout(pipes(elem),200);
-                }
+                 pipes(elem);
         });
-        setTimers();
-        let elementsArray_dyn = document.getElementsByTagName("dyn");
-        Array.from(elementsArray_dyn).forEach(function(elem) {
+}
+    setTimers();
+    let elementsArray_dyn = document.getElementsByTagName("dyn");
+    Array.from(elementsArray_dyn).forEach(function(elem) {
 
-            elem.addEventListener("click", function() {
-                pipes(elem);
+        elem.addEventListener("click", function() {
+            pipes(elem);
+        });
+    });
+    let elements_Carousel = document.getElementsByTagName("carousel");
+    Array.from(elements_Carousel).forEach(function(elem) {
+    setTimeout(carousel(elem),elem.getAttribute("delay"));
+    });
+    let elementsArray_link = document.getElementsByTagName("lnk");
+    Array.from(elementsArray_link).forEach(function(elem) {
+        elem.addEventListener("click", function() {
+            pipes(elem);
+        });
+    });
+    let elementsArray_mouseOver = document.getElementsByClassName("mouse-over");
+    Array.from(elementsArray_mouseOver).forEach(function(elem) {
+            elem.addEventListener("mouseenter", function() {
+                    pipes(elem, true);
             });
-        });
-        let elements_Carousel = document.getElementsByTagName("carousel");
-        Array.from(elements_Carousel).forEach(function(elem) {
-            setTimeout(carousel(elem),700);
-        });
-        let elementsArray_link = document.getElementsByTagName("lnk");
-        Array.from(elementsArray_link).forEach(function(elem) {
-            elem.addEventListener("click", function() {
-                pipes(elem);
+            elem.addEventListener("mouseleave", function() {
+                    pipes(elem, true);
             });
-        });
-        let elementsArray_mouseOver = document.getElementsByClassName("mouse-over");
-        Array.from(elementsArray_mouseOver).forEach(function(elem) {
-                elem.addEventListener("mouseenter", function() {
-                        pipes(elem, true);
-                });
-                elem.addEventListener("mouseleave", function() {
-                        pipes(elem, true);
-                });
-        });
-    }
+    });
+}
 
-    // modala(jsonObj,rootNode)
-    function modala (value, tempTag, root, id)
+// modala(jsonObj,rootNode)
+function modala (value, tempTag, root, id)
+{
+    if (id == true)
     {
-        if (id == true)
-        {
-            tempTag = document.getElementById(tempTag);
-        }
-        if (root === undefined)
-            root = tempTag;
-        if (tempTag == undefined)
-        {
-            return;
-        }
-        if (value == undefined)
-        {
-            console.error("value of reference incorrect");
-            return;
-        }
-        var temp = document.createElement((value["tagname"]));
+        tempTag = document.getElementById(tempTag);
+    }
+    if (root === undefined)
+        root = tempTag;
+    if (tempTag == undefined)
+    {
+        return;
+    }
+    if (value == undefined)
+    {
+        console.error("value of reference incorrect");
+        return;
+    }
+    var temp = document.createElement((value["tagname"]));
 //        console.log(value);
-        Object.entries(value).forEach((nest) => {
-            const [k, v] = nest;
-            if (v instanceof Object)
-                modala(v, temp, root, id);
-            else if (!Number(k) && k.toLowerCase() != "tagname" && k.toLowerCase() != "textcontent" && k.toLowerCase() != "innerhtml" && k.toLowerCase() != "innertext")
-            {
+    Object.entries(value).forEach((nest) => {
+        const [k, v] = nest;
+        if (v instanceof Object)
+            modala(v, temp, root, id);
+        else if (!Number(k) && k.toLowerCase() != "tagname" && k.toLowerCase() != "textcontent" && k.toLowerCase() != "innerhtml" && k.toLowerCase() != "innertext")
+        {
 //                console.log(k + " " + v);
-                temp.setAttribute(k,v);
-            }
-            else if (!Number(k) && k.toLowerCase() != "tagname" && (k.toLowerCase() == "textcontent" || k.toLowerCase() == "innerhtml" || k.toLowerCase() == "innertext"))
-            {
-                (k.toLowerCase() == "textcontent") ? temp.textContent = v : (k.toLowerCase() == "innerhtml") ? temp.innerHTML = v : temp.innerText = v;
-            }
-        });
+            temp.setAttribute(k,v);
+        }
+        else if (!Number(k) && k.toLowerCase() != "tagname" && (k.toLowerCase() == "textcontent" || k.toLowerCase() == "innerhtml" || k.toLowerCase() == "innertext"))
+        {
+            (k.toLowerCase() == "textcontent") ? temp.textContent = v : (k.toLowerCase() == "innerhtml") ? temp.innerHTML = v : temp.innerText = v;
+        }
+    });
 //        if (id == true)
 //              tempTag.innerHTML = "";
-        tempTag.appendChild(temp);
-    }
+    tempTag.appendChild(temp);
+domContentLoad(true);
+}
 
-    function setTimers()
-    {   
-        setInterval(function() {
-            let elem = document.getElementsByTagName("timed");
-            for (i = 0 ; i < elem.length ; i++) {
-                if (elem[i].hasAttribute("delay") == false)
-                {
-                    console.log(elem[i].id + " has no delay. Required.");
-                }
-                else
-                {
-                    console.log("p");
-                    target = document.getElementById(elem[i].id);
-                    // var timers = parseInt(elem[i].getAttribute("delay"));
-                        pipes(target);
-                }
-            }
-        },4000);
-    }
-
-    function fileOrder(elem)
-    {
-        arr = elem.getAttribute("file-order").split(";");
-        ppfc = document.getElementById(elem.getAttribute("insert").toString());
-        if (!ppfc.hasAttribute("file-index"))
-            ppfc.setAttribute("file-index", "0");
-        index = parseInt(ppfc.getAttribute("file-index").toString());
-        if (elem.hasAttribute("decrIndex"))
-            index = Math.abs(parseInt(ppfc.getAttribute("file-index").toString())) - 1;
-        else
-            index = Math.abs(parseInt(ppfc.getAttribute("file-index").toString())) + 1;
-        if (index < 0)
-            index = arr.length - 1;
-        index = index%arr.length;
-        ppfc.setAttribute("file-index",index.toString());
-        
-        console.log(ppfc);
-        if (ppfc.hasAttribute("src"))
-        {
-            try {
-                // <Source> tag's parentNode will need to be paused and resumed
-                // to switch the video
-                ppfc.parentNode.pause();
-                ppfc.parentNode.setAttribute("src",arr[index].toString());
-                ppfc.parentNode.load();
-                ppfc.parentNode.play();
-            }
-            catch (e)
+function setTimers()
+{   
+    setInterval(function() {
+        let elem = document.getElementsByTagName("timed");
+        for (i = 0 ; i < elem.length ; i++) {
+            if (elem[i].hasAttribute("delay") == false)
             {
-                ppfc.setAttribute("src",arr[index].toString());
+                console.log(elem[i].id + " has no delay. Required.");
+            }
+            else
+            {
+                console.log("p");
+                target = document.getElementById(elem[i].id);
+                // var timers = parseInt(elem[i].getAttribute("delay"));
+                    pipes(target);
             }
         }
-        else
+    },4000);
+}
+
+function fileOrder(elem)
+{
+    arr = elem.getAttribute("file-order").split(";");
+    ppfc = document.getElementById(elem.getAttribute("insert").toString());
+    if (!ppfc.hasAttribute("file-index"))
+        ppfc.setAttribute("file-index", "0");
+    index = parseInt(ppfc.getAttribute("file-index").toString());
+    if (elem.hasAttribute("decrIndex"))
+        index = Math.abs(parseInt(ppfc.getAttribute("file-index").toString())) - 1;
+    else
+        index = Math.abs(parseInt(ppfc.getAttribute("file-index").toString())) + 1;
+    if (index < 0)
+        index = arr.length - 1;
+    index = index%arr.length;
+    ppfc.setAttribute("file-index",index.toString());
+    
+    console.log(ppfc);
+    if (ppfc.hasOwnAttribute("src"))
+    {
+        try {
+            // <Source> tag's parentNode will need to be paused and resumed
+            // to switch the video
+            ppfc.parentNode.pause();
+            ppfc.parentNode.setAttribute("src",arr[index].toString());
+            ppfc.parentNode.load();
+            ppfc.parentNode.play();
+        }
+        catch (e)
         {
-            elem.setAttribute("ajax",arr[index].toString());
-            pipes(elem);
+            ppfc.setAttribute("src",arr[index].toString());
         }
     }
-
-    function carousel(elem)
+    else
     {
-
-        x = document.getElementById(elem.getAttribute("insert"));
-        var imgArray = elem.getAttribute("file-order").split(";");
-        var y = x.firstElementChild;
-        while (typeof(x.firstElementChild) == Node)
-            x.removeChild(x.firstElementChild);
-        for (j = elem.getAttribute("file-index") ; x.children.length < elem.getAttribute("boxes"); j++)
-        {
-            img = document.createElement("img");
-            img.src = imgArray[j%(1+imgArray.length)];
-            img.style.height = elem.getAttribute("height");
-            img.style.width = elem.getAttribute("width");
-            x.append(img);
-            img = null;
-        }
-        fileShift(elem);
-        var delay = elem.getAttribute("delay");
-        setTimeout(() => {elem.removeChild(elem.firstElementChild)},delay);
-        setTimeout(() => {carousel(elem)},delay);
+        elem.setAttribute("ajax",arr[index].toString());
+        pipes(elem);
     }
+}
 
-    function fileShift(elem)
+function carousel(elem)
+{
+
+    x = document.getElementById(elem.getAttribute("insert"));
+    var imgArray = elem.getAttribute("file-order").split(";");
+    var y = x.firstElementChild;
+    while (typeof(x.firstElementChild) == Node)
+        x.removeChild(x.firstElementChild);
+    for (j = elem.getAttribute("file-index") ; x.children.length < elem.getAttribute("boxes"); j++)
     {
-        if (elem == null || elem == undefined)
-            return;
-        
-        var arr = elem.getAttribute("file-order").split(";");
-        var ppfc = document.getElementById(elem.getAttribute("insert").toString());
-        if (!ppfc.hasAttribute("file-index"))
-            ppfc.setAttribute("file-index", "0");
-        var index = parseInt(ppfc.getAttribute("file-index").toString());
-        if (elem.hasAttribute("decrIndex"))
-            index = Math.abs(parseInt(ppfc.getAttribute("file-index").toString())) - 1;
-        else
-            index = Math.abs(parseInt(ppfc.getAttribute("file-index").toString())) + 1;
-        if (index < 0)
-            index = arr.length - 1;
-        index = index%arr.length;
-        ppfc.setAttribute("file-index",index.toString());
-        
+        img = document.createElement("img");
+        img.src = imgArray[j%(1+imgArray.length)];
+        img.style.height = elem.getAttribute("height");
+        img.style.width = elem.getAttribute("width");
+        x.append(img);
+        img = null;
     }
+    fileShift(elem);
+    var delay = elem.getAttribute("delay");
+//	if (typeof(elem.firstElementChild) == Node)
+    setTimeout(() => {elem.removeChild(elem.firstElementChild)},delay);
+    setTimeout(() => {carousel(elem)},delay);
+}
 
-    function classOrder(elem)
+function fileShift(elem)
+{
+    if (elem == null || elem == undefined)
+        return;
+    
+    var arr = elem.getAttribute("file-order").split(";");
+    var ppfc = document.getElementById(elem.getAttribute("insert").toString());
+    if (!ppfc.hasAttribute("file-index"))
+        ppfc.setAttribute("file-index", "0");
+    var index = parseInt(ppfc.getAttribute("file-index").toString());
+    if (elem.hasAttribute("decrIndex"))
+        index = Math.abs(parseInt(ppfc.getAttribute("file-index").toString())) - 1;
+    else
+        index = Math.abs(parseInt(ppfc.getAttribute("file-index").toString())) + 1;
+    if (index < 0)
+        index = arr.length - 1;
+    index = index%arr.length;
+    ppfc.setAttribute("file-index",index.toString());
+    
+}
+
+function classOrder(elem)
+{
+    arr = elem.getAttribute("class-switch").split(";");
+    if (!elem.hasAttribute("class-index"))
+    elem.setAttribute("class-index", "0");
+    index = parseInt(elem.getAttribute("class-index").toString());
+    if (elem.hasAttribute("incrIndex"))
+        index = parseInt(elem.getAttribute("incrIndex").toString()) + 1;
+    else if (elem.hasAttribute("decrIndex"))
+        index = Math.abs(parseInt(elem.getAttribute("decrIndex").toString())) - 1;
+    else
+        index++;
+    if (index < 0)
+        index = 0;
+    index = index%arr.length;
+    elem.setAttribute("class-index",index.toString());
+    elem.classList = arr[index];
+}
+
+function pipes(elem, stop = false) {
+
+    var query = "";
+    var headers = new Map();
+    var formclass = "";
+
+    if (elem.id === null)
+        return;
+    if (elem.tagName == "lnk" && elem.classList.contains("new-win"))
     {
-        arr = elem.getAttribute("class-switch").split(";");
-        if (!elem.hasAttribute("class-index"))
-        elem.setAttribute("class-index", "0");
-        index = parseInt(elem.getAttribute("class-index").toString());
-        if (elem.hasAttribute("incrIndex"))
-            index = parseInt(elem.getAttribute("incrIndex").toString()) + 1;
-        else if (elem.hasAttribute("decrIndex"))
-            index = Math.abs(parseInt(elem.getAttribute("decrIndex").toString())) - 1;
-        else
-            index++;
-        if (index < 0)
-            index = 0;
-        index = index%arr.length;
-        elem.setAttribute("class-index",index.toString());
-        elem.classList = arr[index];
+        let lnk_win = (elem.hasAttribute("win-name") && elem.getAttribute("win-name")) ? elem.getAttribute("win-name") : "_blank";
+        window.open(elem.getAttribute("ajax") + (elem.hasAttribute("query") ? "?" + elem.getAttribute("query") : ""), lnk_win);
     }
-
-    function pipes(elem, stop = false) {
-
-        var query = "";
-        var headers = new Map();
-        var formclass = "";
-
-        if (elem === undefined)
-            return;
-        // obfuscated logic
-        if (elem.tagName == "lnk" || elem.hasAttribute("redirect"))
-        {
-            window.location.href = elem.getAttribute("ajax") + (elem.hasAttribute("query") ? "?" + elem.getAttribute("query") : "");
-        }
-        if (elem.hasAttribute("display") && elem.getAttribute("display"))
-        {
-            var optsArray = elem.getAttribute("display").split(";");
-            optsArray.forEach((e,f) => {
+    if (elem.tagName == "lnk" || elem.classList.contains("redirect"))
+    {
+        window.location.href = elem.getAttribute("ajax") + (elem.hasAttribute("query") ? "?" + elem.getAttribute("query") : "");
+    }
+    if (elem.hasAttribute("display") && elem.getAttribute("display"))
+    {
+        var optsArray = elem.getAttribute("display").split(";");
+        optsArray.forEach((e,f) => {
+        var x = document.getElementById(e);
+        if (x !== null && x.style.display !== "none")
+            x.style.display = "none";
+        else if (x !== null)
+            x.style.display = "block";
+        });
+    }
+    if (elem.hasAttribute("set-attr") && elem.getAttribute("set-attr"))
+    {
+        var optsArray = elem.getAttribute("set-attr").split(";");
+        optsArray.forEach((e,f) => {
+            var g = e.split(":");
+            if (g[0] != '' && g[0] != undefined)
+            document.getElementById(elem.getAttribute("insert")).setAttribute(g[0],g[1]);
+        });
+    }
+    if (elem.hasAttribute("remove") && elem.getAttribute("remove"))
+    {
+        var optsArray = elem.getAttribute("remove").split(";");
+        optsArray.forEach((e,f) => {
             var x = document.getElementById(e);
-            if (x !== null && x.style.display !== "none")
-                x.style.display = "none";
-            else if (x !== null)
-                x.style.display = "block";
-            });
-        }
-        if (elem.hasAttribute("set-attr") && elem.getAttribute("set-attr"))
-        {
-            var optsArray = elem.getAttribute("set-attr").split(";");
-            optsArray.forEach((e,f) => {
-                var g = e.split(":");
-                if (g[0] != '' && g[0] != undefined)
-                document.getElementById(elem.getAttribute("insert")).setAttribute(g[0],g[1]);
-            });
-        }
-        if (elem.hasAttribute("remove") && elem.getAttribute("remove"))
-        {
-            var optsArray = elem.getAttribute("remove").split(";");
-            optsArray.forEach((e,f) => {
-                var x = document.getElementById(e);
-                x.remove();
-            });
-        }
-        if (elem.hasAttribute("query"))
-        {
-            var optsArray = elem.getAttribute("query").split(";");
+            x.remove();
+        });
+    }
+    if (elem.hasAttribute("query"))
+    {
+        var optsArray = elem.getAttribute("query").split(";");
 
-            optsArray.forEach((e,f) => {
-                var g = e.split(":");
-                query = query + g[0] + "=" + g[1] + "&";
-            });
-        }
-        if (elem.hasAttribute("headers"))
-        {
-            var optsArray = elem.getAttribute("headers").split("&");
-            optsArray.forEach((e,f) => {
-                var g = e.split(":");
-                headers.set(g[0], g[1]);
-            });
-        }
-        if (elem.hasAttribute("form-class"))
-        {
-            formclass = elem.getAttribute("form-class");
-        }
-        if (elem.hasAttribute("class-switch"))
-        {
-            classOrder(elem);
-        }
-        if (elem.tagName != "carousel" && elem.hasAttribute("file-order"))
-        {
-            fileOrder(elem);
-        }
-        // This is a quick way to make a downloadable link in an href
-    //     else
-        if (elem.tagName == "download")
-        {
-            var text = ev.target.getAttribute("file");
-            var element = document.createElement('a');
-            var location = ev.target.getAttribute("directory");
-            element.setAttribute('href', location + encodeURIComponent(text));
-            element.style.display = 'none';
-            document.body.appendChild(element);
-            element.click();
-            document.body.removeChild(element);
+        optsArray.forEach((e,f) => {
+            var g = e.split(":");
+            query = query + g[0] + "=" + g[1] + "&";
+        });
+    }
+    if (elem.hasAttribute("headers"))
+    {
+        var optsArray = elem.getAttribute("headers").split("&");
+        optsArray.forEach((e,f) => {
+            var g = e.split(":");
+            headers.set(g[0], g[1]);
+        });
+    }
+    if (elem.hasAttribute("form-class"))
+    {
+        formclass = elem.getAttribute("form-class");
+    }
+    if (elem.hasAttribute("class-switch"))
+    {
+        classOrder(elem);
+    }
+    if (elem.tagName != "carousel" && elem.hasAttribute("file-order"))
+    {
+        fileOrder(elem);
+    }
+    if (elem.tagName == "carousel")
+    {
+        // carousel(elem);
             return;
-        }
-        if (stop == true)
-                return;
-        navigate(elem, headers, query, formclass);
     }
-
-    function setAJAXOpts(elem, opts)
+    // This is a quick way to make a downloadable link in an href
+//     else
+    if (elem.tagName == "download")
     {
-        // communicate properties of Fetch Request
-        var method_thru = (opts["method"] !== undefined) ? opts["method"] : "GET";
-        var mode_thru = (opts["mode"] !== undefined) ? opts["mode"]: "no-cors";
-        var cache_thru = (opts["cache"] !== undefined) ? opts["cache"]: "no-cache";
-        var cred_thru = (opts["cred"] !== undefined) ? opts["cred"]: '{"Access-Control-Allow-Origin":"*"}';
-        // updated "headers" attribute to more friendly "content-type" attribute
-        var content_thru = (opts["content-type"] !== undefined) ? opts["content-type"]: '{"Content-Type":"text/html"}';
-        var redirect_thru = (opts["redirect"] !== undefined) ? opts["redirect"]: "manual";
-        var refer_thru = (opts["referrer"] !== undefined) ? opts["referrer"]: "referrer";
-        opts.set("method", method_thru); // *GET, POST, PUT, DELETE, etc.
-        opts.set("mode", mode_thru); // no-cors, cors, *same-origin
-        opts.set("cache", cache_thru); // *default, no-cache, reload, force-cache, only-if-cached
-        opts.set("credentials", cred_thru); // include, same-origin, *omit
-        opts.set("content-type", content_thru); // content-type UPDATED**
-        opts.set("redirect", redirect_thru); // manual, *follow, error
-        opts.set("referrer", refer_thru); // no-referrer, *client
-        opts.set('body', JSON.stringify(content_thru));
-
-        return opts;
+        var text = ev.target.getAttribute("file");
+        var element = document.createElement('a');
+        var location = ev.target.getAttribute("directory");
+        element.setAttribute('href', location + encodeURIComponent(text));
+        element.style.display = 'none';
+        document.body.appendChild(element);
+        element.click();
+        document.body.removeChild(element);
+        return;
     }
+    if (stop == true)
+            return;
+    navigate(elem, headers, query, formclass);
+}
 
-    function formAJAX(elem, classname)
+function setAJAXOpts(elem, opts)
+{
+
+    // communicate properties of Fetch Request
+    var method_thru = (opts["method"] !== undefined) ? opts["method"] : "GET";
+    var mode_thru = (opts["mode"] !== undefined) ? opts["mode"]: "no-cors";
+    var cache_thru = (opts["cache"] !== undefined) ? opts["cache"]: "no-cache";
+    var cred_thru = (opts["cred"] !== undefined) ? opts["cred"]: '{"Access-Control-Allow-Origin":"*"}';
+    // updated "headers" attribute to more friendly "content-type" attribute
+    var content_thru = (opts["content-type"] !== undefined) ? opts["content-type"]: '{"Content-Type":"text/html"}';
+    var redirect_thru = (opts["redirect"] !== undefined) ? opts["redirect"]: "manual";
+    var refer_thru = (opts["referrer"] !== undefined) ? opts["referrer"]: "referrer";
+    opts.set("method", method_thru); // *GET, POST, PUT, DELETE, etc.
+    opts.set("mode", mode_thru); // no-cors, cors, *same-origin
+    opts.set("cache", cache_thru); // *default, no-cache, reload, force-cache, only-if-cached
+    opts.set("credentials", cred_thru); // include, same-origin, *omit
+    opts.set("content-type", content_thru); // content-type UPDATED**
+    opts.set("redirect", redirect_thru); // manual, *follow, error
+    opts.set("referrer", refer_thru); // no-referrer, *client
+    opts.set('body', JSON.stringify(content_thru));
+
+    return opts;
+}
+
+function formAJAX(elem, classname)
+{
+    var elem_qstring = "";
+
+    // No, 'pipe' means it is generic. This means it is open season for all with this class
+    for (var i = 0; i < document.getElementsByClassName(classname).length; i++)
     {
-        var elem_qstring = "";
-
-        // No, 'pipe' means it is generic. This means it is open season for all with this class
-        for (var i = 0; i < document.getElementsByClassName(classname).length; i++)
+        var elem_value = document.getElementsByClassName(classname)[i];
+        elem_qstring = elem_qstring + elem_value.name + "=" + elem_value.value + "&";
+        // Multi-select box
+        if (elem_value.hasOwnProperty("multiple"))
         {
-            var elem_value = document.getElementsByClassName(classname)[i];
-            elem_qstring = elem_qstring + elem_value.name + "=" + elem_value.value + "&";
-            // Multi-select box
-            if (elem_value.hasOwnProperty("multiple"))
-            {
-                for (var o of elem_value.options) {
-                    if (o.selected) {
-                        elem_qstring = elem_qstring + "&" + elem_value.name + "=" + o.value;
-                    }
+            for (var o of elem_value.options) {
+                if (o.selected) {
+                    elem_qstring = elem_qstring + "&" + elem_value.name + "=" + o.value;
                 }
             }
         }
-        if (elem.classList.contains("redirect"))
-            window.location.href = elem.getAttribute("ajax") + ((elem_qstring.length > 0) ? "?" + elem_qstring : "");
-        console.log(elem_qstring);
-        return (elem_qstring);
     }
+    if (elem.classList.contains("redirect"))
+        window.location.href = elem.getAttribute("ajax") + ((elem_qstring.length > 0) ? "?" + elem_qstring : "");
+    console.log(elem_qstring);
+    return (elem_qstring);
+}
 
-    function navigate(elem, opts = null, query = "", classname = "")
+function navigate(elem, opts = null, query = "", classname = "")
+{
+    //formAJAX at the end of this line
+
+    elem_qstring = query + ((document.getElementsByClassName(classname).length > 0) ? formAJAX(elem, classname) : "");
+    elem_qstring = elem.getAttribute("ajax") + ((elem_qstring.length > 0) ? "?" + elem_qstring : "");
+    elem_qstring = encodeURI(elem_qstring);
+    opts = setAJAXOpts(elem, opts);
+    var opts_req = new Request(elem_qstring);
+    opts.set("mode",(opts["mode"] !== undefined) ? opts["mode"]: '"Access-Control-Allow-Origin":"*"');
+
+    var rawFile = new XMLHttpRequest();
+    rawFile.open(opts.get("method"), elem_qstring, true);
+    if (elem.classList.contains("json"))
     {
-        //formAJAX at the end of this line
-
-        elem_qstring = query + ((document.getElementsByClassName(classname).length > 0) ? formAJAX(elem, classname) : "");
-        elem_qstring = elem.getAttribute("ajax") + ((elem_qstring.length > 0) ? "?" + elem_qstring : "");
-        elem_qstring = encodeURI(elem_qstring);
-        opts = setAJAXOpts(elem, opts);
-        var opts_req = new Request(elem_qstring);
-        opts.set("mode",(opts["mode"] !== undefined) ? opts["mode"]: '"Access-Control-Allow-Origin":"*"');
-
-        var rawFile = new XMLHttpRequest();
-        rawFile.open(opts.get("method"), elem_qstring, true);
-        if (elem.classList.contains("json"))
-        {
-            rawFile.onreadystatechange = function() {
-                if (rawFile.readyState === 4) {
-                    var allText = "";// JSON.parse(rawFile.responseText);
-                    try {
-                        allText = JSON.parse(rawFile.responseText);
-                        if (elem.hasAttribute("callback"))
-                        {
-                            var func = elem.getAttribute("callback");
-                            window[func](allText);
-                        }
-                        console.log("...");
-                        if (elem.hasAttribute("insert"))
-                        {
-                                console.log("$$$");
-                                document.getElementById(elem.getAttribute("insert")).textContent = (rawFile.responseText);
-                        }
-                        return allText;
-                    }
-                    catch (e)
-                    {
-                        console.log("Response not a JSON");
-                    }
-                }
-            }
-        }   
-        else if (elem.classList.contains("set-attr"))
-        {
-            rawFile.onreadystatechange = function() {
-                if (rawFile.readyState === 4) {
-                    var allText = JSON.parse(rawFile.responseText);
-                    try {
-                        // if (elem.hasAttribute("set-value"))
-                        {
-                            document.getElementById(elem.getAttribute("insert")).setAttribute(elem.getAttribute("set-attr"),allText);//elem.getAttribute("set-value"));
-                            //var func = elem.setAttribute(elem.getAttribute("set-attr"),elem.getAttribute("set-value"));
-                        }
-                    }
-                    catch (e)
-                    {
-                        console.error(e);
-                    }
-                }
-            }
-        }
-        else if (elem.classList.contains("modala"))
-        {
-            rawFile.onreadystatechange = function() {
-                if (rawFile.readyState === 4) {
-                    var allText = ""; // JSON.parse(rawFile.responseText);
+        rawFile.onreadystatechange = function() {
+            if (rawFile.readyState === 4) {
+                var allText = "";// JSON.parse(rawFile.responseText);
+                try {
                     allText = JSON.parse(rawFile.responseText);
-                    var x = document.getElementById(elem.getAttribute("insert"));
-                    x.innerHTML = "";
-                    modala(allText, x);
                     if (elem.hasAttribute("callback"))
                     {
                         var func = elem.getAttribute("callback");
                         window[func](allText);
                     }
+                    if (elem.hasAttribute("insert"))
+                    {
+                            document.getElementById(elem.getAttribute("insert")).textContent = (rawFile.responseText);
+                    }
+                    return allText;
                 }
-            }
-        }
-        else if (!elem.hasAttribute("json") && !elem.hasAttribute("callback"))
-        {
-            rawFile.onreadystatechange = function() {
-                if (rawFile.readyState === 4) {
-                    var allText = rawFile.responseText;
-                    document.getElementById(elem.getAttribute("insert")).innerHTML = allText;
-                }
-            }
-        }
-        else
-        {
-            rawFile.onreadystatechange = function() {
-                if (rawFile.readyState === 4)
+                catch (e)
                 {
-                    var allText = JSON.parse(rawFile.responseText);
+                    console.log("Response not a JSON");
+                }
+            }
+        }
+    }   
+    else if (elem.classList.contains("set-attr"))
+    {
+        rawFile.onreadystatechange = function() {
+            if (rawFile.readyState === 4) {
+                var allText = JSON.parse(rawFile.responseText);
+                try {
+                    // if (elem.hasAttribute("set-value"))
+                    {
+                        document.getElementById(elem.getAttribute("insert")).setAttribute(elem.getAttribute("set-attr"),allText);//elem.getAttribute("set-value"));
+                        //var func = elem.setAttribute(elem.getAttribute("set-attr"),elem.getAttribute("set-value"));
+                    }
+                }
+                catch (e)
+                {
+                    console.error(e);
+                }
+            }
+        }
+    }
+    else if (elem.classList.contains("modala"))
+    {
+        rawFile.onreadystatechange = function() {
+            if (rawFile.readyState === 4) {
+                var allText = ""; // JSON.parse(rawFile.responseText);
+                allText = JSON.parse(rawFile.responseText);
+                var x = document.getElementById(elem.getAttribute("insert"));
+                x.innerHTML = "";
+                modala(allText, x);
+                if (elem.hasAttribute("callback"))
+                {
                     var func = elem.getAttribute("callback");
                     window[func](allText);
                 }
             }
         }
-                rawFile.send();
     }
+    else if (!elem.hasAttribute("json") && !elem.hasAttribute("callback") )
+    {
+        rawFile.onreadystatechange = function() {
+            if (rawFile.readyState === 4) {
+                var allText = rawFile.responseText;
+                if (document.getElementById(elem.getAttribute("insert") !== null))
+                document.getElementById(elem.getAttribute("insert")).innerHTML = allText;
+            }
+        }
+    }
+    else
+    {
+        rawFile.onreadystatechange = function() {
+            if (rawFile.readyState === 4)
+            {
+                var allText = JSON.parse(rawFile.responseText);
+                var func = elem.getAttribute("callback");
+                window[func](allText);
+            }
+        }
+    }
+    try{
+            rawFile.send();
+    } catch(e)
+    {
+            console.log(e);
+    }
+}
+
 
