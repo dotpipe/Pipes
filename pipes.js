@@ -80,14 +80,14 @@
     });
 });
 
-let domContentLoad = (again = false, incoming_elem = undefined) => {
+let domContentLoad = (again = false) => {
     doc_set = document.getElementsByTagName("pipe");
-    if (again == false)
-    {
-            Array.from(doc_set).forEach(function(elem) {
-                    pipes(elem);
-            });
-    }
+if (again == false)
+{
+        Array.from(doc_set).forEach(function(elem) {
+                 pipes(elem);
+        });
+}
     setTimers();
     let elementsArray_dyn = document.getElementsByTagName("dyn");
     Array.from(elementsArray_dyn).forEach(function(elem) {
@@ -115,28 +115,6 @@ let domContentLoad = (again = false, incoming_elem = undefined) => {
                     pipes(elem, true);
             });
     });
-}
-
-let domContentLoadSingle = (incoming_elem) => {
-    if (incoming_elem.tagName == "pipe")
-        pipes(incoming_elem);
-    else if (incoming_elem.tagName == "timed")
-        setTimers(incoming_elem);
-    else if (incoming_elem.tagName == ("dyn"))
-        pipes(incoming_elem);
-    else if (incoming_elem.tagName == "delay")
-        setTimeout(carousel(incoming_elem),incoming_elem.getAttribute("delay"));
-    else if (incoming_elem.tagName == "lnk")
-        pipes(incoming_elem);
-    if (incoming_elem.classList.contains("mouse-over"))
-    {
-        incoming_elem.addEventListener("mouseenter", function() {
-                pipes(incoming_elem, true);
-        });
-        incoming_elem.addEventListener("mouseleave", function() {
-                pipes(incoming_elem, true);
-        });
-    }
 }
 
 // modala(jsonObj,rootNode)
@@ -175,18 +153,28 @@ function modala (value, tempTag, root, id)
     });
 //        if (id == true)
 //              tempTag.innerHTML = "";
-    domContentLoadSingle(elem)
     tempTag.appendChild(temp);
 domContentLoad(true);
 }
 
-function setTimers(elem)
+function setTimers()
 {   
-    var time = elem.getAttribute("delay");
     setInterval(function() {
-        pipes(elem);
-        setTimers(elem);
-    },time);
+        let elem = document.getElementsByTagName("timed");
+        for (i = 0 ; i < elem.length ; i++) {
+            if (elem[i].hasAttribute("delay") == false)
+            {
+                console.log(elem[i].id + " has no delay. Required.");
+            }
+            else
+            {
+                console.log("p");
+                target = document.getElementById(elem[i].id);
+                // var timers = parseInt(elem[i].getAttribute("delay"));
+                    pipes(target);
+            }
+        }
+    },4000);
 }
 
 function fileOrder(elem)
