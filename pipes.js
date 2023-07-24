@@ -180,7 +180,7 @@ function modala (value, tempTag, root, id)
 domContentLoad(true);
 }
 
-function setTimers()
+function setTimers(elem)
 {   
     var time = elem.getAttribute("delay");
     setInterval(function() {
