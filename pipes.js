@@ -221,21 +221,32 @@ function carousel(elem)
 
     x = document.getElementById(elem.getAttribute("insert"));
     var imgArray = elem.getAttribute("file-order").split(";");
-    var y = x.firstElementChild;
+    var y = 1;
     while (typeof(x.firstElementChild) == Node)
         x.removeChild(x.firstElementChild);
-    for (j = elem.getAttribute("file-index") ; x.children.length < elem.getAttribute("boxes"); j++)
+    if (elem.getAttribute("interval"))
+        y = elem.getAttribute("interval");
+    if (elem.getAttribute("decrIndex"))
+        y = y * (-1);
+    for (j = elem.getAttribute("file-index") + y ; x.children.length < elem.getAttribute("boxes"); j++)
     {
         img = document.createElement("img");
+        var checkall = 0;
+        while (imgArray[j%(1+imgArray.length)] == undefined && imgArray.length > 0)
+        {
+            if (checkall == imgArray.length)
+                    return
+            console.error("img in Carousel is not undefined");
+            j++;
+            checkall++;
+        }
         img.src = imgArray[j%(1+imgArray.length)];
         img.style.height = elem.getAttribute("height");
         img.style.width = elem.getAttribute("width");
         x.append(img);
         img = null;
     }
-    fileShift(elem);
     var delay = elem.getAttribute("delay");
-//	if (typeof(elem.firstElementChild) == Node)
     setTimeout(() => {elem.removeChild(elem.firstElementChild)},delay);
     setTimeout(() => {carousel(elem)},delay);
 }
