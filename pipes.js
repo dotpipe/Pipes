@@ -56,7 +56,7 @@
     let elements_Carousel = document.getElementsByTagName("carousel");
     Array.from(elements_Carousel).forEach(function(elem) {
         console.log(elem);
-        setInterval(carousel(elem),700);
+        carousel(elem)
     });
     let elementsArray_link = document.getElementsByTagName("lnk");
     Array.from(elementsArray_link).forEach(function(elem) {
@@ -82,58 +82,56 @@
 
 let domContentLoad = (again = false) => {
     doc_set = document.getElementsByTagName("pipe");
-    if (again == false)
-    {
-            Array.from(doc_set).forEach(function(elem) {
-                    pipes(elem);
-            });
-    }
-    let elementsArray_time= document.getElementsByTagName("timed");
+	if (again == false)
+	{
+		Array.from(doc_set).forEach(function(elem) {
+			pipes(elem);
+        	});
+	}
+    let elementsArray_time= document.getElementsByTagName("timer");
     Array.from(elementsArray_time).forEach(function(elem) {
-        if (elem.hasAttribute("p"))
-            return
-        else
-            elem.setAttribute("p","0");
+	if (elem.classList.contains("t"))
+		return
+	elem.classList.toggle("t")
         setTimers(elem);
     });
     let elementsArray_dyn = document.getElementsByTagName("dyn");
     Array.from(elementsArray_dyn).forEach(function(elem) {
-
+	if (elem.classList.contains("y"))
+		return
+	elem.classList.toggle("y");
         elem.addEventListener("click", function() {
-            if (elem.hasAttribute("p"))
-                return
-            else
-                elem.setAttribute("p","0");
-                pipes(elem);
+            pipes(elem);
         });
     });
     let elements_Carousel = document.getElementsByTagName("carousel");
     Array.from(elements_Carousel).forEach(function(elem) {
-        if (elem.hasAttribute("p"))
-            return
-        else
-            elem.setAttribute("p","0");
-        setTimeout(carousel(elem),elem.getAttribute("delay"));
+	if (elem.classList.contains("c"))
+		return
+	elem.classList.toggle("c")
+	setInterval(carousel(elem),elem.getAttribute("delay"));
     });
     let elementsArray_link = document.getElementsByTagName("lnk");
     Array.from(elementsArray_link).forEach(function(elem) {
+	if (elem.classList.contains("n"))
+		return
+	elem.classList.toggle("n");
         elem.addEventListener("click", function() {
-            if (elem.hasAttribute("p"))
-                return
-            else
-                elem.setAttribute("p","0");
             pipes(elem);
         });
     });
-        let elementsArray_mouseOver = document.getElementsByClassName("mouse-over");
-        Array.from(elementsArray_mouseOver).forEach(function(elem) {
-            elem.addEventListener("mouseenter", function() {
-                pipes(elem, true);
-            });
-            elem.addEventListener("mouseleave", function() {
-                pipes(elem, true);
-            });
+    let elementsArray_mouseOver = document.getElementsByClassName("mouse-over");
+    Array.from(elementsArray_mouseOver).forEach(function(elem) {
+	if (elem.classList.contains("m0"))
+		return
+	elem.classList.toggle("m0");
+	elem.addEventListener("mouseenter", function() {
+		pipes(elem, true);
+	});
+	elem.addEventListener("mouseleave", function() {
+		pipes(elem, true);
         });
+    });
 }
 
 // modala(jsonObj,rootNode)
@@ -173,10 +171,10 @@ function modala (value, tempTag, root, id)
 //        if (id == true)
 //              tempTag.innerHTML = "";
     tempTag.appendChild(temp);
-domContentLoad(true);
+    domContentLoad(true);
 }
 
-function setTimers(target)
+function setTimers()
 {   
     var delay = target.getAttribute("delay");
     setTimeout(function() {
@@ -229,23 +227,36 @@ function carousel(elem)
 
     x = document.getElementById(elem.getAttribute("insert"));
     var imgArray = elem.getAttribute("file-order").split(";");
-        var y = x.firstElementChild;
-    while (typeof(x.firstElementChild) == Node)
-        x.removeChild(x.firstElementChild);
-        for (j = elem.getAttribute("file-index") ; x.children.length < elem.getAttribute("boxes"); j++)
+    var y = 1;
+    x.clear();
+//    while (typeof(x.firstElementChild) == Node)
+//        x.removeChild(x.firstElementChild);
+    if (elem.getAttribute("interval"))
+        y = elem.getAttribute("interval");
+    if (elem.getAttribute("decrIndex"))
+        y = y * (-1);
+    var z = Math.abs(y)
+    var j = 0;
+    for (j = elem.getAttribute("file-index") + y ; j%imgArray.length != (2*y)%imgArray.length || x.children.length < elem.getAttribute("boxes"); j++)
+    {
+        img = document.createElement("img");
+        var checkall = 0;
+        if (imgArray[j%(imgArray.length)] == undefined && imgArray.length > checkall)
         {
-            img = document.createElement("img");
-            img.src = imgArray[j%(1+imgArray.length)];
-            img.style.height = elem.getAttribute("height");
-            img.style.width = elem.getAttribute("width");
-            x.append(img);
-            img = null;
+            console.error("image in Carousel is undefined");
+            j++;
+            checkall++;
         }
-    var delay = elem.getAttribute("delay");
-    //if (elem.firstElementChild != undefined)
-    setTimeout(() => {
-        try { elem.removeChild(elem.firstElementChild);} catch(e) {}},delay);
-    setTimeout(() => {carousel(elem)},delay);
+        img.src = imgArray[j%(imgArray.length-1)];
+        img.style.height = elem.getAttribute("height");
+        img.style.width = elem.getAttribute("width");
+        x.append(img);
+        img = null;
+    }
+    x.setAttribute("file-index",j%imgArray.length);
+    var delay = x.getAttribute("delay");
+    x.removeChild(elem.firstElementChild);
+    setTimeout(() => {carousel(x)},delay);
 }
 
 function fileShift(elem)
