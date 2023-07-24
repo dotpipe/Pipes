@@ -82,42 +82,58 @@
 
 let domContentLoad = (again = false) => {
     doc_set = document.getElementsByTagName("pipe");
-if (again == false)
-{
-        Array.from(doc_set).forEach(function(elem) {
-                 pipes(elem);
-        });
-}
-    let elementsArray_time= document.getElementsByTagName("timer");
+    if (again == false)
+    {
+            Array.from(doc_set).forEach(function(elem) {
+                    pipes(elem);
+            });
+    }
+    let elementsArray_time= document.getElementsByTagName("timed");
     Array.from(elementsArray_time).forEach(function(elem) {
+        if (elem.hasAttribute("p"))
+            return
+        else
+            elem.setAttribute("p","0");
         setTimers(elem);
     });
     let elementsArray_dyn = document.getElementsByTagName("dyn");
     Array.from(elementsArray_dyn).forEach(function(elem) {
 
         elem.addEventListener("click", function() {
-            pipes(elem);
+            if (elem.hasAttribute("p"))
+                return
+            else
+                elem.setAttribute("p","0");
+                pipes(elem);
         });
     });
     let elements_Carousel = document.getElementsByTagName("carousel");
     Array.from(elements_Carousel).forEach(function(elem) {
-    setTimeout(carousel(elem),elem.getAttribute("delay"));
+        if (elem.hasAttribute("p"))
+            return
+        else
+            elem.setAttribute("p","0");
+        setTimeout(carousel(elem),elem.getAttribute("delay"));
     });
     let elementsArray_link = document.getElementsByTagName("lnk");
     Array.from(elementsArray_link).forEach(function(elem) {
         elem.addEventListener("click", function() {
+            if (elem.hasAttribute("p"))
+                return
+            else
+                elem.setAttribute("p","0");
             pipes(elem);
         });
     });
-    let elementsArray_mouseOver = document.getElementsByClassName("mouse-over");
-    Array.from(elementsArray_mouseOver).forEach(function(elem) {
+        let elementsArray_mouseOver = document.getElementsByClassName("mouse-over");
+        Array.from(elementsArray_mouseOver).forEach(function(elem) {
             elem.addEventListener("mouseenter", function() {
-                    pipes(elem, true);
+                pipes(elem, true);
             });
             elem.addEventListener("mouseleave", function() {
-                    pipes(elem, true);
+                pipes(elem, true);
             });
-    });
+        });
 }
 
 // modala(jsonObj,rootNode)
@@ -160,12 +176,12 @@ function modala (value, tempTag, root, id)
 domContentLoad(true);
 }
 
-function setTimers()
+function setTimers(target)
 {   
     var delay = target.getAttribute("delay");
     setTimeout(function() {
         pipes(target);
-        setTimeout(setTimers(target),delay);
+        setTimers(target);
     },delay);
 }
 
@@ -213,33 +229,22 @@ function carousel(elem)
 
     x = document.getElementById(elem.getAttribute("insert"));
     var imgArray = elem.getAttribute("file-order").split(";");
-    var y = 1;
+        var y = x.firstElementChild;
     while (typeof(x.firstElementChild) == Node)
         x.removeChild(x.firstElementChild);
-    if (elem.getAttribute("interval"))
-        y = elem.getAttribute("interval");
-    if (elem.getAttribute("decrIndex"))
-        y = y * (-1);
-    for (j = elem.getAttribute("file-index") + y ; x.children.length < elem.getAttribute("boxes"); j++)
-    {
-        img = document.createElement("img");
-        var checkall = 0;
-        while (imgArray[j%(1+imgArray.length)] == undefined && imgArray.length > 0)
+        for (j = elem.getAttribute("file-index") ; x.children.length < elem.getAttribute("boxes"); j++)
         {
-            if (checkall == imgArray.length)
-                    return
-            console.error("img in Carousel is not undefined");
-            j++;
-            checkall++;
+            img = document.createElement("img");
+            img.src = imgArray[j%(1+imgArray.length)];
+            img.style.height = elem.getAttribute("height");
+            img.style.width = elem.getAttribute("width");
+            x.append(img);
+            img = null;
         }
-        img.src = imgArray[j%(1+imgArray.length)];
-        img.style.height = elem.getAttribute("height");
-        img.style.width = elem.getAttribute("width");
-        x.append(img);
-        img = null;
-    }
     var delay = elem.getAttribute("delay");
-    setTimeout(() => {elem.removeChild(elem.firstElementChild)},delay);
+    //if (elem.firstElementChild != undefined)
+    setTimeout(() => {
+        try { elem.removeChild(elem.firstElementChild);} catch(e) {}},delay);
     setTimeout(() => {carousel(elem)},delay);
 }
 
