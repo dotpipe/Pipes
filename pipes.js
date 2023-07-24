@@ -88,7 +88,10 @@ if (again == false)
                  pipes(elem);
         });
 }
-    setTimers();
+    let elementsArray_time= document.getElementsByTagName("timer");
+    Array.from(elementsArray_time).forEach(function(elem) {
+        setTimers(elem);
+    });
     let elementsArray_dyn = document.getElementsByTagName("dyn");
     Array.from(elementsArray_dyn).forEach(function(elem) {
 
@@ -159,22 +162,11 @@ domContentLoad(true);
 
 function setTimers()
 {   
-    setInterval(function() {
-        let elem = document.getElementsByTagName("timed");
-        for (i = 0 ; i < elem.length ; i++) {
-            if (elem[i].hasAttribute("delay") == false)
-            {
-                console.log(elem[i].id + " has no delay. Required.");
-            }
-            else
-            {
-                console.log("p");
-                target = document.getElementById(elem[i].id);
-                // var timers = parseInt(elem[i].getAttribute("delay"));
-                    pipes(target);
-            }
-        }
-    },4000);
+    var delay = target.getAttribute("delay");
+    setTimeout(function() {
+        pipes(target);
+        setTimeout(setTimers(target),delay);
+    },delay);
 }
 
 function fileOrder(elem)
