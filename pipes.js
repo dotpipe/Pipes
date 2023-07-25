@@ -252,8 +252,6 @@ function classOrder(elem)
         index = Math.abs(parseInt(ppfc.getAttribute("file-index").toString())) - interv;
     else
         index = Math.abs(parseInt(ppfc.getAttribute("file-index").toString())) + interv;
-    else
-        index++;
     if (index < 0)
         index = arr.length-1;
     index = index%arr.length;
