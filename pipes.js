@@ -38,47 +38,10 @@
   **** go on if there is no input to replace them.
   */
   
-  document.addEventListener("DOMContentLoaded", function () {
-    domContentLoad();
-    return;
-    doc_set = document.getElementsByTagName("pipe");
-    Array.from(doc_set).forEach(function(elem) {
-        setTimeout(pipes(elem),200);
+    document.addEventListener("DOMContentLoaded", function () {
+        domContentLoad();
+        return;
     });
-    setTimers();
-    let elementsArray_dyn = document.getElementsByTagName("dyn");
-    Array.from(elementsArray_dyn).forEach(function(elem) {
-        console.log(elem);
-        elem.addEventListener("click", function() {
-            pipes(elem);
-        });
-    });
-    let elements_Carousel = document.getElementsByTagName("carousel");
-    Array.from(elements_Carousel).forEach(function(elem) {
-        console.log(elem);
-        carousel(elem)
-    });
-    let elementsArray_link = document.getElementsByTagName("lnk");
-    Array.from(elementsArray_link).forEach(function(elem) {
-        console.log(elem);
-        elem.addEventListener("click", function() {
-            console.log("C!");
-            pipes(elem);
-        });
-    });
-    let elementsArray_mouseOver = document.getElementsByClassName("mouse-over");
-    Array.from(elementsArray_mouseOver).forEach(function(elem) {
-        console.log(elem);
-        elem.addEventListener("mouseover", function() {
-            console.log("C!");
-            pipes(elem);
-        });
-        elem.addEventListener("mouseout", function() {
-            console.log("C!");
-            pipes(elem);
-        });
-    });
-});
 
 let domContentLoad = (again = false) => {
     doc_set = document.getElementsByTagName("pipe");
@@ -234,17 +197,15 @@ function carousel(elem)
     if (elem.classList.contains("decrIndex"))
         crement = parseInt(crement) * (-1);
     var i = parseInt(x.getAttribute("file-index"));
-    var z = Array.from(x);
-    var loooop = 0;
-    var array_temp = [];
-    
+    var j = 0;
     Array.from(imgArray).forEach((n) => {
-	if (x.children.length == x.getAttribute("boxes"))
+	if (x.children.length == x.getAttribute("boxes") && y >= j)
 	{
 		x.children[i%parseInt(x.getAttribute("boxes"))].src = imgArray[i%imgArray.length];
 		i++;
+        j++;
 	}
-	else {
+	else if (x.children.length < x.getAttribute("boxes")) {
 		img = document.createElement("img");
 		img.src = n;
 	        x.appendChild(img);
