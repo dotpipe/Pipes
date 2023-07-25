@@ -1,4 +1,4 @@
- /**
+7 /**
   *  only usage: onclick="pipes(this)"
   *  to begin using the PipesJS code in other ways than <dyn> <pipe> and <timed>.
   *  Usable DOM Attributes (almost all are optional
@@ -88,7 +88,7 @@ let domContentLoad = (again = false) => {
 			pipes(elem);
         	});
 	}
-    let elementsArray_time= document.getElementsByTagName("timer");
+    let elementsArray_time= document.getElementsByTagName("timed");
     Array.from(elementsArray_time).forEach(function(elem) {
 	if (elem.classList.contains("t"))
 		return
@@ -109,7 +109,7 @@ let domContentLoad = (again = false) => {
 	if (elem.classList.contains("c"))
 		return
 	elem.classList.toggle("c")
-	setInterval(carousel(elem),elem.getAttribute("delay"));
+	setInterval(carousel(elem.id),elem.getAttribute("delay"));
     });
     let elementsArray_link = document.getElementsByTagName("lnk");
     Array.from(elementsArray_link).forEach(function(elem) {
@@ -174,7 +174,7 @@ function modala (value, tempTag, root, id)
     domContentLoad(true);
 }
 
-function setTimers()
+function setTimers(target)
 {   
     var delay = target.getAttribute("delay");
     setTimeout(function() {
@@ -224,46 +224,42 @@ function fileOrder(elem)
 
 function carousel(elem)
 {
-
+    elem = document.getElementById(elem);
     x = document.getElementById(elem.getAttribute("insert"));
-    var imgArray = elem.getAttribute("file-order").split(";");
+    var imgArray = x.getAttribute("file-order").split(";");
     var y = 1;
-    x.clear();
-//    while (typeof(x.firstElementChild) == Node)
-//        x.removeChild(x.firstElementChild);
-    if (elem.getAttribute("interval"))
-        y = elem.getAttribute("interval");
-    if (elem.getAttribute("decrIndex"))
-        y = y * (-1);
-    var z = Math.abs(y)
-    var j = 0;
-    for (j = elem.getAttribute("file-index") + y ; j%imgArray.length != (2*y)%imgArray.length || x.children.length < elem.getAttribute("boxes"); j++)
-    {
-        img = document.createElement("img");
-        var checkall = 0;
-        if (imgArray[j%(imgArray.length)] == undefined && imgArray.length > checkall)
-        {
-            console.error("image in Carousel is undefined");
-            j++;
-            checkall++;
-        }
-        img.src = imgArray[j%(imgArray.length-1)];
-        img.style.height = elem.getAttribute("height");
-        img.style.width = elem.getAttribute("width");
-        x.append(img);
-        img = null;
-    }
-    x.setAttribute("file-index",j%imgArray.length);
+    var crement = 1;
+    if (elem.hasAttribute("interval"))
+        y = parseInt(elem.getAttribute("interval"));
+    if (elem.classList.contains("decrIndex"))
+        crement = parseInt(crement) * (-1);
+    var i = parseInt(x.getAttribute("file-index"));
+    var z = Array.from(x);
+    var loooop = 0;
+    var array_temp = [];
+    
+    Array.from(imgArray).forEach((n) => {
+	if (x.children.length == x.getAttribute("boxes"))
+	{
+		x.children[i%parseInt(x.getAttribute("boxes"))].src = imgArray[i%imgArray.length];
+		i++;
+	}
+	else {
+		img = document.createElement("img");
+		img.src = n;
+	        x.appendChild(img);
+	}
+    });
+    var w = parseInt(y + i);
+    x.setAttribute("file-index", w%imgArray.length);
     var delay = x.getAttribute("delay");
-    x.removeChild(elem.firstElementChild);
-    setTimeout(() => {carousel(x)},delay);
+    setTimeout(() => { carousel(elem.id); },delay);
 }
 
 function fileShift(elem)
 {
     if (elem == null || elem == undefined)
         return;
-    
     var arr = elem.getAttribute("file-order").split(";");
     var ppfc = document.getElementById(elem.getAttribute("insert").toString());
     if (!ppfc.hasAttribute("file-index"))
@@ -277,7 +273,6 @@ function fileShift(elem)
         index = arr.length - 1;
     index = index%arr.length;
     ppfc.setAttribute("file-index",index.toString());
-    
 }
 
 function classOrder(elem)
