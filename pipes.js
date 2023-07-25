@@ -13,16 +13,18 @@
   *  file............= filename to download
   *  directory.......= relative or full path of 'file'
   *  redirect........= "follow" the ajax call in POST or GET mode ex: <pipe ajax="foo.bar" redirect query="key0:value0;" insert="someID">
-  *  <link>..........= tag for clickable link <link ajax="goinghere.html" query="key0:value0;">
+  *  <lnk>..........= tag for clickable link <link ajax="goinghere.html" query="key0:value0;">
   *  <pipe>..........= Tag (initializes on DOMContentLoaded Event) ex: <pipe ajax="foo.bar" query="key0:value0;" insert="someID">
   *  <dyn>...........= Automatic eventListening tag for onclick="pipes(this)" ex: <dyn ajax="foo.bar" query="key0:value0;" insert="someID">
   *  <timed>.........= Timed result refreshing tags (Keep up-to-date handling on page) ex: <timed ajax="foo.bar" delay="3000" query="key0:value0;" insert="someID">
   *  delay...........= delay between <timed> tag refreshes (required for <timed> tag) ex: see <timed>
   *  <carousel>......= Tag to create a carousel that moves every a timeOut() delay="x" occurs ex: <carousel ajax="foo.bar" file-order="foo.bar;bar.foo;foobar.barfoo" delay="3000" id="thisId" insert="thisId" height="100" width="100" boxes="8" style="height:100;width:800">
+  *  boxes...........= &lt;carousel&gt; attribute to request for x boxes for pictures
   *  file-order......= ajax to these files, iterating [0,1,2,3]%array.length per call (delimited by ';') ex: <pipe query="key0:value0;" file-order="foo.bar;bar.foo;foobar.barfoo" insert="someID">
   *  file-index......= counter of which index to use with file-order to go with ajax ex: <pipe ajax="foo.bar" query="key0:value0;" insert="someID">
-  *  incrIndex.......= increment thru index of file-order (0 moves once) (default: 1) ex: <pipe ajax="foo.bar" incrIndex="2" file-order="foo.bar;bar.foo;foobar.barfoo" insert="someID">
-  *  decrIndex.......= decrement thru index of file-order (0 moves once) (default: 1) ex: <pipe ajax="foo.bar" decrIndex="3" file-order="foo.bar;bar.foo;foobar.barfoo" insert="someID">
+  *  incrIndex.......= increment thru index of file-order (0 moves once) (default: 1) ex: <pipe ajax="foo.bar" class="incrIndex" interval="2" file-order="foo.bar;bar.foo;foobar.barfoo" insert="someID">
+  *  decrIndex.......= decrement thru index of file-order (0 moves once) (default: 1) ex: <pipe ajax="foo.bar" class="decrIndex" interval="3" file-order="foo.bar;bar.foo;foobar.barfoo" insert="someID">
+  *  interval........= Take this many steps when stepping through file-order default = 1
   *  set-attr........= attribute to set in target HTML tag ex: <pipe set-attr="value" ajax="foo.bar" query="key0:value0;" insert="thisOrSomeID">
   *  mode............= "POST" or "GET" (default: "POST") ex: <pipe mode="POST" set-attr="value" ajax="foo.bar" query="key0:value0;" insert="thisOrSomeID">
   *  data-pipe.......= name of class for multi-tag data (augment with pipe) *** obfuscated to be reoriented
@@ -33,7 +35,7 @@
   *  callback........= calls function set as attribute value
   *  headers.........= headers in CSS markup-style-attribute (delimited by '&') <any ajax="foo.bar" headers="foobar:boo&barfoo:barfoo;q:9&" insert="someID">
   *  form-class......= class name of devoted form elements
-  *  mouse-over......= class name to work thru PipesJS' other attributes
+  *  mouse-over......= class name to work thru PipesJS' other attributes on mouseenter/mouseleave
   **** ALL HEADERS FOR AJAX are available. They will use defaults to
   **** go on if there is no input to replace them.
   */
@@ -153,10 +155,11 @@ function fileOrder(elem)
     if (!ppfc.hasAttribute("file-index"))
         ppfc.setAttribute("file-index", "0");
     index = parseInt(ppfc.getAttribute("file-index").toString());
-    if (elem.hasAttribute("decrIndex"))
-        index = Math.abs(parseInt(ppfc.getAttribute("file-index").toString())) - 1;
+    var interv = elem.getAttribute("interval");
+    if (elem.classList.contains("decrIndex"))
+        index = Math.abs(parseInt(ppfc.getAttribute("file-index").toString())) - interv;
     else
-        index = Math.abs(parseInt(ppfc.getAttribute("file-index").toString())) + 1;
+        index = Math.abs(parseInt(ppfc.getAttribute("file-index").toString())) + interv;
     if (index < 0)
         index = arr.length - 1;
     index = index%arr.length;
@@ -203,7 +206,7 @@ function carousel(elem, auto = true)
 	{
 		x.children[j%parseInt(x.getAttribute("boxes"))].src = imgArray[i%imgArray.length];
 		i++;
-        j++;
+        	j++;
 	}
 	else if (x.children.length < x.getAttribute("boxes")) {
 		img = document.createElement("img");
@@ -227,10 +230,11 @@ function fileShift(elem)
     if (!ppfc.hasAttribute("file-index"))
         ppfc.setAttribute("file-index", "0");
     var index = parseInt(ppfc.getAttribute("file-index").toString());
-    if (elem.hasAttribute("decrIndex"))
-        index = Math.abs(parseInt(ppfc.getAttribute("file-index").toString())) - 1;
+    var interv = elem.getAttribute("interval");
+    if (elem.classList.contains("decrIndex"))
+        index = Math.abs(parseInt(ppfc.getAttribute("file-index").toString())) - interv;
     else
-        index = Math.abs(parseInt(ppfc.getAttribute("file-index").toString())) + 1;
+        index = Math.abs(parseInt(ppfc.getAttribute("file-index").toString())) + interv;
     if (index < 0)
         index = arr.length - 1;
     index = index%arr.length;
@@ -243,14 +247,15 @@ function classOrder(elem)
     if (!elem.hasAttribute("class-index"))
     elem.setAttribute("class-index", "0");
     index = parseInt(elem.getAttribute("class-index").toString());
-    if (elem.hasAttribute("incrIndex"))
-        index = parseInt(elem.getAttribute("incrIndex").toString()) + 1;
-    else if (elem.hasAttribute("decrIndex"))
-        index = Math.abs(parseInt(elem.getAttribute("decrIndex").toString())) - 1;
+    var interv = elem.getAttribute("interval");
+    if (elem.classList.contains("decrIndex"))
+        index = Math.abs(parseInt(ppfc.getAttribute("file-index").toString())) - interv;
+    else
+        index = Math.abs(parseInt(ppfc.getAttribute("file-index").toString())) + interv;
     else
         index++;
     if (index < 0)
-        index = 0;
+        index = arr.length-1;
     index = index%arr.length;
     elem.setAttribute("class-index",index.toString());
     elem.classList = arr[index];
