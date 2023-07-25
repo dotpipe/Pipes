@@ -3,6 +3,47 @@ JavaScript DOM Handler for Routing and API
 
 To donate please visit: https://paypal.me/pirodock
 
+# Instruction Cheat Sheet
+------------------
+  *  only usage: onclick="pipes(this)"
+  *  to begin using the PipesJS code in other ways than <dyn> <pipe> and <timed>.
+  *  Usable DOM Attributes (almost all are optional
+  *  upto x > 134,217,000 different configurations 
+  *  with unlimited inputs/outputs):
+  *  Attribute/Tag   |   Use Case
+  *  -------------------------------------------------------------
+  *  insert..........= return ajax call to this id
+  *  ajax............= calls and returns the value file's output ex: <pipe ajax="foo.bar" query="key0:value0;" insert="someID">
+  *  query...........= default query string associated with url ex: <anyTag query="key0:value0;key1:value2;" ajax="page.foo">
+  *  <download>......= tag for downloading files ex: <download file="foo.zip" directory="/home/bar/"> (needs ending with slash)
+  *  file............= filename to download
+  *  directory.......= relative or full path of 'file'
+  *  redirect........= "follow" the ajax call in POST or GET mode ex: <pipe ajax="foo.bar" redirect query="key0:value0;" insert="someID">
+  *  <link>..........= tag for clickable link <link ajax="goinghere.html" query="key0:value0;">
+  *  <pipe>..........= Tag (initializes on DOMContentLoaded Event) ex: <pipe ajax="foo.bar" query="key0:value0;" insert="someID">
+  *  <dyn>...........= Automatic eventListening tag for onclick="pipes(this)" ex: <dyn ajax="foo.bar" query="key0:value0;" insert="someID">
+  *  <timed>.........= Timed result refreshing tags (Keep up-to-date handling on page) ex: <timed ajax="foo.bar" delay="3000" query="key0:value0;" insert="someID">
+  *  delay...........= delay between <timed> tag refreshes (required for <timed> tag) ex: see <timed>
+  *  <carousel>......= Tag to create a carousel that moves every a timeOut() delay="x" occurs ex: <carousel ajax="foo.bar" file-order="foo.bar;bar.foo;foobar.barfoo" delay="3000" id="thisId" insert="thisId" height="100" width="100" boxes="8" style="height:100;width:800">
+  *  file-order......= ajax to these files, iterating [0,1,2,3]%array.length per call (delimited by ';') ex: <pipe query="key0:value0;" file-order="foo.bar;bar.foo;foobar.barfoo" insert="someID">
+  *  file-index......= counter of which index to use with file-order to go with ajax ex: <pipe ajax="foo.bar" query="key0:value0;" insert="someID">
+  *  incrIndex.......= increment thru index of file-order (0 moves once) (default: 1) ex: <pipe ajax="foo.bar" incrIndex="2" file-order="foo.bar;bar.foo;foobar.barfoo" insert="someID">
+  *  decrIndex.......= decrement thru index of file-order (0 moves once) (default: 1) ex: <pipe ajax="foo.bar" decrIndex="3" file-order="foo.bar;bar.foo;foobar.barfoo" insert="someID">
+  *  set-attr........= attribute to set in target HTML tag ex: <pipe set-attr="value" ajax="foo.bar" query="key0:value0;" insert="thisOrSomeID">
+  *  mode............= "POST" or "GET" (default: "POST") ex: <pipe mode="POST" set-attr="value" ajax="foo.bar" query="key0:value0;" insert="thisOrSomeID">
+  *  data-pipe.......= name of class for multi-tag data (augment with pipe) *** obfuscated to be reoriented
+  *  multiple........= states that this object has two or more key/value pairs use: states this is a multi-select form box
+  *  remove..........= remove element in tag ex: <anyTag remove="someID;someOtherId;">
+  *  display.........= toggle visible and invisible of anything in the value ex: <anyTag display="someID;someOtherId;">
+  *  json............= returns a JSON file set as value *** obfuscated for now
+  *  callback........= calls function set as attribute value
+  *  headers.........= headers in CSS markup-style-attribute (delimited by '&') <any ajax="foo.bar" headers="foobar:boo&barfoo:barfoo;q:9&" insert="someID">
+  *  form-class......= class name of devoted form elements
+  *  mouse-over......= class name to work thru PipesJS' other attributes
+  **** ALL HEADERS FOR AJAX are available. They will use defaults to
+  **** go on if there is no input to replace them
+
+     
 # Modala v1.0
 
 Modala is a JSON structure mapped HTML page where you can create templates, and offer more pages to users with less code. It's a run away hit if you just trust. Used with PipesJS it's as perfectly harmonizing as any other framework. Give it a go. It's at least worthy of a look. Just clone and use PipesJS. Affix the JSON of HTML to the function
