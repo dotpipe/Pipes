@@ -21,21 +21,9 @@
         "delay": "5000",
         "height": "200",
         "width": "200",
-        "file-order": "grid2.png;grid.png;grid2.png",
+        "file-order": "grid.png;grid2.png;grid.png",
         "insert": "carousel1",
         "id": "carousel1"
-    },
-    "car": {
-        "tagname": "carousel",
-        "style": "height:100;width:200;",
-        "file-index": "0",
-        "boxes": "2",
-        "delay": "5000",
-        "height": "100",
-        "width": "100",
-        "file-order": "grid.png;grid2.png",
-        "insert": "carousel",
-        "id": "carousel"
     },
     "hk": {
         "tagname": "timed",

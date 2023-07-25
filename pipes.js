@@ -199,9 +199,9 @@ function carousel(elem)
     var i = parseInt(x.getAttribute("file-index"));
     var j = 0;
     Array.from(imgArray).forEach((n) => {
-	if (x.children.length == x.getAttribute("boxes") && y >= j)
+	if (x.children.length == x.getAttribute("boxes"))
 	{
-		x.children[i%parseInt(x.getAttribute("boxes"))].src = imgArray[i%imgArray.length];
+		x.children[j%parseInt(x.getAttribute("boxes"))].src = imgArray[i%imgArray.length];
 		i++;
         j++;
 	}
