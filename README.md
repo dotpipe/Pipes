@@ -6,38 +6,38 @@ To donate please visit: https://paypal.me/pirodock
 # Instructional Cheat Sheet
 ------------------
   *  only usage: onclick="pipes(this)"
-  *  to begin using the PipesJS code in other ways than <dyn> <pipe> and <timed>.
+  *  to begin using the PipesJS code in other ways than &lt;dyn&gt; &lt;pipe&gt; and &lt;timed&gt;.
   *  Usable DOM Attributes (almost all are optional
-  *  upto x > 134,217,000 different configurations 
+  *  upto x &gt; 134,217,000 different configurations 
   *  with unlimited inputs/outputs):
   *  Attribute/Tag   |   Use Case
   *  -------------------------------------------------------------
   *  insert..........= return ajax call to this id
-  *  ajax............= calls and returns the value file's output ex: <pipe ajax="foo.bar" query="key0:value0;" insert="someID">
-  *  query...........= default query string associated with url ex: <anyTag query="key0:value0;key1:value2;" ajax="page.foo">
-  *  &lt;download&gt;......= tag for downloading files ex: <download file="foo.zip" directory="/home/bar/"> (needs ending with slash)
+  *  ajax............= calls and returns the value file's output ex: &lt;pipe ajax="foo.bar" query="key0:value0;" insert="someID"&gt;
+  *  query...........= default query string associated with url ex: &lt;anyTag query="key0:value0;key1:value2;" ajax="page.foo"&gt;
+  *  &lt;download&gt;......= tag for downloading files ex: &lt;download file="foo.zip" directory="/home/bar/"&gt; (needs ending with slash)
   *  file............= filename to download
   *  directory.......= relative or full path of 'file'
-  *  redirect........= "follow" the ajax call in POST or GET mode ex: <pipe ajax="foo.bar" redirect query="key0:value0;" insert="someID">
-  *  &lt;link&gt;..........= tag for clickable link <link ajax="goinghere.html" query="key0:value0;">
-  *  &lt;pipe&gt;..........= Tag (initializes on DOMContentLoaded Event) ex: <pipe ajax="foo.bar" query="key0:value0;" insert="someID">
-  *  &lt;dyn&gt;...........= Automatic eventListening tag for onclick="pipes(this)" ex: <dyn ajax="foo.bar" query="key0:value0;" insert="someID">
-  *  &lt;timed&gt;.........= Timed result refreshing tags (Keep up-to-date handling on page) ex: <timed ajax="foo.bar" delay="3000" query="key0:value0;" insert="someID">
-  *  delay...........= delay between <timed> tag refreshes (required for <timed> tag) ex: see <timed>
-  *  &lt;carousel&gt;......= Tag to create a carousel that moves every a timeOut() delay="x" occurs ex: <carousel ajax="foo.bar" file-order="foo.bar;bar.foo;foobar.barfoo" delay="3000" id="thisId" insert="thisId" height="100" width="100" boxes="8" style="height:100;width:800">
-  *  file-order......= ajax to these files, iterating [0,1,2,3]%array.length per call (delimited by ';') ex: <pipe query="key0:value0;" file-order="foo.bar;bar.foo;foobar.barfoo" insert="someID">
-  *  file-index......= counter of which index to use with file-order to go with ajax ex: <pipe ajax="foo.bar" query="key0:value0;" insert="someID">
-  *  incrIndex.......= increment thru index of file-order (0 moves once) (default: 1) ex: <pipe ajax="foo.bar" incrIndex="2" file-order="foo.bar;bar.foo;foobar.barfoo" insert="someID">
-  *  decrIndex.......= decrement thru index of file-order (0 moves once) (default: 1) ex: <pipe ajax="foo.bar" decrIndex="3" file-order="foo.bar;bar.foo;foobar.barfoo" insert="someID">
-  *  set-attr........= attribute to set in target HTML tag ex: <pipe set-attr="value" ajax="foo.bar" query="key0:value0;" insert="thisOrSomeID">
-  *  mode............= "POST" or "GET" (default: "POST") ex: <pipe mode="POST" set-attr="value" ajax="foo.bar" query="key0:value0;" insert="thisOrSomeID">
+  *  redirect........= "follow" the ajax call in POST or GET mode ex: &lt;pipe ajax="foo.bar" redirect query="key0:value0;" insert="someID"&gt;
+  *  &lt;lnk&gt;..........= tag for clickable link &lt;lnk ajax="goinghere.html" query="key0:value0;"&gt;
+  *  &lt;pipe&gt;..........= Tag (initializes on DOMContentLoaded Event) ex: &lt;pipe ajax="foo.bar" query="key0:value0;" insert="someID"&gt;
+  *  &lt;dyn&gt;...........= Automatic eventListening tag for onclick="pipes(this)" ex: &lt;dyn ajax="foo.bar" query="key0:value0;" insert="someID"&gt;
+  *  &lt;timed&gt;.........= Timed result refreshing tags (Keep up-to-date handling on page) ex: &lt;timed ajax="foo.bar" delay="3000" query="key0:value0;" insert="someID"&gt;
+  *  delay...........= delay between &lt;timed&gt; tag refreshes (required for &lt;timed&gt; tag) ex: see &lt;timed&gt;
+  *  &lt;carousel&gt;......= Tag to create a carousel that moves every a timeOut() delay="x" occurs ex: &lt;carousel ajax="foo.bar" file-order="foo.bar;bar.foo;foobar.barfoo" delay="3000" id="thisId" insert="thisId" height="100" width="100" boxes="8" style="height:100;width:800"&gt;
+  *  file-order......= ajax to these files, iterating [0,1,2,3]%array.length per call (delimited by ';') ex: &lt;pipe query="key0:value0;" file-order="foo.bar;bar.foo;foobar.barfoo" insert="someID"&gt;
+  *  file-index......= counter of which index to use with file-order to go with ajax ex: &lt;pipe ajax="foo.bar" query="key0:value0;" insert="someID"&gt;
+  *  incrIndex.......= increment thru index of file-order (0 moves once) (default: 1) ex: &lt;pipe ajax="foo.bar" incrIndex="2" file-order="foo.bar;bar.foo;foobar.barfoo" insert="someID"&gt;
+  *  decrIndex.......= decrement thru index of file-order (0 moves once) (default: 1) ex: &lt;pipe ajax="foo.bar" decrIndex="3" file-order="foo.bar;bar.foo;foobar.barfoo" insert="someID"&gt;
+  *  set-attr........= attribute to set in target HTML tag ex: &lt;pipe set-attr="value" ajax="foo.bar" query="key0:value0;" insert="thisOrSomeID"&gt;
+  *  mode............= "POST" or "GET" (default: "POST") ex: &lt;pipe mode="POST" set-attr="value" ajax="foo.bar" query="key0:value0;" insert="thisOrSomeID"&gt;
   *  data-pipe.......= name of class for multi-tag data (augment with pipe) *** obfuscated to be reoriented
   *  multiple........= states that this object has two or more key/value pairs use: states this is a multi-select form box
-  *  remove..........= remove element in tag ex: <anyTag remove="someID;someOtherId;">
-  *  display.........= toggle visible and invisible of anything in the value ex: <anyTag display="someID;someOtherId;">
+  *  remove..........= remove element in tag ex: &lt;anyTag remove="someID;someOtherId;"&gt;
+  *  display.........= toggle visible and invisible of anything in the value ex: &lt;anyTag display="someID;someOtherId;"&gt;
   *  json............= returns a JSON file set as value *** obfuscated for now
   *  callback........= calls function set as attribute value
-  *  headers.........= headers in CSS markup-style-attribute (delimited by '&') <any ajax="foo.bar" headers="foobar:boo&barfoo:barfoo;q:9&" insert="someID">
+  *  headers.........= headers in CSS markup-style-attribute (delimited by '&') &lt;any ajax="foo.bar" headers="foobar:boo&barfoo:barfoo;q:9&" insert="someID"&gt;
   *  form-class......= class name of devoted form elements
   *  mouse-over......= class name to work thru PipesJS' other attributes
   **** ALL HEADERS FOR AJAX are available. They will use defaults to
@@ -50,7 +50,7 @@ Modala is a JSON structure mapped HTML page where you can create templates, and 
 
 modala({"key": "pair",...}, rootNode);
 
-and run it on the page you want. Due to JS, all timer delays will be ignored. Each will run as a 3 second timer. The issue is that JS has only one thread to work with. So, they all need to run under that one thread. Therefore, for now, I'm bypassing the delay attribute. Soon we will have a init value for all timers. That said, you will need to make one value, at the upper point of the JSON state that you want your timers all under x milliseconds. This will be that state of all timers. And all timers will need to be native to PipesJS. (<timed>) 
+and run it on the page you want. Due to JS, all timer delays will be ignored. Each will run as a 3 second timer. The issue is that JS has only one thread to work with. So, they all need to run under that one thread. Therefore, for now, I'm bypassing the delay attribute. Soon we will have a init value for all timers. That said, you will need to make one value, at the upper point of the JSON state that you want your timers all under x milliseconds. This will be that state of all timers. And all timers will need to be native to PipesJS. (&lt;timed&gt;) 
 
 At that point in Modala, PipesJS will have a future of being created in Modala. But this is far off. The Modala package, as it sets, is a rich and heavily blendable template. This is because you can write JSONs in such languages as PHP, and it can be given to the Modala interpretor. Very keen I think. 
 
@@ -60,20 +60,20 @@ Another problem with Modala, though, is that it doesn't create subpages from the
 
 New tag added this version. Also a callback function attribute. 
 
-<timed delay="x"> where x is the milliseconds between each iteration of loading the Pipe. Like in Node, unless I'm wrong, (never used it) you can now use updated information consistently on your pages. Very easy to use.
+&lt;timed delay="x"&gt; where x is the milliseconds between each iteration of loading the Pipe. Like in Node, unless I'm wrong, (never used it) you can now use updated information consistently on your pages. Very easy to use.
 
 callback = "foo" uses any data like json or other data to return your page's need. just set your function name as the value of callback and it shall be done ✅
 	
 
 # Pipes v3.6.6
 
-The aggregate use of a cache class has been appended to the project! (yeay!) Now you can unroll multiple <pipe> tags and their filters by using this class with a JSON of filter arguments. The JSON can be named anything. In the $_GET you will have no extension of '.json' tho. It is plugged in automatically. If this is an issue, please flag it and I'll change it. As soon as I'm done with this, the $_GET and $_POST will be interchangable in the calls to their respective pages. Also, make sure your filters use JSON for more arbitrary information to come thru. Classes are often very large in importance to looks so that's it! There's better examples in testvid.html now, too. So go look into that, examine the cache.php class file. And that should be all, thanks!
+The aggregate use of a cache class has been appended to the project! (yeay!) Now you can unroll multiple &lt;pipe&gt; tags and their filters by using this class with a JSON of filter arguments. The JSON can be named anything. In the $_GET you will have no extension of '.json' tho. It is plugged in automatically. If this is an issue, please flag it and I'll change it. As soon as I'm done with this, the $_GET and $_POST will be interchangable in the calls to their respective pages. Also, make sure your filters use JSON for more arbitrary information to come thru. Classes are often very large in importance to looks so that's it! There's better examples in testvid.html now, too. So go look into that, examine the cache.php class file. And that should be all, thanks!
 
 # Pipes v3.6.2
 
 
 
-Pipes may now be considered a viable and strategic option for the UI/UX developer. It is with great pleasure I introduce the <pipe></pipe> tag that incites automatic inclusion of what I call Filters. These are file getters that produce a script from their PipesJS attributes upon the DOMContentLoaded Event. It is also with more value, that I can kick off a purely JSON setup for pages. It is like includes, but it's a little better, you can have forms on the page take event parameters and use containing tags to write the rest of the page. This can be done with anything in the DOM with an Event on the tag of your choice, or an EventListener. That is now a huge part of this package's breadth. So you can rest assuredly put more to use.
+Pipes may now be considered a viable and strategic option for the UI/UX developer. It is with great pleasure I introduce the &lt;pipe&gt;&lt;/pipe&gt; tag that incites automatic inclusion of what I call Filters. These are file getters that produce a script from their PipesJS attributes upon the DOMContentLoaded Event. It is also with more value, that I can kick off a purely JSON setup for pages. It is like includes, but it's a little better, you can have forms on the page take event parameters and use containing tags to write the rest of the page. This can be done with anything in the DOM with an Event on the tag of your choice, or an EventListener. That is now a huge part of this package's breadth. So you can rest assuredly put more to use.
 
 	Coming Soon (expected by Spring 2023): multiple tags initiating at once via a controlled run thru an attribute like this ajax="first.php;second.html;etc-foo.bar"
 
