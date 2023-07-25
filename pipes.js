@@ -185,7 +185,7 @@ function fileOrder(elem)
     }
 }
 
-function carousel(elem)
+function carousel(elem, auto = true)
 {
     elem = document.getElementById(elem);
     x = document.getElementById(elem.getAttribute("insert"));
@@ -214,7 +214,8 @@ function carousel(elem)
     var w = parseInt(y + i);
     x.setAttribute("file-index", w%imgArray.length);
     var delay = x.getAttribute("delay");
-    setTimeout(() => { carousel(elem.id); },delay);
+    if (auto == true)
+        setTimeout(() => { carousel(elem.id); },delay);
 }
 
 function fileShift(elem)
