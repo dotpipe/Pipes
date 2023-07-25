@@ -3,7 +3,7 @@ JavaScript DOM Handler for Routing and API
 
 To donate please visit: https://paypal.me/pirodock
 
-# Instruction Cheat Sheet
+# Instructional Cheat Sheet
 ------------------
   *  only usage: onclick="pipes(this)"
   *  to begin using the PipesJS code in other ways than <dyn> <pipe> and <timed>.
