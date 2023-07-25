@@ -1,4 +1,4 @@
-7 /**
+/**
   *  only usage: onclick="pipes(this)"
   *  to begin using the PipesJS code in other ways than <dyn> <pipe> and <timed>.
   *  Usable DOM Attributes (almost all are optional
