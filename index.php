@@ -14,8 +14,5 @@ Modala Demonstration -
 <dyn id="mod" class="modala" onclick="domContentLoad()" ajax="./modal.json" insert="hed">Reload Top</dyn>
 </body>
 
-<script>
-//    modala(value, document.getElementById("hed-mod"));
-</script>
 <pipe insert="txt" class="json" ajax="./modal.json" id="t"></pipe>
 <textarea id="txt"> </textarea>

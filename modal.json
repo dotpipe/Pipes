@@ -1,4 +1,5 @@
 {
+    "tagname": "div",
     "lnk1": {
         "tagname": "lnk",
         "ajax": "https:\/\/github.com\/wise-penny\/pipes",
@@ -24,14 +25,6 @@
         "file-order": "grid.png;grid2.png;grid.png",
         "insert": "carousel1",
         "id": "carousel1"
-    },
-    "hk": {
-        "tagname": "timed",
-        "delay": "3000",
-        "ajax": "img_src.php",
-        "insert": "hed",
-        "id": "timer2",
-        "textContent": 1689294415
     },
     "gk": {
         "tagname": "timed",

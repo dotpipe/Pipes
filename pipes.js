@@ -1,4 +1,4 @@
-7 /**
+/**
   *  only usage: onclick="pipes(this)"
   *  to begin using the PipesJS code in other ways than <dyn> <pipe> and <timed>.
   *  Usable DOM Attributes (almost all are optional
@@ -13,16 +13,18 @@
   *  file............= filename to download
   *  directory.......= relative or full path of 'file'
   *  redirect........= "follow" the ajax call in POST or GET mode ex: <pipe ajax="foo.bar" redirect query="key0:value0;" insert="someID">
-  *  <link>..........= tag for clickable link <link ajax="goinghere.html" query="key0:value0;">
+  *  <lnk>..........= tag for clickable link <link ajax="goinghere.html" query="key0:value0;">
   *  <pipe>..........= Tag (initializes on DOMContentLoaded Event) ex: <pipe ajax="foo.bar" query="key0:value0;" insert="someID">
   *  <dyn>...........= Automatic eventListening tag for onclick="pipes(this)" ex: <dyn ajax="foo.bar" query="key0:value0;" insert="someID">
   *  <timed>.........= Timed result refreshing tags (Keep up-to-date handling on page) ex: <timed ajax="foo.bar" delay="3000" query="key0:value0;" insert="someID">
   *  delay...........= delay between <timed> tag refreshes (required for <timed> tag) ex: see <timed>
   *  <carousel>......= Tag to create a carousel that moves every a timeOut() delay="x" occurs ex: <carousel ajax="foo.bar" file-order="foo.bar;bar.foo;foobar.barfoo" delay="3000" id="thisId" insert="thisId" height="100" width="100" boxes="8" style="height:100;width:800">
+  *  boxes...........= &lt;carousel&gt; attribute to request for x boxes for pictures
   *  file-order......= ajax to these files, iterating [0,1,2,3]%array.length per call (delimited by ';') ex: <pipe query="key0:value0;" file-order="foo.bar;bar.foo;foobar.barfoo" insert="someID">
   *  file-index......= counter of which index to use with file-order to go with ajax ex: <pipe ajax="foo.bar" query="key0:value0;" insert="someID">
-  *  incrIndex.......= increment thru index of file-order (0 moves once) (default: 1) ex: <pipe ajax="foo.bar" incrIndex="2" file-order="foo.bar;bar.foo;foobar.barfoo" insert="someID">
-  *  decrIndex.......= decrement thru index of file-order (0 moves once) (default: 1) ex: <pipe ajax="foo.bar" decrIndex="3" file-order="foo.bar;bar.foo;foobar.barfoo" insert="someID">
+  *  incrIndex.......= increment thru index of file-order (0 moves once) (default: 1) ex: <pipe ajax="foo.bar" class="incrIndex" interval="2" file-order="foo.bar;bar.foo;foobar.barfoo" insert="someID">
+  *  decrIndex.......= decrement thru index of file-order (0 moves once) (default: 1) ex: <pipe ajax="foo.bar" class="decrIndex" interval="3" file-order="foo.bar;bar.foo;foobar.barfoo" insert="someID">
+  *  interval........= Take this many steps when stepping through file-order default = 1
   *  set-attr........= attribute to set in target HTML tag ex: <pipe set-attr="value" ajax="foo.bar" query="key0:value0;" insert="thisOrSomeID">
   *  mode............= "POST" or "GET" (default: "POST") ex: <pipe mode="POST" set-attr="value" ajax="foo.bar" query="key0:value0;" insert="thisOrSomeID">
   *  data-pipe.......= name of class for multi-tag data (augment with pipe) *** obfuscated to be reoriented
@@ -33,7 +35,7 @@
   *  callback........= calls function set as attribute value
   *  headers.........= headers in CSS markup-style-attribute (delimited by '&') <any ajax="foo.bar" headers="foobar:boo&barfoo:barfoo;q:9&" insert="someID">
   *  form-class......= class name of devoted form elements
-  *  mouse-over......= class name to work thru PipesJS' other attributes
+  *  mouse-over......= class name to work thru PipesJS' other attributes on mouseenter/mouseleave
   **** ALL HEADERS FOR AJAX are available. They will use defaults to
   **** go on if there is no input to replace them.
   */
@@ -45,54 +47,54 @@
 
 let domContentLoad = (again = false) => {
     doc_set = document.getElementsByTagName("pipe");
-	if (again == false)
-	{
-		Array.from(doc_set).forEach(function(elem) {
-			pipes(elem);
-        	});
-	}
+    if (again == false)
+    {
+        Array.from(doc_set).forEach(function(elem) {
+            pipes(elem);
+            });
+    }
     let elementsArray_time= document.getElementsByTagName("timed");
     Array.from(elementsArray_time).forEach(function(elem) {
-	if (elem.classList.contains("t"))
-		return
-	elem.classList.toggle("t")
+    if (elem.classList.contains("t"))
+        return
+    elem.classList.toggle("t")
         setTimers(elem);
     });
     let elementsArray_dyn = document.getElementsByTagName("dyn");
     Array.from(elementsArray_dyn).forEach(function(elem) {
-	if (elem.classList.contains("y"))
-		return
-	elem.classList.toggle("y");
+    if (elem.classList.contains("y"))
+        return
+    elem.classList.toggle("y");
         elem.addEventListener("click", function() {
             pipes(elem);
         });
     });
     let elements_Carousel = document.getElementsByTagName("carousel");
     Array.from(elements_Carousel).forEach(function(elem) {
-	if (elem.classList.contains("c"))
-		return
-	elem.classList.toggle("c")
-	setInterval(carousel(elem.id),elem.getAttribute("delay"));
+    if (elem.classList.contains("c"))
+        return
+    elem.classList.toggle("c")
+    setInterval(carousel(elem.id),elem.getAttribute("delay"));
     });
     let elementsArray_link = document.getElementsByTagName("lnk");
     Array.from(elementsArray_link).forEach(function(elem) {
-	if (elem.classList.contains("n"))
-		return
-	elem.classList.toggle("n");
+    if (elem.classList.contains("n"))
+        return
+    elem.classList.toggle("n");
         elem.addEventListener("click", function() {
             pipes(elem);
         });
     });
     let elementsArray_mouseOver = document.getElementsByClassName("mouse-over");
     Array.from(elementsArray_mouseOver).forEach(function(elem) {
-	if (elem.classList.contains("m0"))
-		return
-	elem.classList.toggle("m0");
-	elem.addEventListener("mouseenter", function() {
-		pipes(elem, true);
-	});
-	elem.addEventListener("mouseleave", function() {
-		pipes(elem, true);
+    if (elem.classList.contains("m"))
+        return
+    elem.classList.toggle("m");
+    elem.addEventListener("mouseenter", function() {
+        pipes(elem, true);
+    });
+    elem.addEventListener("mouseleave", function() {
+        pipes(elem, true);
         });
     });
 }
@@ -116,14 +118,14 @@ function modala (value, tempTag, root, id)
         return;
     }
     var temp = document.createElement((value["tagname"]));
-//        console.log(value);
+    //        console.log(value);
     Object.entries(value).forEach((nest) => {
         const [k, v] = nest;
         if (v instanceof Object)
             modala(v, temp, root, id);
         else if (!Number(k) && k.toLowerCase() != "tagname" && k.toLowerCase() != "textcontent" && k.toLowerCase() != "innerhtml" && k.toLowerCase() != "innertext")
         {
-//                console.log(k + " " + v);
+    //                console.log(k + " " + v);
             temp.setAttribute(k,v);
         }
         else if (!Number(k) && k.toLowerCase() != "tagname" && (k.toLowerCase() == "textcontent" || k.toLowerCase() == "innerhtml" || k.toLowerCase() == "innertext"))
@@ -131,8 +133,6 @@ function modala (value, tempTag, root, id)
             (k.toLowerCase() == "textcontent") ? temp.textContent = v : (k.toLowerCase() == "innerhtml") ? temp.innerHTML = v : temp.innerText = v;
         }
     });
-//        if (id == true)
-//              tempTag.innerHTML = "";
     tempTag.appendChild(temp);
     domContentLoad(true);
 }
@@ -153,15 +153,16 @@ function fileOrder(elem)
     if (!ppfc.hasAttribute("file-index"))
         ppfc.setAttribute("file-index", "0");
     index = parseInt(ppfc.getAttribute("file-index").toString());
-    if (elem.hasAttribute("decrIndex"))
-        index = Math.abs(parseInt(ppfc.getAttribute("file-index").toString())) - 1;
+    var interv = elem.getAttribute("interval");
+    if (elem.classList.contains("decrIndex"))
+        index = Math.abs(parseInt(ppfc.getAttribute("file-index").toString())) - interv;
     else
-        index = Math.abs(parseInt(ppfc.getAttribute("file-index").toString())) + 1;
+        index = Math.abs(parseInt(ppfc.getAttribute("file-index").toString())) + interv;
     if (index < 0)
         index = arr.length - 1;
     index = index%arr.length;
     ppfc.setAttribute("file-index",index.toString());
-    
+
     console.log(ppfc);
     if (ppfc.hasOwnAttribute("src"))
     {
@@ -197,25 +198,25 @@ function carousel(elem, auto = true)
     if (elem.classList.contains("decrIndex"))
         crement = parseInt(crement) * (-1);
     var i = parseInt(x.getAttribute("file-index"));
-    var j = 0;
-    Array.from(imgArray).forEach((n) => {
-	if (x.children.length == x.getAttribute("boxes"))
-	{
-		x.children[j%parseInt(x.getAttribute("boxes"))].src = imgArray[i%imgArray.length];
-		i++;
-        j++;
-	}
-	else if (x.children.length < x.getAttribute("boxes")) {
-		img = document.createElement("img");
-		img.src = n;
-	        x.appendChild(img);
-	}
-    });
+    var j = i;
+    for (m = 0 ; m < x.getAttribute("boxes") ; m++) {
+            if (x.children.length == x.getAttribute("boxes"))
+            {
+                x.children[j%parseInt(x.getAttribute("boxes"))].src = imgArray[i%imgArray.length];
+                i++;
+                    j++;
+            }
+            else if (x.children.length < x.getAttribute("boxes")) {
+                img = document.createElement("img");
+                img.src = imgArray[i%imgArray.length];
+                    x.appendChild(img);
+            }
+    }
     var w = parseInt(y + i);
-    x.setAttribute("file-index", w%imgArray.length);
+    x.setAttribute("file-index", w%parseInt(x.getAttribute("boxes")));
     var delay = x.getAttribute("delay");
     if (auto == true)
-        setTimeout(() => { carousel(elem.id); },delay);
+    setTimeout(() => { carousel(elem.id); },delay);
 }
 
 function fileShift(elem)
@@ -227,10 +228,11 @@ function fileShift(elem)
     if (!ppfc.hasAttribute("file-index"))
         ppfc.setAttribute("file-index", "0");
     var index = parseInt(ppfc.getAttribute("file-index").toString());
-    if (elem.hasAttribute("decrIndex"))
-        index = Math.abs(parseInt(ppfc.getAttribute("file-index").toString())) - 1;
+    var interv = elem.getAttribute("interval");
+    if (elem.classList.contains("decrIndex"))
+        index = Math.abs(parseInt(ppfc.getAttribute("file-index").toString())) - interv;
     else
-        index = Math.abs(parseInt(ppfc.getAttribute("file-index").toString())) + 1;
+        index = Math.abs(parseInt(ppfc.getAttribute("file-index").toString())) + interv;
     if (index < 0)
         index = arr.length - 1;
     index = index%arr.length;
@@ -243,14 +245,13 @@ function classOrder(elem)
     if (!elem.hasAttribute("class-index"))
     elem.setAttribute("class-index", "0");
     index = parseInt(elem.getAttribute("class-index").toString());
-    if (elem.hasAttribute("incrIndex"))
-        index = parseInt(elem.getAttribute("incrIndex").toString()) + 1;
-    else if (elem.hasAttribute("decrIndex"))
-        index = Math.abs(parseInt(elem.getAttribute("decrIndex").toString())) - 1;
+    var interv = elem.getAttribute("interval");
+    if (elem.classList.contains("decrIndex"))
+        index = Math.abs(parseInt(ppfc.getAttribute("file-index").toString())) - interv;
     else
-        index++;
+        index = Math.abs(parseInt(ppfc.getAttribute("file-index").toString())) + interv;
     if (index < 0)
-        index = 0;
+        index = arr.length-1;
     index = index%arr.length;
     elem.setAttribute("class-index",index.toString());
     elem.classList = arr[index];
@@ -264,6 +265,7 @@ function pipes(elem, stop = false) {
 
     if (elem.id === null)
         return;
+    domContentLoad(true);
     if (elem.tagName == "lnk" && elem.classList.contains("new-win"))
     {
         let lnk_win = (elem.hasAttribute("win-name") && elem.getAttribute("win-name")) ? elem.getAttribute("win-name") : "_blank";
@@ -336,7 +338,7 @@ function pipes(elem, stop = false) {
             return;
     }
     // This is a quick way to make a downloadable link in an href
-//     else
+    //     else
     if (elem.tagName == "download")
     {
         var text = ev.target.getAttribute("file");
@@ -400,7 +402,7 @@ function formAJAX(elem, classname)
     if (elem.classList.contains("redirect"))
         window.location.href = elem.getAttribute("ajax") + ((elem_qstring.length > 0) ? "?" + elem_qstring : "");
     console.log(elem_qstring);
-    return (elem_qstring);
+    return (elem_qstring.substring(0,-2));
 }
 
 function navigate(elem, opts = null, query = "", classname = "")
@@ -426,7 +428,7 @@ function navigate(elem, opts = null, query = "", classname = "")
                     if (elem.hasAttribute("callback"))
                     {
                         var func = elem.getAttribute("callback");
-                        window[func](allText);
+                        this[func](allText);
                     }
                     if (elem.hasAttribute("insert"))
                     {
@@ -440,7 +442,7 @@ function navigate(elem, opts = null, query = "", classname = "")
                 }
             }
         }
-    }   
+    }
     else if (elem.classList.contains("set-attr"))
     {
         rawFile.onreadystatechange = function() {
@@ -472,7 +474,7 @@ function navigate(elem, opts = null, query = "", classname = "")
                 if (elem.hasAttribute("callback"))
                 {
                     var func = elem.getAttribute("callback");
-                    window[func](allText);
+                    this[func](allText);
                 }
             }
         }
@@ -494,7 +496,7 @@ function navigate(elem, opts = null, query = "", classname = "")
             {
                 var allText = JSON.parse(rawFile.responseText);
                 var func = elem.getAttribute("callback");
-                window[func](allText);
+                this[func](allText);
             }
         }
     }
