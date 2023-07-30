@@ -13,7 +13,7 @@
   *  file............= filename to download
   *  directory.......= relative or full path of 'file'
   *  redirect........= "follow" the ajax call in POST or GET mode ex: <pipe ajax="foo.bar" redirect query="key0:value0;" insert="someID">
-  *  <lnk>..........= tag for clickable link <link ajax="goinghere.html" query="key0:value0;">
+  *  <lnk>..........= tag for clickable link <lnk ajax="goinghere.html" query="key0:value0;">
   *  <pipe>..........= Tag (initializes on DOMContentLoaded Event) ex: <pipe ajax="foo.bar" query="key0:value0;" insert="someID">
   *  <dyn>...........= Automatic eventListening tag for onclick="pipes(this)" ex: <dyn ajax="foo.bar" query="key0:value0;" insert="someID">
   *  <timed>.........= Timed result refreshing tags (Keep up-to-date handling on page) ex: <timed ajax="foo.bar" delay="3000" query="key0:value0;" insert="someID">
