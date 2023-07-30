@@ -470,11 +470,9 @@ function navigate(elem, opts = null, query = "", classname = "")
             if (rawFile.readyState === 4) {
                 var allText = JSON.parse(rawFile.responseText);
                 try {
-                    // if (elem.hasAttribute("set-value"))
-                    {
-                        document.getElementById(elem.getAttribute("insert")).setAttribute(elem.getAttribute("set-attr"),allText);//elem.getAttribute("set-value"));
-                        //var func = elem.setAttribute(elem.getAttribute("set-attr"),elem.getAttribute("set-value"));
-                    }
+                    
+                    document.getElementById(elem.getAttribute("insert")).setAttribute(elem.getAttribute("set-attr"),allText);
+                    
                 }
                 catch (e)
                 {
