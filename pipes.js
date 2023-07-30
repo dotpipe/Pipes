@@ -19,11 +19,7 @@
   *  <timed>.........= Timed result refreshing tags (Keep up-to-date handling on page) ex: <timed ajax="foo.bar" delay="3000" query="key0:value0;" insert="someID">
   *  delay...........= delay between <timed> tag refreshes (required for <timed> tag) ex: see <timed>
   *  <carousel>......= Tag to create a carousel that moves every a timeOut() delay="x" occurs ex: <carousel ajax="foo.bar" file-order="foo.bar;bar.foo;foobar.barfoo" delay="3000" id="thisId" insert="thisId" height="100" width="100" boxes="8" style="height:100;width:800">
-<<<<<<< HEAD
-  *  boxes...........= &lt;carousel&gt; attribute to request for x boxes for pictures
-=======
   *  boxes...........= <carousel> attribute to request for x boxes for pictures
->>>>>>> dd0b96d42f7c78fb21f38cd359d52661e98cb56e
   *  file-order......= ajax to these files, iterating [0,1,2,3]%array.length per call (delimited by ';') ex: <pipe query="key0:value0;" file-order="foo.bar;bar.foo;foobar.barfoo" insert="someID">
   *  file-index......= counter of which index to use with file-order to go with ajax ex: <pipe ajax="foo.bar" query="key0:value0;" insert="someID">
   *  incrIndex.......= increment thru index of file-order (0 moves once) (default: 1) ex: <pipe ajax="foo.bar" class="incrIndex" interval="2" file-order="foo.bar;bar.foo;foobar.barfoo" insert="someID">
@@ -202,7 +198,6 @@ function carousel(elem, auto = true)
     if (elem.classList.contains("decrIndex"))
         crement = parseInt(crement) * (-1);
     var i = parseInt(x.getAttribute("file-index"));
-<<<<<<< HEAD
     var j = i;
     for (m = 0 ; m < x.getAttribute("boxes") ; m++) {
             if (x.children.length == x.getAttribute("boxes"))
@@ -217,22 +212,6 @@ function carousel(elem, auto = true)
                     x.appendChild(img);
             }
     }
-=======
-    var j = 0;
-    Array.from(imgArray).forEach((n) => {
-	if (x.children.length == x.getAttribute("boxes"))
-	{
-		x.children[j%parseInt(x.getAttribute("boxes"))].src = imgArray[i%imgArray.length];
-		i++;
-        	j++;
-	}
-	else if (x.children.length < x.getAttribute("boxes")) {
-		img = document.createElement("img");
-		img.src = n;
-	        x.appendChild(img);
-	}
-    });
->>>>>>> dd0b96d42f7c78fb21f38cd359d52661e98cb56e
     var w = parseInt(y + i);
     x.setAttribute("file-index", w%parseInt(x.getAttribute("boxes")));
     var delay = x.getAttribute("delay");
