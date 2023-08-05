@@ -51,50 +51,53 @@ let domContentLoad = (again = false) => {
     {
         Array.from(doc_set).forEach(function(elem) {
             pipes(elem);
-            });
+        });
     }
     let elementsArray_time= document.getElementsByTagName("timed");
     Array.from(elementsArray_time).forEach(function(elem) {
-    if (elem.classList.contains("t"))
-        return
-    elem.classList.toggle("t")
-        setTimers(elem);
+        if (elem.classList.contains("t"))
+            return
+        elem.classList.toggle("t")
+            setTimers(elem);
     });
     let elementsArray_dyn = document.getElementsByTagName("dyn");
     Array.from(elementsArray_dyn).forEach(function(elem) {
-    if (elem.classList.contains("y"))
-        return
-    elem.classList.toggle("y");
-        elem.addEventListener("click", function() {
-            pipes(elem);
+        if (elem.classList.contains("y"))
+            return
+        elem.classList.toggle("y");
+            elem.addEventListener("click", function() {
+                pipes(elem);
         });
     });
     let elements_Carousel = document.getElementsByTagName("carousel");
     Array.from(elements_Carousel).forEach(function(elem) {
-    if (elem.classList.contains("c"))
-        return
-    elem.classList.toggle("c")
-    setInterval(carousel(elem.id),elem.getAttribute("delay"));
+        if (elem.classList.contains("c"))
+            return;
+        elem.classList.toggle("c")
+        let auto = true;
+        if (elem.classList.contains("carousel-auto"))
+            auto = false;
+        setInterval(carousel(elem.id, auto),elem.getAttribute("delay"));
     });
     let elementsArray_link = document.getElementsByTagName("lnk");
     Array.from(elementsArray_link).forEach(function(elem) {
-    if (elem.classList.contains("n"))
-        return
-    elem.classList.toggle("n");
-        elem.addEventListener("click", function() {
-            pipes(elem);
+        if (elem.classList.contains("n"))
+            return
+        elem.classList.toggle("n");
+            elem.addEventListener("click", function() {
+                pipes(elem);
         });
     });
     let elementsArray_mouseOver = document.getElementsByClassName("mouse-over");
     Array.from(elementsArray_mouseOver).forEach(function(elem) {
-    if (elem.classList.contains("m"))
-        return
-    elem.classList.toggle("m");
-    elem.addEventListener("mouseenter", function() {
-        pipes(elem, true);
-    });
-    elem.addEventListener("mouseleave", function() {
-        pipes(elem, true);
+        if (elem.classList.contains("m"))
+            return
+        elem.classList.toggle("m");
+        elem.addEventListener("mouseenter", function() {
+            pipes(elem, true);
+        });
+        elem.addEventListener("mouseleave", function() {
+            pipes(elem, true);
         });
     });
 }
@@ -125,7 +128,6 @@ function modala (value, tempTag, root, id)
             modala(v, temp, root, id);
         else if (!Number(k) && k.toLowerCase() != "tagname" && k.toLowerCase() != "textcontent" && k.toLowerCase() != "innerhtml" && k.toLowerCase() != "innertext")
         {
-    //                console.log(k + " " + v);
             temp.setAttribute(k,v);
         }
         else if (!Number(k) && k.toLowerCase() != "tagname" && (k.toLowerCase() == "textcontent" || k.toLowerCase() == "innerhtml" || k.toLowerCase() == "innertext"))
@@ -204,7 +206,7 @@ function carousel(elem, auto = true)
             {
                 x.children[j%parseInt(x.getAttribute("boxes"))].src = imgArray[i%imgArray.length];
                 i++;
-                    j++;
+                j++;
             }
             else if (x.children.length < x.getAttribute("boxes")) {
                 img = document.createElement("img");
