@@ -50,57 +50,52 @@ let domContentLoad = (again = false) => {
     if (again == false)
     {
         Array.from(doc_set).forEach(function(elem) {
-	    if (elem.classList.contains("pipe-active"))
+            if (elem.classList.contains("pipe-active"))
                 return;
             elem.classList.toggle("pipe-active")
             pipes(elem);
         });
     }
-
     let elementsArray_time= document.getElementsByTagName("timed");
     Array.from(elementsArray_time).forEach(function(elem) {
-            if (elem.classList.contains("pipe-active"))
-                return;
-            elem.classList.toggle("pipe-active")
+        if (elem.classList.contains("pipe-active"))
+            return;
+        elem.classList.toggle("pipe-active")
             setTimers(elem);
     });
-
     let elementsArray_dyn = document.getElementsByTagName("dyn");
     Array.from(elementsArray_dyn).forEach(function(elem) {
-            if (elem.classList.contains("pipe-active"))
-                return;
-            elem.classList.toggle("pipe-active")
+        if (elem.classList.contains("pipe-active"))
+            return;
+        elem.classList.toggle("pipe-active");
             elem.addEventListener("click", function() {
                 pipes(elem);
         });
     });
-
     let elements_Carousel = document.getElementsByTagName("carousel");
     Array.from(elements_Carousel).forEach(function(elem) {
-            if (elem.classList.contains("pipe-active"))
-                return;
-            elem.classList.toggle("pipe-active")
+        if (elem.classList.contains("pipe-active"))
+            return;
+        elem.classList.toggle("pipe-active")
         let auto = true;
-        if (elem.classList.contains("carousel-auto-off"))
+        if (elem.classList.contains("carousel-auto"))
             auto = false;
-        setTimeout(carousel(elem.id, auto),elem.getAttribute("delay"));
+        setInterval(carousel(elem.id, auto),elem.getAttribute("delay"));
     });
-
     let elementsArray_link = document.getElementsByTagName("lnk");
     Array.from(elementsArray_link).forEach(function(elem) {
-            if (elem.classList.contains("pipe-active"))
-                return;
-            elem.classList.toggle("pipe-active")
+        if (elem.classList.contains("pipe-active"))
+            return;
+        elem.classList.toggle("pipe-active");
             elem.addEventListener("click", function() {
                 pipes(elem);
         });
     });
-
     let elementsArray_mouseOver = document.getElementsByClassName("mouse-over");
     Array.from(elementsArray_mouseOver).forEach(function(elem) {
         if (elem.classList.contains("pipe-active"))
             return;
-        elem.classList.toggle("pipe-active")
+        elem.classList.toggle("pipe-active");
         elem.addEventListener("mouseenter", function() {
             pipes(elem, true);
         });
@@ -208,31 +203,35 @@ function carousel(elem, auto = true)
     if (elem.classList.contains("decrIndex"))
         crement = crement * (-1);
     var i = parseInt(x.getAttribute("file-index"));
-    var j = i;
+    var j = 0;
     var multiVert = 1;
     if (elem.classList.contains("carousel-vert"))
     {
         multiVert = 2;
     }
-    var n = 0;
     for (m = 0 ; m < elem.getAttribute("boxes") ; m++) {
-	if (x.children.length >= x.getAttribute("boxes"))
+        if (x.children.length == elem.getAttribute("boxes") * multiVert)
         {
-	    while (x.children[Math.abs(j)%parseInt(x.getAttribute("boxes"))].tagname == "BR")
-                j++;
+            if (x.children[Math.abs(j)%parseInt(x.getAttribute("boxes"))].tagName == "br")
+                j += crement;
             x.children[Math.abs(j)%parseInt(x.getAttribute("boxes"))].src = imgArray[i%imgArray.length];
             i++;
-            j += (crement);
+            
+            if (elem.classList.contains("decrIndex"))
+                j -= crement;
+            else
+                j += crement;
+            continue;
         }
-        else if (x.children.length < x.getAttribute("boxes"))
+        else if (x.children.length < elem.getAttribute("boxes") * multiVert)
         {
             img = document.createElement("img");
-            img.src = imgArray[(n)%imgArray.length];
+            img.src = imgArray[i%imgArray.length];
             x.appendChild(img);
-	    n++;
+            
             br = document.createElement("br");
-	    if (multiVert == 2)
-	            x.appendChild(br);
+            if (multiVert == 2)
+                x.appendChild(br);
         }
     }
     var w = (i);
@@ -288,7 +287,7 @@ function pipes(elem, stop = false) {
 
     if (elem.id === null)
         return;
-//    domContentLoad(true);
+    domContentLoad(true);
     if (elem.tagName == "lnk" && elem.classList.contains("new-win"))
     {
         let lnk_win = (elem.hasAttribute("win-name") && elem.getAttribute("win-name")) ? elem.getAttribute("win-name") : "_blank";
@@ -357,11 +356,11 @@ function pipes(elem, stop = false) {
     }
     if (elem.classList.contains("carousel"))
     {
-	var auto = true;
-	if (elem.classList.contains("carousel-auto-off"))
-		auto = false;
-	carousel(elem,auto);
-	return;
+        var auto = true;
+        if (elem.classList.contains("carousel-auto-off"))
+            auto = false;
+        carousel(elem,auto);
+                return;
     }
     // This is a quick way to make a downloadable link in an href
     //     else
