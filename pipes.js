@@ -196,17 +196,23 @@ function carousel(elem, auto = true)
     var y = 1;
     var crement = 1;
     if (elem.hasAttribute("interval"))
-        y = parseInt(elem.getAttribute("interval"));
+        crement = parseInt(elem.getAttribute("interval"));
     if (elem.classList.contains("decrIndex"))
-        crement = parseInt(crement) * (-1);
+        crement = crement * (-1);
     var i = parseInt(x.getAttribute("file-index"));
     var j = i;
     for (m = 0 ; m < x.getAttribute("boxes") ; m++) {
             if (x.children.length == x.getAttribute("boxes"))
             {
-                x.children[j%parseInt(x.getAttribute("boxes"))].src = imgArray[i%imgArray.length];
+                x.children[Math.abs(j)%parseInt(x.getAttribute("boxes"))].src = imgArray[i%imgArray.length];
                 i++;
-                j++;
+                if (elem.classList.contains("decrIndex"))
+                    j -= crement;
+                else
+                    j += crement;
+                //if (parseInt(x.getAttribute("boxes")) - j < 0)
+                //    j = Math.abs(j);
+
             }
             else if (x.children.length < x.getAttribute("boxes")) {
                 img = document.createElement("img");
@@ -218,7 +224,7 @@ function carousel(elem, auto = true)
     x.setAttribute("file-index", w%parseInt(x.getAttribute("boxes")));
     var delay = x.getAttribute("delay");
     if (auto == true)
-    setTimeout(() => { carousel(elem.id); },delay);
+    setTimeout(() => { carousel(elem.id, auto); },delay);
 }
 
 function fileShift(elem)
