@@ -55,25 +55,25 @@ let domContentLoad = (again = false) => {
     }
     let elementsArray_time= document.getElementsByTagName("timed");
     Array.from(elementsArray_time).forEach(function(elem) {
-        if (elem.classList.contains("t"))
+        if (elem.classList.contains("pipe-active"))
             return
-        elem.classList.toggle("t")
+        elem.classList.toggle("pipe-active")
             setTimers(elem);
     });
     let elementsArray_dyn = document.getElementsByTagName("dyn");
     Array.from(elementsArray_dyn).forEach(function(elem) {
-        if (elem.classList.contains("y"))
+        if (elem.classList.contains("pipe-active"))
             return
-        elem.classList.toggle("y");
+        elem.classList.toggle("pipe-active");
             elem.addEventListener("click", function() {
                 pipes(elem);
         });
     });
     let elements_Carousel = document.getElementsByTagName("carousel");
     Array.from(elements_Carousel).forEach(function(elem) {
-        if (elem.classList.contains("c"))
+        if (elem.classList.contains("pipe-active"))
             return;
-        elem.classList.toggle("c")
+        elem.classList.toggle("pipe-active")
         let auto = true;
         if (elem.classList.contains("carousel-auto"))
             auto = false;
@@ -81,18 +81,18 @@ let domContentLoad = (again = false) => {
     });
     let elementsArray_link = document.getElementsByTagName("lnk");
     Array.from(elementsArray_link).forEach(function(elem) {
-        if (elem.classList.contains("n"))
+        if (elem.classList.contains("pipe-active"))
             return
-        elem.classList.toggle("n");
+        elem.classList.toggle("pipe-active");
             elem.addEventListener("click", function() {
                 pipes(elem);
         });
     });
     let elementsArray_mouseOver = document.getElementsByClassName("mouse-over");
     Array.from(elementsArray_mouseOver).forEach(function(elem) {
-        if (elem.classList.contains("m"))
+        if (elem.classList.contains("pipe-active"))
             return
-        elem.classList.toggle("m");
+        elem.classList.toggle("pipe-active");
         elem.addEventListener("mouseenter", function() {
             pipes(elem, true);
         });
@@ -215,7 +215,7 @@ function carousel(elem, auto = true)
         {
             img = document.createElement("img");
             img.src = imgArray[i%imgArray.length];
-                x.appendChild(img);
+            x.appendChild(img);
         }
     }
     var w = parseInt(y + i);
