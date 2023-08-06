@@ -202,23 +202,21 @@ function carousel(elem, auto = true)
     var i = parseInt(x.getAttribute("file-index"));
     var j = i;
     for (m = 0 ; m < x.getAttribute("boxes") ; m++) {
-            if (x.children.length == x.getAttribute("boxes"))
-            {
-                x.children[Math.abs(j)%parseInt(x.getAttribute("boxes"))].src = imgArray[i%imgArray.length];
-                i++;
-                if (elem.classList.contains("decrIndex"))
-                    j -= crement;
-                else
-                    j += crement;
-                //if (parseInt(x.getAttribute("boxes")) - j < 0)
-                //    j = Math.abs(j);
-
-            }
-            else if (x.children.length < x.getAttribute("boxes")) {
-                img = document.createElement("img");
-                img.src = imgArray[i%imgArray.length];
-                    x.appendChild(img);
-            }
+        if (x.children.length == x.getAttribute("boxes"))
+        {
+            x.children[Math.abs(j)%parseInt(x.getAttribute("boxes"))].src = imgArray[i%imgArray.length];
+            i++;
+            if (elem.classList.contains("decrIndex"))
+                j -= crement;
+            else
+                j += crement;
+        }
+        else if (x.children.length < x.getAttribute("boxes"))
+        {
+            img = document.createElement("img");
+            img.src = imgArray[i%imgArray.length];
+                x.appendChild(img);
+        }
     }
     var w = parseInt(y + i);
     x.setAttribute("file-index", w%parseInt(x.getAttribute("boxes")));
