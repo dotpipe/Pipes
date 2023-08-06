@@ -9,9 +9,9 @@ Modala Demonstration -
 <span id="hed-mod" style="width:100%"></span><br>
 <br>
 <br>
-<pipe id="mod" class="modala" onclick="domContentLoad()" ajax="./modals.json" insert="hed-mod">Reload Top</pipe>
+<pipe id="mod" class="modala" ajax="./modals.json" insert="hed-mod"></pipe>
 <span id="hed" style="width:100%"></span><br>
-<dyn id="mod" class="modala" onclick="domContentLoad()" ajax="./modal.json" insert="hed">Reload Top</dyn>
+<dyn id="mod" class="modala" ajax="./modal.json" insert="hed">Reload Top</dyn>
 </body>
 
 <pipe insert="txt" class="json" ajax="./modal.json" id="t"></pipe>

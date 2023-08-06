@@ -18,11 +18,12 @@
         "tagname": "carousel",
         "style": "height:200;width:400;",
         "file-index": "0",
-        "interval": "2",
-        "boxes": "2",
+        "boxes": "7",
+	"interval": "1",
         "delay": "5000",
         "height": "200",
         "width": "200",
+	"class": "carousel-vert",
         "file-order": "grid.png;grid2.png;grid.png;grid2.png;grid.png;grid2.png;grid.png",
         "insert": "carousel3",
         "id": "carousel3"
@@ -83,14 +84,16 @@
     },
     "mo": {
         "tagname": "span",
-        "display": "mo-id",
+        "display": "mo-id1",
         "textContent": "It was somewhere over here",
+	"id": "mid",
+	"class": "mouse-over",
         "guts": {
             "tagname": "a",
             "innerText": "Donate",
             "ajax": "http://www.paypal.me/pirodock",
             "style": "display:none",
-            "id": "mo-id"
+            "id": "mo-id1"
         }
     }
 }

@@ -14,15 +14,46 @@
         "class": "redirect",
         "id": "ids-required"
     },
+    "car11": {
+        "tagname": "carousel",
+        "style": "height:200;width:400;",
+        "file-index": "0",
+	"interval": "2",
+        "boxes": "10",
+	"class": "carousel-auto-off",
+        "delay": "3000",
+        "height": "200",
+        "width": "200",
+        "file-order": "grid.png;grid2.png;grid3.png;grid4.png",
+        "insert": "carousel0",
+        "id": "carousel0",
+	"gutt44y": {
+		"id": "stuffer",
+		"tagname": "input",
+		"class": "carousel",
+		"onclick": "carousel('carousel0',false)",
+		"type": "button",
+		"innerText": "Testing this out",
+		"value": "left",
+		"interval": "1",
+		"file-index": "0",
+		"style": "justify-content:center;"
+	}
+    },
+    "br": {
+	"tagname": "br"
+    },
     "card": {
         "tagname": "carousel",
         "style": "height:200;width:400;",
         "file-index": "0",
-        "boxes": "3",
+        "boxes": "19",
+	"interval": "5",
+	"class": "carousel-vert",
         "delay": "5000",
         "height": "200",
         "width": "200",
-        "file-order": "grid.png;grid2.png;grid.png",
+        "file-order": "grid.png;grid2.png;grid3.png;grid4.png",
         "insert": "carousel1",
         "id": "carousel1"
     },
