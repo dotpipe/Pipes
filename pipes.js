@@ -215,24 +215,26 @@ function carousel(elem, auto = true)
         multiVert = 2;
     }
     var n = 0;
-    for (m = 0 ; m < elem.getAttribute("boxes") * multiVert ; m++) {
-        if (x.children.length < elem.getAttribute("boxes") * multiVert)
+    for (m = 0 ; m < x.getAttribute("boxes") * multiVert ; m++) {
+        if (x.children.length < x.getAttribute("boxes") * multiVert)
         {
             img = document.createElement("img");
             img.src = imgArray[(n)%imgArray.length];
             x.appendChild(img);
-	    n++;
+            n++;
             br = document.createElement("br");
-	    if (multiVert == 2)
-	            x.appendChild(br);
+            if (multiVert == 2)
+                    x.appendChild(br);
         }
-	else if (x.children.length >= x.getAttribute("boxes") * multiVert)
+        else if (x.children.length >= x.getAttribute("boxes") * multiVert)
         {
-	    if (x.children[Math.abs(j)%x.children.length].tagName == "BR")
-                j++;
-            x.children[Math.abs(j)%x.children.length].src = imgArray[i%imgArray.length];
-            i++;
-            j += 1;
+            if (x.children[Math.abs((j)%x.children.length)].tagName == "BR")
+                    j = (crement > 0) ? j + 1 : (j <= 0) ? (x.children.length - 1) : j - 1;
+
+            x.children[Math.abs((j)%x.children.length)].src = imgArray[Math.abs((i)%imgArray.length)];
+
+            i = (crement > 0) ? i + 1 : (i <= 0) ? (imgArray.length - 1) : i - 1;
+            j = (crement > 0) ? j + 1 : (j <= 0) ? (x.children.length - 1) : j - 1;
         }
     }
     var w = (i);
