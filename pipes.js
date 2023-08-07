@@ -340,11 +340,12 @@ function pipes(elem, stop = false) {
     }
     if (elem.hasAttribute("headers"))
     {
-        var optsArray = elem.getAttribute("headers").split("&");
-        optsArray.forEach((e,f) => {
-            var g = e.split(":");
-            headers.set(g[0], g[1]);
-        });
+        headers = elem;
+        // var optsArray = elem.getAttribute("headers").split("&");
+        // optsArray.forEach((e,f) => {
+        //     var g = e.split(":");
+        //     headers.set(g[0], g[1]);
+        // });
     }
     if (elem.hasAttribute("form-class"))
     {
@@ -385,25 +386,23 @@ function pipes(elem, stop = false) {
     navigate(elem, headers, query, formclass);
 }
 
-function setAJAXOpts(elem, opts)
+function setAJAXOpts(elem, opts = null)
 {
 
+    var opts = elem.getAttribute("headers").split("&");
+    opts.forEach((headers) => {
+        var g = headers.split(":");
+        opts.set(g[0], g[1]);
+    });
     // communicate properties of Fetch Request
     var method_thru = (opts["method"] !== undefined) ? opts["method"] : "GET";
     var mode_thru = (opts["mode"] !== undefined) ? opts["mode"]: "no-cors";
-    var cache_thru = (opts["cache"] !== undefined) ? opts["cache"]: "no-cache";
     var cred_thru = (opts["cred"] !== undefined) ? opts["cred"]: '{"Access-Control-Allow-Origin":"*"}';
     // updated "headers" attribute to more friendly "content-type" attribute
     var content_thru = (opts["content-type"] !== undefined) ? opts["content-type"]: '{"Content-Type":"text/html"}';
-    var redirect_thru = (opts["redirect"] !== undefined) ? opts["redirect"]: "manual";
-    var refer_thru = (opts["referrer"] !== undefined) ? opts["referrer"]: "referrer";
     opts.set("method", method_thru); // *GET, POST, PUT, DELETE, etc.
     opts.set("mode", mode_thru); // no-cors, cors, *same-origin
-    opts.set("cache", cache_thru); // *default, no-cache, reload, force-cache, only-if-cached
     opts.set("credentials", cred_thru); // include, same-origin, *omit
-    opts.set("content-type", content_thru); // content-type UPDATED**
-    opts.set("redirect", redirect_thru); // manual, *follow, error
-    opts.set("referrer", refer_thru); // no-referrer, *client
     opts.set('body', JSON.stringify(content_thru));
 
     return opts;
