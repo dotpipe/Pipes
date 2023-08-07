@@ -14,11 +14,21 @@
         "class": "redirect",
         "id": "ids-required"
     },
+    "car54": {
+        "id": "stuffer",
+        "tagname": "input",
+        "onclick": "carousel('carousel0',false)",
+        "type": "button",
+        "value": "left"
+    },
+    "br1": {
+	"tagname": "br"
+    },
     "car11": {
         "tagname": "carousel",
         "style": "height:200;width:400;",
         "file-index": "0",
-	"interval": "2",
+	"interval": "1",
         "boxes": "10",
 	"class": "carousel-auto-off",
         "delay": "3000",
@@ -26,36 +36,24 @@
         "width": "200",
         "file-order": "grid.png;grid2.png;grid3.png;grid4.png",
         "insert": "carousel0",
-        "id": "carousel0",
-	"gutt44y": {
-		"id": "stuffer",
-		"tagname": "input",
-		"class": "carousel",
-		"onclick": "carousel('carousel0',false)",
-		"type": "button",
-		"innerText": "Testing this out",
-		"value": "left",
-		"interval": "1",
-		"file-index": "0",
-		"style": "justify-content:center;"
-	}
+        "id": "carousel0"
     },
-    "br": {
+    "br2": {
 	"tagname": "br"
     },
     "card": {
         "tagname": "carousel",
         "style": "height:200;width:400;",
         "file-index": "0",
-        "boxes": "19",
-	"interval": "5",
-	"class": "carousel-vert",
+        "boxes": "10",
+        "interval": "1",
         "delay": "5000",
         "height": "200",
         "width": "200",
-        "file-order": "grid.png;grid2.png;grid3.png;grid4.png",
-        "insert": "carousel1",
-        "id": "carousel1"
+        "class": "carousel-vert",
+        "file-order": "grid.png;grid2.png;grid3.png;grid2.png;grid4.png;grid2.png;grid3.png",
+        "insert": "carousel2",
+        "id": "carousel2"
     },
     "gk": {
         "tagname": "timed",
