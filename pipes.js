@@ -83,7 +83,7 @@ let domContentLoad = (again = false) => {
         let auto = true;
         if (elem.classList.contains("carousel-auto-off"))
             auto = false;
-        setTimeout(carousel(elem.id, auto),elem.getAttribute("delay"));
+        setTimeout(carousel(elem, auto),elem.getAttribute("delay"));
     });
 
     let elementsArray_link = document.getElementsByTagName("lnk");
@@ -198,19 +198,20 @@ function fileOrder(elem)
 
 function carousel(elem, auto = true)
 {
-    elem = document.getElementById(elem);
+    if (typeof(elem) == "string")
+	elem = document.getElementById(elem);
     x = document.getElementById(elem.getAttribute("insert"));
-    var imgArray = elem.getAttribute("file-order").split(";");
+    var imgArray = x.getAttribute("file-order").split(";");
     var y = 1;
     var crement = 1;
-    if (elem.hasAttribute("interval"))
-        crement = parseInt(elem.getAttribute("interval"));
+//    if (elem.hasAttribute("interval"))
+//        crement = parseInt(elem.getAttribute("interval"));
     if (elem.classList.contains("decrIndex"))
-        crement = crement * (-1);
+        crement = (-1);
     var i = parseInt(x.getAttribute("file-index"));
     var j = 0;
     var multiVert = 1;
-    if (elem.classList.contains("carousel-vert"))
+    if (x.classList.contains("carousel-vert"))
     {
         multiVert = 2;
     }
@@ -221,15 +222,15 @@ function carousel(elem, auto = true)
             img = document.createElement("img");
             img.src = imgArray[(n)%imgArray.length];
             x.appendChild(img);
-            n++;
+	    n++;
             br = document.createElement("br");
-            if (multiVert == 2)
-                    x.appendChild(br);
+	    if (multiVert == 2)
+	            x.appendChild(br);
         }
-        else if (x.children.length >= x.getAttribute("boxes") * multiVert)
+	else if (x.children.length >= x.getAttribute("boxes") * multiVert)
         {
-            if (x.children[Math.abs((j)%x.children.length)].tagName == "BR")
-                    j = (crement > 0) ? j + 1 : (j <= 0) ? (x.children.length - 1) : j - 1;
+	    if (x.children[Math.abs((j)%x.children.length)].tagName == "BR")
+	            j = (crement > 0) ? j + 1 : (j <= 0) ? (x.children.length - 1) : j - 1;
 
             x.children[Math.abs((j)%x.children.length)].src = imgArray[Math.abs((i)%imgArray.length)];
 
@@ -237,10 +238,10 @@ function carousel(elem, auto = true)
             j = (crement > 0) ? j + 1 : (j <= 0) ? (x.children.length - 1) : j - 1;
         }
     }
-    var w = (i);
+    var w = (Math.abs(i));
     x.setAttribute("file-index", w%imgArray.length);
     var delay = elem.getAttribute("delay");
-    if (!elem.classList.contains("carousel-auto-off"))
+    if (!x.classList.contains("carousel-auto-off"))
     setTimeout(() => { carousel(elem.id, auto); },delay);
 }
 

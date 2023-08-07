@@ -15,23 +15,32 @@
         "id": "ids-required"
     },
     "car54": {
-        "id": "stuffer",
+        "id": "stuffer-left",
         "tagname": "input",
-        "onclick": "carousel('carousel0',false)",
+	"insert": "carousel0",
+	"class": "decrIndex",
+        "onclick": "carousel(this)",
         "type": "button",
         "value": "left"
     },
+    "car2n": {
+        "id": "stuffer-right",
+        "tagname": "input",
+        "onclick": "carousel(this)",
+        "type": "button",
+        "value": "right",
+	"file-index": "0",
+	"insert": "carousel0"
+    },
     "br1": {
-	    "tagname": "br"
+	"tagname": "br"
     },
     "car11": {
         "tagname": "carousel",
         "style": "height:200;width:400;",
         "file-index": "0",
-	    "interval": "1",
-        "boxes": "10",
-	    "class": "carousel-auto-off",
-        "delay": "3000",
+        "boxes": "11",
+	"class": "carousel-auto-off",
         "height": "200",
         "width": "200",
         "file-order": "grid.png;grid2.png;grid3.png;grid4.png",
@@ -39,18 +48,17 @@
         "id": "carousel0"
     },
     "br2": {
-	    "tagname": "br"
+	"tagname": "br"
     },
     "card": {
         "tagname": "carousel",
         "style": "height:200;width:400;",
         "file-index": "0",
         "boxes": "10",
-        "interval": "1",
         "delay": "5000",
         "height": "200",
         "width": "200",
-        "class": "carousel-vert",
+        "class": "carousel-vert decrIndex",
         "file-order": "grid.png;grid2.png;grid3.png;grid2.png;grid4.png;grid2.png;grid3.png",
         "insert": "carousel2",
         "id": "carousel2"
@@ -112,13 +120,13 @@
     "mo": {
         "tagname": "span",
         "display": "mo-id",
-	    "class": "mouse-over",
+	"class": "mouse-over",
         "textContent": "It was somewhere over here",
-	    "id": "mo-init",
+	"id": "mo-init",
         "guts": {
             "tagname": "dyn",
             "innerText": "Donate",
-	        "class": "redirect",
+	    "class": "redirect",
             "ajax": "https://www.paypal.me/pirodock",
             "style": "display:none",
             "id": "mo-id"
