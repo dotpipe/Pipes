@@ -215,16 +215,8 @@ function carousel(elem, auto = true)
         multiVert = 2;
     }
     var n = 0;
-    for (m = 0 ; m < elem.getAttribute("boxes") ; m++) {
-	if (x.children.length >= x.getAttribute("boxes"))
-        {
-	    while (x.children[Math.abs(j)%parseInt(elem.getAttribute("boxes"))].tagName == "BR")
-                j++;
-            x.children[Math.abs(j)%parseInt(elem.getAttribute("boxes"))].src = imgArray[i%imgArray.length];
-            i++;
-            j += 1;
-        }
-        else if (x.children.length <= elem.getAttribute("boxes") )
+    for (m = 0 ; m < elem.getAttribute("boxes") * multiVert ; m++) {
+        if (x.children.length < elem.getAttribute("boxes") * multiVert)
         {
             img = document.createElement("img");
             img.src = imgArray[(n)%imgArray.length];
@@ -234,11 +226,19 @@ function carousel(elem, auto = true)
 	    if (multiVert == 2)
 	            x.appendChild(br);
         }
+	else if (x.children.length >= x.getAttribute("boxes") * multiVert)
+        {
+	    if (x.children[Math.abs(j)%x.children.length].tagName == "BR")
+                j++;
+            x.children[Math.abs(j)%x.children.length].src = imgArray[i%imgArray.length];
+            i++;
+            j += 1;
+        }
     }
     var w = (i);
     x.setAttribute("file-index", w%imgArray.length);
     var delay = elem.getAttribute("delay");
-    if (auto == true)
+    if (!elem.classList.contains("carousel-auto-off"))
     setTimeout(() => { carousel(elem.id, auto); },delay);
 }
 
