@@ -201,66 +201,66 @@ function fileOrder(elem)
 
 function carousel(elem, auto = true)
 {
-	if (typeof(elem) == "string")
-		elem = document.getElementById(elem);
-	x = document.getElementById(elem.getAttribute("insert"));
-	var mArray = x.getAttribute("file-order").split(";");
-	var y = 1;
-	var crement = 1;
-	if (elem.classList.contains("decrIndex"))
-		crement = (-1);
+    if (typeof(elem) == "string")
+	elem = document.getElementById(elem);
+    x = document.getElementById(elem.getAttribute("insert"));
+    var mArray = x.getAttribute("file-order").split(";");
+    var y = 1;
+    var crement = 1;
+    if (elem.classList.contains("decrIndex"))
+        crement = (-1);
 	var i = (parseInt(x.getAttribute("file-index"))) ?? 0;
-	var j = 0;
-	var multiVert = 1;
-	if (x.classList.contains("carousel-vert"))
-	{
-		multiVert = 2;
-	}
+    var j = 0;
+    var multiVert = 1;
+    if (x.classList.contains("carousel-vert"))
+    {
+        multiVert = 2;
+    }
 	while (x.children.length)
-	{
+        {
 		x.removeChild(x.children[0]);
-	}
+        }
 	var m = 0;
 	for (n = 0 ; x.children.length < x.getAttribute("boxes") * multiVert ; n++)
 	{
 		if ((x.classList.contains("carousel-ajax") || elem.classList.contains("carousel-ajax")) && x.children.length < elem.getAttribute("boxes"))
-	        {
-	                p = document.createElement("pipe");
-	                p.setAttribute("ajax", mArray[i%mArray.length]);
-	                p.setAttribute("insert", "self_" + n);
-	                p.classList.toggle("modala");
-	                p.id = "self_" + n;
+                {
+                        p = document.createElement("pipe");
+                        p.setAttribute("ajax", mArray[i%mArray.length]);
+                        p.setAttribute("insert", "self_" + n);
+                        p.classList.toggle("modala");
+                        p.id = "self_" + n;
 	                x.appendChild(p);
-	                if (multiVert == 2)
+                        if (multiVert == 2)
 			{
 		                br = document.createElement("br");
-	                        x.appendChild(br);
-			}
-	                i = (crement > 0) ? i + 1 : (i <= 0) ? (mArray.length - 1) : i - 1;
+                                x.appendChild(br);
+                }
+                        i = (crement > 0) ? i + 1 : (i <= 0) ? (mArray.length - 1) : i - 1;
 			domContentLoad();
-	        }
+    }
 		else if ((!x.classList.contains("carousel-ajax") && !elem.classList.contains("carousel-ajax")))
-		{
-			img = document.createElement("img");
+            {
+                img = document.createElement("img");
 			img.src = mArray[i%mArray.length];
-			x.appendChild(img);
+                x.appendChild(img);
 			i = (crement > 0) ? i + 1 : (i <= 0) ? (mArray.length - 1) : i - 1;
-			br = document.createElement("br");
-			if (multiVert == 2)
+                br = document.createElement("br");
+                if (multiVert == 2)
 			{
 				n++;
-				x.appendChild(br);
-			}
-		}
-	}
+                    x.appendChild(br);
+            }
+        }
+    }
 	while (x.children.length > x.getAttribute("boxes") * multiVert)
 		x.removeChild(x.children[x.children.length-1]);
 
-	var w = (Math.abs(i));
+    var w = (Math.abs(i));
 	x.setAttribute("file-index", w%mArray.length);
-	var delay = elem.getAttribute("delay");
-	if (!x.classList.contains("carousel-auto-off"))
-		setTimeout(() => { carousel(elem.id, auto); },delay);
+    var delay = elem.getAttribute("delay");
+    if (!x.classList.contains("carousel-auto-off"))
+        setTimeout(() => { carousel(elem.id, auto); },delay);
 }
 
 function fileShift(elem)
