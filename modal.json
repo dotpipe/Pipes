@@ -17,20 +17,18 @@
     "car54": {
         "id": "stuffer-left",
         "tagname": "input",
-	"insert": "carousel0",
-	"class": "decrIndex",
-        "onclick": "carousel(this)",
+	"class": "decrIndex carousel-ajax",
+        "onclick": "carousel('carousel0')",
         "type": "button",
-        "value": "left"
+        "value": "up"
     },
     "car2n": {
         "id": "stuffer-right",
         "tagname": "input",
-        "onclick": "carousel(this)",
+        "onclick": "carousel('carousel0')",
         "type": "button",
-        "value": "right",
-	"file-index": "0",
-	"insert": "carousel0"
+        "value": "down",
+	"file-index": "0"
     },
     "br1": {
 	"tagname": "br"
@@ -39,11 +37,11 @@
         "tagname": "carousel",
         "style": "height:200;width:400;",
         "file-index": "0",
-        "boxes": "11",
-	"class": "carousel-auto-off",
+        "boxes": "7",
+	"class": "carousel-auto-off carousel-ajax",
         "height": "200",
         "width": "200",
-        "file-order": "grid.png;grid2.png;grid3.png;grid4.png",
+        "file-order": "modala.json;modala.json;modala2.json",
         "insert": "carousel0",
         "id": "carousel0"
     },

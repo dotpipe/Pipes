@@ -1,0 +1,17 @@
+{
+    "tagname": "div",
+    "lnk1": {
+        "tagname": "lnk",
+        "ajax": "https:\/\/github.com\/wise-penny\/pipes",
+        "textContent": "GitHub + ",
+        "class": "redirect",
+        "id": "necessary"
+    },
+    "lnk2": {
+        "tagname": "lnk",
+        "ajax": "https:\/\/paypal.me\/pirodock",
+       "textContent": "Donate",
+        "class": "redirect",
+        "id": "ids-required"
+    }
+}

@@ -1,102 +1,119 @@
 {
-    "tagname": "div",
-    "lnk1": {
-        "tagname": "lnk",
-        "ajax": "https:\/\/github.com\/wise-penny\/pipes",
-        "textContent": "GitHub + ",
-        "class": "redirect",
-        "id": "necessary"
-    },
-    "lnk2": {
-        "tagname": "lnk",
-        "ajax": "https:\/\/paypal.me\/pirodock",
-        "textContent": "Donate to the framework",
-        "class": "redirect",
-        "id": "ids-required"
-    },
-    "br2": {
-	"tagname": "br"
-    },
-    "card": {
-        "tagname": "carousel",
-        "style": "height:200;width:400;",
-        "file-index": "0",
-        "boxes": "10",
-	"interval": "2",
-        "delay": "5000",
-        "height": "200",
-        "width": "200",
-	"class": "carousel-vert",
-        "file-order": "grid4.png;grid3.png;grid2.png;grid.png;grid4.png;grid3.png;grid2.png",
-        "insert": "carousel3",
-        "id": "carousel3"
-    },
-    "gk": {
-        "tagname": "timed",
-        "class": "set-attr",
-        "set-attr": "value",
-        "delay": "3000",
-        "ajax": "button_src.php",
-        "insert": "gutty-button",
-        "id": "timer1"
-    },
-    "h": {
-        "tagname": "div",
-        "style": "height:150;width:200;background-color:#abcdef;",
-        "textContent": "technically *I* was floating",
-        "class": "oiwfiriro",
-        "guts": {
-            "tagname": "p",
-            "innerText": "eowfwuioe",
-            "style": "justify-content:center;color:#ffffff;width:96%;border:#ffffff solid;",
-            "gutty": {
-                "tagname": "input",
-                "id": "gutty-button",
-                "type": "button",
-                "value": "eowfwuioe",
-                "style": "justify-content:center;"
-            }
-        },
-        "guts1": {
-            "tagname": "p",
-            "innerText": "eowfwuioe",
-            "style": "justify-content:center;color:#ffffff;width:96%;border:#ffffff solid;",
-            "gutty": {
-                "tagname": "input",
-                "type": "button",
-                "value": "eowfwuioe",
-                "style": "justify-content:center;"
-            }
-        }
-    },
-    "g": {
-        "tagname": "div",
-        "style": "height:150;width:200;background-color:#abcdef;",
-        "textContent": "technically *I* was floating",
-        "guts": {
-            "tagname": "p",
-            "innerText": "eowfwuioe",
-            "style": "justify-content:center;color:#ffffff;width:96%;border:#ffffff solid;",
-            "gutty": {
-                "tagname": "input",
-                "type": "button",
-                "value": "eowfwuioe",
-                "style": "justify-content:center;"
-            }
-        }
-    },
-    "mo": {
-        "tagname": "span",
-        "display": "mo-id1",
-        "textContent": "It was somewhere over here",
-	"id": "mid",
-	"class": "mouse-over",
-        "guts": {
-            "tagname": "a",
-            "innerText": "Donate",
-            "ajax": "http://www.paypal.me/pirodock",
-            "style": "display:none",
-            "id": "mo-id1"
-        }
-    }
+	"tagname": "table",
+	"tr0": {
+		"tagname": "tr",
+		"th00": {
+			"tagname": "th",
+			"lnk1": {
+				"tagname": "lnk",
+				"ajax": "https:\/\/github.com\/wise-penny\/pipes",
+				"textContent": "GitHub + ",
+				"class": "redirect",
+				"id": "necessary"
+			}
+		},
+		"th01": {
+			"tagname" : "th",
+			"lnk2": {
+				"tagname": "lnk",
+				"ajax": "https:\/\/paypal.me\/pirodock",
+				"textContent": "Donate to the framework",
+				"class": "redirect",
+				"id": "ids-required"
+			}
+		}
+	},
+	"tr1": {
+		"tagname": "tr",
+		"td10": {
+			"tagname": "td",
+			"card": {
+				"tagname": "carousel",
+				"style": "height:100%;width:200;vertical-align:bottom",
+				"file-index": "0",
+				"boxes": "6",
+				"interval": "2",
+				"delay": "5000",
+				"height": "200",
+				"width": "200",
+				"class": "carousel-vert",
+				"file-order": "grid4.png;grid3.png;grid2.png;grid.png;grid4.png;grid3.png;grid2.png",
+				"insert": "carousel3",
+				"id": "carousel3"
+			}
+		},
+		"td11": {
+			"tagname": "td",
+			"gk": {
+				"tagname": "timed",
+				"class": "set-attr",
+				"set-attr": "value",
+				"delay": "3000",
+				"ajax": "button_src.php",
+				"insert": "gutty-button",
+				"id": "timer1"
+			},
+			"h": {
+				"tagname": "div",
+				"style": "justify-content:center;padding:3px;border: 1px solid black;height:150;width:200;background-color:#abcdef;",
+				"textContent": "technically *I* was floating",
+				"class": "oiwfiriro",
+				"guts": {
+					"tagname": "p",
+					"innerText": "eowfwuioe",
+					"style": "justify-content:center;color:#ffffff;width:96%;border:2px solid black;",
+					"gutty": {
+						"tagname": "input",
+						"id": "gutty-button",
+						"type": "button",
+						"value": "eowfwuioe",
+						"style": "justify-content:center;"
+					}
+				},
+				"guts1": {
+					"tagname": "p",
+					"innerText": "eowfwuioe",
+					"style": "justify-content:center;color:#ffffff;width:96%;border:2px solid black;",
+					"gutty": {
+					        "tagname": "input",
+					        "type": "button",
+					        "value": "eowfwuioe",
+					        "style": "justify-content:center;"
+					}
+				},
+				"g": {
+					"tagname": "div",
+					"style": "height:150;width:200;background-color:#abcdef;",
+					"textContent": "technically *I* was floating",
+					"guts": {
+					    "tagname": "p",
+					    "innerText": "eowfwuioe",
+					    "style": "justify-content:center;color:#ffffff;width:96%;border:2px solid black;",
+					    "gutty": {
+							"tagname": "input",
+							"type": "button",
+							"value": "eowfwuioe",
+							"style": "justify-content:center;"
+						}
+					}
+				},
+				"mo": {
+					"tagname": "span",
+					"display": "mo-id1",
+					"textContent": "It was somewhere over here",
+					"id": "mid",
+					"class": "mouse-over",
+					"guts": {
+					    "tagname": "a",
+					    "innerText": "Donate",
+					    "ajax": "http://www.paypal.me/pirodock",
+					    "style": "display:none",
+					    "id": "mo-id1"
+					}
+				}
+			}
+		}
+	}
 }
+
+
