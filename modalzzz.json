@@ -84,13 +84,13 @@
     "mo": {
         "tagname": "span",
         "display": "mo-id1",
-	    "class": "mouse-over",
+        "class": "mouse-over",
         "textContent": "It was somewhere over here",
-	"id": "mo-init1",
+        "id": "mo-init1",
         "guts": {
             "tagname": "dyn",
             "innerText": "Donate",
-	        "class": "redirect",
+            "class": "redirect",
             "ajax": "https://www.paypal.me/pirodock",
             "style": "display:none",
             "id": "mo-id1"

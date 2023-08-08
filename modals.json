@@ -13,7 +13,7 @@
 			}
 		},
 		"th01": {
-			"tagname" : "th",
+			"tagname": "th",
 			"lnk2": {
 				"tagname": "lnk",
 				"ajax": "https:\/\/paypal.me\/pirodock",
@@ -75,10 +75,10 @@
 					"innerText": "eowfwuioe",
 					"style": "justify-content:center;color:#ffffff;width:96%;border:2px solid black;",
 					"gutty": {
-					        "tagname": "input",
-					        "type": "button",
-					        "value": "eowfwuioe",
-					        "style": "justify-content:center;"
+						"tagname": "input",
+						"type": "button",
+						"value": "eowfwuioe",
+						"style": "justify-content:center;"
 					}
 				},
 				"g": {
@@ -86,10 +86,10 @@
 					"style": "height:150;width:200;background-color:#abcdef;",
 					"textContent": "technically *I* was floating",
 					"guts": {
-					    "tagname": "p",
-					    "innerText": "eowfwuioe",
-					    "style": "justify-content:center;color:#ffffff;width:96%;border:2px solid black;",
-					    "gutty": {
+						"tagname": "p",
+						"innerText": "eowfwuioe",
+						"style": "justify-content:center;color:#ffffff;width:96%;border:2px solid black;",
+						"gutty": {
 							"tagname": "input",
 							"type": "button",
 							"value": "eowfwuioe",
@@ -104,16 +104,14 @@
 					"id": "mid",
 					"class": "mouse-over",
 					"guts": {
-					    "tagname": "a",
-					    "innerText": "Donate",
-					    "ajax": "http://www.paypal.me/pirodock",
-					    "style": "display:none",
-					    "id": "mo-id1"
+						"tagname": "a",
+						"innerText": "Donate",
+						"ajax": "http://www.paypal.me/pirodock",
+						"style": "display:none",
+						"id": "mo-id1"
 					}
 				}
 			}
 		}
 	}
 }
-
-

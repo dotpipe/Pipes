@@ -17,7 +17,7 @@
     "car54": {
         "id": "stuffer-left",
         "tagname": "input",
-	"class": "decrIndex carousel-ajax",
+        "class": "decrIndex carousel-ajax",
         "onclick": "carousel('carousel0')",
         "type": "button",
         "value": "up"
@@ -28,17 +28,17 @@
         "onclick": "carousel('carousel0')",
         "type": "button",
         "value": "down",
-	"file-index": "0"
+        "file-index": "0"
     },
     "br1": {
-	"tagname": "br"
+        "tagname": "br"
     },
     "car11": {
         "tagname": "carousel",
         "style": "height:200;width:400;",
         "file-index": "0",
         "boxes": "7",
-	"class": "carousel-auto-off carousel-ajax",
+        "class": "carousel-auto-off carousel-ajax",
         "height": "200",
         "width": "200",
         "file-order": "modala.json;modala.json;modala2.json",
@@ -46,7 +46,7 @@
         "id": "carousel0"
     },
     "br2": {
-	"tagname": "br"
+        "tagname": "br"
     },
     "card": {
         "tagname": "carousel",
@@ -118,13 +118,13 @@
     "mo": {
         "tagname": "span",
         "display": "mo-id",
-	"class": "mouse-over",
+        "class": "mouse-over",
         "textContent": "It was somewhere over here",
-	"id": "mo-init",
+        "id": "mo-init",
         "guts": {
             "tagname": "dyn",
             "innerText": "Donate",
-	    "class": "redirect",
+            "class": "redirect",
             "ajax": "https://www.paypal.me/pirodock",
             "style": "display:none",
             "id": "mo-id"
