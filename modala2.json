@@ -9,9 +9,9 @@
     },
     "lnk2": {
         "tagname": "img",
-	"src": "grid3.png",
+        "src": "grid3.png",
         "ajax": "https:\/\/paypal.me\/pirodock",
-	"style": "color:crimson;",
+        "style": "color:crimson;",
         "textContent": "Donate to the cause!",
         "class": "redirect pipe",
         "id": "ids-required"

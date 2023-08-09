@@ -36,19 +36,18 @@
 			"tagname": "tr",
 			"td00": {
 				"tagname": "th",
-
 				"car11": {
-				        "tagname": "carousel",
-				        "style": "height:200;width:400;",
-				        "file-index": "0",
-				        "boxes": "7",
-				        "class": "carousel-auto-off carousel-ajax",
-				        "height": "200",
-				        "width": "200",
+					"tagname": "carousel",
+					"style": "height:200;width:400;",
+					"file-index": "0",
+					"boxes": "7",
+					"class": "carousel-auto-off carousel-ajax",
+					"height": "200",
+					"width": "200",
 					"interval": "2",
-				        "file-order": "modala.json;modala.json;modala2.json",
-				        "insert": "carousel0",
-				        "id": "carousel0"
+					"file-order": "modala.json;modala.json;modala2.json",
+					"insert": "carousel0",
+					"id": "carousel0"
 				}
 			},
 			"td01": {
@@ -109,9 +108,9 @@
 		}
 	},
 	"g": {
-	"tagname": "div",
-	"style": "height:150;width:200;background-color:#abcdef;",
-	"textContent": "technically *I* was floating",
+		"tagname": "div",
+		"style": "height:150;width:200;background-color:#abcdef;",
+		"textContent": "technically *I* was floating",
 		"guts": {
 			"tagname": "p",
 			"innerText": "eowfwuioe",

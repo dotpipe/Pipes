@@ -75,16 +75,14 @@ let domContentLoad = (again = false) => {
             return;
         elem.classList.toggle("pipe-active");
         elem.addEventListener("click", function () {
-		if (elem.classList.contains("dyn-one") && !elem.classList.contains("dyn-done"))
-		{
-			elem.classList.toggle("dyn-done");
-			pipes(elem);
-			return;
-		}
-		else if (elem.classList.contains("dyn-one") && elem.classList.contains("dyn-done"))
-		{}
-		else
-			pipes(elem);
+            if (elem.classList.contains("dyn-one") && !elem.classList.contains("dyn-done")) {
+                elem.classList.toggle("dyn-done");
+                pipes(elem);
+                return;
+            }
+            else if (elem.classList.contains("dyn-one") && elem.classList.contains("dyn-done")) { }
+            else
+                pipes(elem);
         });
     });
 
@@ -218,34 +216,33 @@ function carousel(elem, auto = true) {
     if (elem.classList.contains("decrIndex"))
         crement = (-1);
     var i = (parseInt(x.getAttribute("file-index"))) ?? 0;
-    var j = parseInt(x.getAttribute("interval")) ?? 1;
+    var j = (parseInt(x.getAttribute("interval"))) ?? 1;
     var multiVert = 1;
     if (x.classList.contains("carousel-vert")) {
         multiVert = 2;
     }
-    while (x.children.length)
-    {
+    while (x.children.length) {
         x.removeChild(x.children[0]);
     }
     var m = 0;
     for (n = 0; x.children.length < x.getAttribute("boxes") * multiVert; n++) {
         if ((x.classList.contains("carousel-ajax") || elem.classList.contains("carousel-ajax"))) // && x.children.length < elem.getAttribute("boxes")) {
-	{
-	    p = document.createElement("p");
+        {
+            p = document.createElement("p");
             p.setAttribute("ajax", mArray[(i + j) % mArray.length]);
             p.setAttribute("insert", "self_" + x.children.length + 1);
             p.classList.toggle("modala");
             p.id = "self_" + x.children.length + 1;
-	    p.setAttribute("onclick","pipes(this)");
-	    p.click();
-	    p.removeAttribute("onclick");
+            p.setAttribute("onclick", "pipes(this)");
+            p.click();
+            p.removeAttribute("onclick");
             x.appendChild(p);
             if (multiVert == 2) {
                 br = document.createElement("br");
                 x.appendChild(br);
             }
             i = (crement > 0) ? i + 1 : (i <= 0) ? (mArray.length - 1) : i - 1;
-            
+
         }
         else if ((!x.classList.contains("carousel-ajax") && !elem.classList.contains("carousel-ajax"))) {
             img = document.createElement("img");

@@ -10,7 +10,7 @@
     "lnk2": {
         "tagname": "lnk",
         "ajax": "https:\/\/paypal.me\/pirodock",
-       "textContent": "Donate",
+        "textContent": "Donate",
         "class": "redirect",
         "id": "ids-required"
     }
