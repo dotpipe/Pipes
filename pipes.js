@@ -16,6 +16,8 @@
   *  <lnk>.............= tag for clickable link <lnk ajax="goinghere.html" query="key0:value0;">
   *  <pipe>............= Tag (initializes on DOMContentLoaded Event) ex: <pipe ajax="foo.bar" query="key0:value0;" insert="someID">
   *  <dyn>.............= Automatic eventListening tag for onclick="pipes(this)" ex: <dyn ajax="foo.bar" query="key0:value0;" insert="someID">
+  *  dyn-one...........= class for <dyn> tag to only allow one-click to be accepted
+  *  plain-text........= plain text returned to the insertion point
   *  <timed>...........= Timed result refreshing tags (Keep up-to-date handling on page) ex: <timed ajax="foo.bar" delay="3000" query="key0:value0;" insert="someID">
   *  delay.............= delay between <timed> tag refreshes (required for <timed> tag) ex: see <timed>
   *  <carousel>........= Tag to create a carousel that moves every a timeOut() delay="x" occurs ex: <carousel ajax="foo.bar" file-order="foo.bar;bar.foo;foobar.barfoo" delay="3000" id="thisId" insert="thisId" height="100" width="100" boxes="8" style="height:100;width:800">
@@ -71,9 +73,18 @@ let domContentLoad = (again = false) => {
     Array.from(elementsArray_dyn).forEach(function (elem) {
         if (elem.classList.contains("pipe-active"))
             return;
-        elem.classList.toggle("pipe-active")
+        elem.classList.toggle("pipe-active");
         elem.addEventListener("click", function () {
-            pipes(elem);
+		if (elem.classList.contains("dyn-one") && !elem.classList.contains("dyn-done"))
+		{
+			elem.classList.toggle("dyn-done");
+			pipes(elem);
+			return;
+		}
+		else if (elem.classList.contains("dyn-one") && elem.classList.contains("dyn-done"))
+		{}
+		else
+			pipes(elem);
         });
     });
 
@@ -197,33 +208,38 @@ function carousel(elem, auto = true) {
     if (elem.classList.contains("decrIndex"))
         crement = (-1);
     var i = (parseInt(x.getAttribute("file-index"))) ?? 0;
-    var j = 0;
+    var j = parseInt(x.getAttribute("interval")) ?? 1;
     var multiVert = 1;
     if (x.classList.contains("carousel-vert")) {
         multiVert = 2;
     }
-    while (x.children.length) {
+    while (x.children.length)
+    {
         x.removeChild(x.children[0]);
     }
     var m = 0;
     for (n = 0; x.children.length < x.getAttribute("boxes") * multiVert; n++) {
-        if ((x.classList.contains("carousel-ajax") || elem.classList.contains("carousel-ajax")) && x.children.length < elem.getAttribute("boxes")) {
-            p = document.createElement("pipe");
-            p.setAttribute("ajax", mArray[i % mArray.length]);
-            p.setAttribute("insert", "self_" + n);
+        if ((x.classList.contains("carousel-ajax") || elem.classList.contains("carousel-ajax"))) // && x.children.length < elem.getAttribute("boxes")) {
+	{
+	    p = document.createElement("p");
+            p.setAttribute("ajax", mArray[(i + j) % mArray.length]);
+            p.setAttribute("insert", "self_" + x.children.length + 1);
             p.classList.toggle("modala");
-            p.id = "self_" + n;
+            p.id = "self_" + x.children.length + 1;
+	    p.setAttribute("onclick","pipes(this)");
+	    p.click();
+	    p.removeAttribute("onclick");
             x.appendChild(p);
             if (multiVert == 2) {
                 br = document.createElement("br");
                 x.appendChild(br);
             }
             i = (crement > 0) ? i + 1 : (i <= 0) ? (mArray.length - 1) : i - 1;
-            domContentLoad();
+            
         }
         else if ((!x.classList.contains("carousel-ajax") && !elem.classList.contains("carousel-ajax"))) {
             img = document.createElement("img");
-            img.src = mArray[i % mArray.length];
+            img.src = mArray[(i + j) % mArray.length];
             x.appendChild(img);
             i = (crement > 0) ? i + 1 : (i <= 0) ? (mArray.length - 1) : i - 1;
             br = document.createElement("br");
@@ -233,7 +249,7 @@ function carousel(elem, auto = true) {
             }
         }
     }
-    while (x.children.length > x.getAttribute("boxes") * multiVert)
+    while ((x.classList.contains("carousel-ajax") || elem.classList.contains("carousel-ajax")) && x.children.length > x.getAttribute("boxes") * multiVert)
         x.removeChild(x.children[x.children.length - 1]);
 
     var w = (Math.abs(i));
@@ -428,7 +444,28 @@ function navigate(elem, opts = null, query = "", classname = "") {
     rawFile.open(opts.get("method"), elem_qstring, true);
     console.log(elem);
 
-    if (elem.classList.contains("json")) {
+    if (elem.classList.contains("plain-text")) {
+        rawFile.onreadystatechange = function () {
+            if (rawFile.readyState === 4) {
+                var allText = "";// JSON.parse(rawFile.responseText);
+                try {
+                    allText = JSON.parse(rawFile.responseText);
+                    if (elem.hasAttribute("callback")) {
+                        var func = elem.getAttribute("callback");
+                        this[func](allText);
+                    }
+                    if (elem.hasAttribute("insert")) {
+                        document.getElementById(elem.getAttribute("insert")).textContent = (rawFile.responseText);
+                    }
+                    return allText;
+                }
+                catch (e) {
+                    console.log("Response not a JSON");
+                }
+            }
+        }
+    }
+    else if (elem.classList.contains("json")) {
         rawFile.onreadystatechange = function () {
             if (rawFile.readyState === 4) {
                 var allText = "";// JSON.parse(rawFile.responseText);
@@ -471,7 +508,7 @@ function navigate(elem, opts = null, query = "", classname = "") {
                 allText = JSON.parse(rawFile.responseText);
                 console.log(allText);
                 var x = document.getElementById(elem.getAttribute("insert"));
-                modala(allText, x);
+                modala(allText, elem.getAttribute("insert"));
                 if (elem.hasAttribute("callback")) {
                     var func = elem.getAttribute("callback");
                     this[func](allText);

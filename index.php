@@ -11,7 +11,7 @@ Modala Demonstration -
 <br>
 <pipe id="mod" class="modala" ajax="./modals.json" insert="hed-mod"></pipe>
 <span id="hed" style="width:100%"></span><br>
-<button onclick="pipes(this)" id="mod" class="modala" ajax="./modal.json" insert="hed">Load Bottom</button><br>
+<dyn id="mod" class="dyn-one modala" ajax="./modal.json" insert="hed">Load Bottom</dyn><br>
 </body>
 
 <pipe insert="txt" class="json" ajax="./modal.json" id="t"></pipe>

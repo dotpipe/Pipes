@@ -3,13 +3,14 @@
     "lnk1": {
         "tagname": "lnk",
         "ajax": "https:\/\/github.com\/wise-penny\/pipes",
-        "textContent": "Click to get yours ",
+        "textContent": "Click to get yours & ",
         "class": "redirect",
         "id": "necessary"
     },
     "lnk2": {
         "tagname": "lnk",
         "ajax": "https:\/\/paypal.me\/pirodock",
+	"style": "color:crimson;",
         "textContent": "Donate to the cause!",
         "class": "redirect",
         "id": "ids-required"

@@ -41,6 +41,7 @@
         "class": "carousel-auto-off carousel-ajax",
         "height": "200",
         "width": "200",
+	"interval": "2",
         "file-order": "modala.json;modala.json;modala2.json",
         "insert": "carousel0",
         "id": "carousel0"
@@ -56,6 +57,7 @@
         "delay": "5000",
         "height": "200",
         "width": "200",
+	"interval": "3",
         "class": "carousel-vert decrIndex",
         "file-order": "grid.png;grid2.png;grid3.png;grid2.png;grid4.png;grid2.png;grid3.png",
         "insert": "carousel2",
