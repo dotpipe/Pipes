@@ -121,6 +121,16 @@ let domContentLoad = (again = false) => {
             pipes(elem, true);
         });
     });
+
+    let elementsArray_p = document.getElementsByClassName("pipe");
+    Array.from(elementsArray_p).forEach(function (elem) {
+        if (elem.classList.contains("pipe-active"))
+            return;
+        elem.classList.toggle("pipe-active")
+        elem.addEventListener("click", function () {
+            pipes(elem, false);
+        });
+    });
 }
 
 // modala(jsonObj,rootNode)
@@ -389,7 +399,7 @@ function setAJAXOpts(elem, opts) {
 
     // communicate properties of Fetch Request
     var method_thru = (opts["method"] !== undefined) ? opts["method"] : "GET";
-    var mode_thru = (opts["mode"] !== undefined) ? opts["mode"] : "no-cors";
+    var mode_thru = (opts["mode"] !== undefined) ? opts["mode"] : '{"Access-Control-Allow-Origin":"*"}';
     var cache_thru = (opts["cache"] !== undefined) ? opts["cache"] : "no-cache";
     var cred_thru = (opts["cred"] !== undefined) ? opts["cred"] : '{"Access-Control-Allow-Origin":"*"}';
     // updated "headers" attribute to more friendly "content-type" attribute
