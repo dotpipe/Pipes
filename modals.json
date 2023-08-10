@@ -112,6 +112,15 @@
 					}
 				}
 			}
+		},
+		"td": {
+			"tagname": "td",
+			"td0": {
+				"tagname": "img",
+				"src": "btcqr.png",
+				"width": "200",
+				"height": "200"
+			}
 		}
 	}
 }

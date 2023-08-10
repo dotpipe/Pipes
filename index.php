@@ -1,5 +1,18 @@
 <!DOCTYPE html>
+<head><title>PipesJS+Modala</title>
+<style>
+.pipe-grid {
+	display: inline-grid;
+	grid-template-columns: auto auto auto;
+	grid-gap:10px;
+}
 
+.pipe-grid-child {
+	border-radius: 50% 20% / 10% 40%;
+	vertical-align: center;
+}
+</style>
+</head>
 <script src="pipes.js"></script>
 
 <body>
@@ -10,8 +23,8 @@ Modala Demonstration -
 <br>
 <br>
 <pipe id="mod" class="modala" ajax="./modals.json" insert="hed-mod"></pipe>
-<span id="hed" style="width:100%"></span><br>
-<dyn id="mod" class="dyn-one modala" ajax="./modal.json" insert="hed">Load Bottom</dyn><br>
+<div id="hed" class="pipe-grid" style="width:100%"></div><br>
+<button id="mod" class="dyn-one pipe modala" ajax="./modal.json" insert="hed">Load Bottom</button><br>
 </body>
 
 <pipe insert="txt" class="json" ajax="./modal.json" id="t"></pipe>

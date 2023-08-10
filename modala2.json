@@ -1,19 +1,19 @@
 {
-    "tagname": "div",
-    "lnk1": {
-        "tagname": "lnk",
-        "ajax": "https:\/\/github.com\/wise-penny\/pipes",
-        "textContent": "Click to get yours & ",
-        "class": "redirect",
-        "id": "necessary"
-    },
-    "lnk2": {
-        "tagname": "img",
-        "src": "grid3.png",
-        "ajax": "https:\/\/paypal.me\/pirodock",
-        "style": "color:crimson;",
-        "textContent": "Donate to the cause!",
-        "class": "redirect pipe",
-        "id": "ids-required"
-    }
+	"lnk1": {
+		"tagname": "lnk",
+		"ajax": "https:\/\/github.com\/wise-penny\/pipes",
+		"textContent": "Click to get yours & ",
+		"class": "redirect pipe-grid-child",
+		"id": "necessary"
+	},
+	"lnk2": {
+		"tagname": "img",
+		"src": "grid3.png",
+		"ajax": "https:\/\/paypal.me\/pirodock",
+		"style": "color:crimson",
+		"textContent": "Donate to the cause!",
+		"class": "redirect pipe-grid-child pipe",
+		"id": "ids-required"
+	}
 }
+

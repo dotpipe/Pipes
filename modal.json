@@ -27,31 +27,29 @@
 		"tagname": "input",
 		"onclick": "carousel('carousel0')",
 		"type": "button",
-		"value": "down",
-		"file-index": "0"
+		"value": "down"
 	},
+	"br1": { "tagname": "br" },
+
 	"table": {
-		"tagname": "table",
-		"tr0": {
-			"tagname": "tr",
-			"td00": {
-				"tagname": "th",
-				"car11": {
-					"tagname": "carousel",
-					"style": "height:200;width:400;",
-					"file-index": "0",
-					"boxes": "7",
-					"class": "carousel-auto-off carousel-ajax",
-					"height": "200",
-					"width": "200",
-					"interval": "2",
-					"file-order": "modala.json;modala.json;modala2.json",
-					"insert": "carousel0",
-					"id": "carousel0"
-				}
-			},
+		"tagname": "div",
+		"class": "pipe-grid",
+		"car11": {
+			"tagname": "carousel",
+			"style": "",
+			"file-index": "0",
+			"boxes": "7",
+			"class": "carousel-auto-off carousel-ajax",
+			"interval": "2",
+			"file-order": "modala.json;modala.json;modala2.json",
+			"insert": "carousel0",
+			"id": "carousel0"
+		},
+		"tr1": {
+			"tagname": "div",
 			"td01": {
-				"tagname": "td",
+				"tagname": "div",
+				"class": "pipe-grid-child",
 				"card": {
 					"tagname": "carousel",
 					"style": "height:200;width:400;",
@@ -67,75 +65,75 @@
 					"id": "carousel2"
 				}
 			}
-		}
-	},
-	"gk": {
-		"tagname": "timed",
-		"class": "set-attr",
-		"set-attr": "value",
-		"delay": "3000",
-		"ajax": "button_src.php",
-		"insert": "gutty-button",
-		"id": "timer1"
-	},
-	"h": {
-		"tagname": "div",
-		"style": "height:150;width:200;background-color:#abcdef;",
-		"textContent": "technically *I* was floating",
-		"class": "oiwfiriro",
-		"guts": {
-			"tagname": "p",
-			"innerText": "eowfwuioe",
-			"style": "justify-content:center;color:#ffffff;width:96%;border:#ffffff solid;",
-			"gutty": {
-				"tagname": "input",
-				"id": "gutty-button",
-				"type": "button",
-				"value": "eowfwuioe",
-				"style": "justify-content:center;"
+		},
+		"h": {
+			"tagname": "div",
+			"style": "height:150;background-color:#abcdef;",
+			"textContent": "technically *I* was floating",
+			"class": "",
+			"guts": {
+				"tagname": "p",
+				"innerText": "eowfwuioe",
+				"style": "justify-content:center;color:#ffffff;width:96%;border:#ffffff solid;",
+				"gutty": {
+					"tagname": "input",
+					"id": "gutty-button",
+					"type": "button",
+					"value": "eowfwuioe",
+					"style": "justify-content:center;"
+				}
+			},
+			"guts1": {
+				"tagname": "p",
+				"innerText": "eowfwuioe",
+				"style": "justify-content:center;color:#ffffff;width:96%;border:#ffffff solid;",
+				"gutty": {
+					"tagname": "input",
+					"type": "button",
+					"value": "eowfwuioe",
+					"style": "justify-content:center;"
+				}
 			}
 		},
-		"guts1": {
-			"tagname": "p",
-			"innerText": "eowfwuioe",
-			"style": "justify-content:center;color:#ffffff;width:96%;border:#ffffff solid;",
-			"gutty": {
-				"tagname": "input",
-				"type": "button",
-				"value": "eowfwuioe",
-				"style": "justify-content:center;"
+		"g": {
+			"tagname": "div",
+			"style": "height:150;width:200;background-color:#abcdef;",
+			"textContent": "technically *I* was floating",
+			"guts": {
+				"tagname": "p",
+				"innerText": "eowfwuioe",
+				"style": "justify-content:center;color:#ffffff;width:96%;border:#ffffff solid;",
+				"gutty": {
+					"tagname": "input",
+					"type": "button",
+					"value": "eowfwuioe",
+					"style": "justify-content:center;"
+				}
 			}
-		}
-	},
-	"g": {
-		"tagname": "div",
-		"style": "height:150;width:200;background-color:#abcdef;",
-		"textContent": "technically *I* was floating",
-		"guts": {
-			"tagname": "p",
-			"innerText": "eowfwuioe",
-			"style": "justify-content:center;color:#ffffff;width:96%;border:#ffffff solid;",
-			"gutty": {
-				"tagname": "input",
-				"type": "button",
-				"value": "eowfwuioe",
-				"style": "justify-content:center;"
+		},
+		"mo": {
+			"tagname": "span",
+			"display": "mo-id",
+			"class": "mouse-over",
+			"textContent": "It was somewhere over here",
+			"id": "mo-init",
+			"guts": {
+				"tagname": "dyn",
+				"innerText": "Donate",
+				"class": "redirect",
+				"ajax": "https://www.paypal.me/pirodock",
+				"style": "display:none",
+				"id": "mo-id"
 			}
-		}
-	},
-	"mo": {
-		"tagname": "span",
-		"display": "mo-id",
-		"class": "mouse-over",
-		"textContent": "It was somewhere over here",
-		"id": "mo-init",
-		"guts": {
-			"tagname": "dyn",
-			"innerText": "Donate",
-			"class": "redirect",
-			"ajax": "https://www.paypal.me/pirodock",
-			"style": "display:none",
-			"id": "mo-id"
+		},
+		"gk": {
+			"tagname": "timed",
+			"class": "set-attr",
+			"set-attr": "value",
+			"delay": "3000",
+			"ajax": "button_src.php",
+			"insert": "gutty-button",
+			"id": "timer1"
 		}
 	}
 }

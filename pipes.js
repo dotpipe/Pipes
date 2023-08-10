@@ -75,14 +75,16 @@ let domContentLoad = (again = false) => {
             return;
         elem.classList.toggle("pipe-active");
         elem.addEventListener("click", function () {
-            if (elem.classList.contains("dyn-one") && !elem.classList.contains("dyn-done")) {
-                elem.classList.toggle("dyn-done");
-                pipes(elem);
-                return;
-            }
-            else if (elem.classList.contains("dyn-one") && elem.classList.contains("dyn-done")) { }
-            else
-                pipes(elem);
+		if (elem.classList.contains("dyn-one") && !elem.classList.contains("dyn-done"))
+		{
+			elem.classList.toggle("dyn-done");
+			pipes(elem);
+			return;
+		}
+		else if (elem.classList.contains("dyn-one") && elem.classList.contains("dyn-done"))
+		{}
+		else
+			pipes(elem);
         });
     });
 
@@ -126,7 +128,16 @@ let domContentLoad = (again = false) => {
             return;
         elem.classList.toggle("pipe-active")
         elem.addEventListener("click", function () {
-            pipes(elem, false);
+		if (elem.classList.contains("dyn-one") && !elem.classList.contains("dyn-done"))
+		{
+			elem.classList.toggle("dyn-done");
+			pipes(elem);
+			return;
+		}
+		else if (elem.classList.contains("dyn-one") && elem.classList.contains("dyn-done"))
+		{}
+		else
+			pipes(elem);
         });
     });
 }
@@ -209,56 +220,59 @@ function fileOrder(elem) {
 function carousel(elem, auto = true) {
     if (typeof (elem) == "string")
         elem = document.getElementById(elem);
-    x = document.getElementById(elem.getAttribute("insert"));
+    var x = document.getElementById(elem.getAttribute("insert"));
     var mArray = x.getAttribute("file-order").split(";");
     var y = 1;
     var crement = 1;
     if (elem.classList.contains("decrIndex"))
         crement = (-1);
     var i = (parseInt(x.getAttribute("file-index"))) ?? 0;
-    var j = (parseInt(x.getAttribute("interval"))) ?? 1;
+    var j = parseInt(x.getAttribute("interval")) ?? 1;
     var multiVert = 1;
     if (x.classList.contains("carousel-vert")) {
         multiVert = 2;
     }
-    while (x.children.length) {
+    while (x.children.length)
+    {
         x.removeChild(x.children[0]);
     }
     var m = 0;
-    for (n = 0; x.children.length < x.getAttribute("boxes") * multiVert; n++) {
-        if ((x.classList.contains("carousel-ajax") || elem.classList.contains("carousel-ajax"))) // && x.children.length < elem.getAttribute("boxes")) {
-        {
-            p = document.createElement("p");
-            p.setAttribute("ajax", mArray[(i + j) % mArray.length]);
-            p.setAttribute("insert", "self_" + x.children.length + 1);
-            p.classList.toggle("modala");
-            p.id = "self_" + x.children.length + 1;
-            p.setAttribute("onclick", "pipes(this)");
-            p.click();
-            p.removeAttribute("onclick");
-            x.appendChild(p);
-            if (multiVert == 2) {
-                br = document.createElement("br");
-                x.appendChild(br);
-            }
-            i = (crement > 0) ? i + 1 : (i <= 0) ? (mArray.length - 1) : i - 1;
-
-        }
-        else if ((!x.classList.contains("carousel-ajax") && !elem.classList.contains("carousel-ajax"))) {
-            img = document.createElement("img");
-            img.src = mArray[(i + j) % mArray.length];
-            x.appendChild(img);
-            i = (crement > 0) ? i + 1 : (i <= 0) ? (mArray.length - 1) : i - 1;
-            br = document.createElement("br");
-            if (multiVert == 2) {
-                n++;
-                x.appendChild(br);
-            }
-        }
+    var obj = document.createElement("card");
+    obj.classList.toggle("pipe-grid");
+    for (n = 0; obj.children.length < x.getAttribute("boxes") * multiVert; n++) {
+	if ((x.classList.contains("carousel-ajax") || elem.classList.contains("carousel-ajax"))) // && x.children.length < elem.getAttribute("boxes")) {
+	{
+                p = document.createElement("p");
+                p.setAttribute("ajax", mArray[(i + j) % mArray.length]);
+                p.setAttribute("insert", "self_" + obj.children.length + 1);
+                p.classList.add("modala");
+                p.id = "self_" + obj.children.length + 1;
+                p.setAttribute("onclick","pipes(this)");
+                p.click();
+                p.removeAttribute("onclick");
+                p.classList.add("pipe-grid-child");
+                p.classList.add("pipe");
+                obj.appendChild(p);
+                i = (crement > 0) ? i + 1 : (i <= 0) ? (mArray.length - 1) : i - 1;
+	}
+	else if ((!x.classList.contains("carousel-ajax") && !elem.classList.contains("carousel-ajax")))
+	{
+		img = document.createElement("img");
+		img.src = mArray[(i + j) % mArray.length];
+		img.style = x.style;
+		img.classList.add("pipe-grid-child");
+		obj.appendChild(img);
+		i = (crement > 0) ? i + 1 : (i <= 0) ? (mArray.length - 1) : i - 1;
+		br = document.createElement("br");
+		if (multiVert == 2) {
+			n++;
+			obj.appendChild(br);
+		}
+	}
     }
-    while ((x.classList.contains("carousel-ajax") || elem.classList.contains("carousel-ajax")) && x.children.length > x.getAttribute("boxes") * multiVert)
+    while (x.children.length || (x.classList.contains("carousel-ajax") || elem.classList.contains("carousel-ajax")) && x.children.length > x.getAttribute("boxes") * multiVert)
         x.removeChild(x.children[x.children.length - 1]);
-
+    x.append(obj);
     var w = (Math.abs(i));
     x.setAttribute("file-index", w % mArray.length);
     var delay = elem.getAttribute("delay");
