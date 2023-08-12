@@ -15,11 +15,22 @@
 </head>
 <script src="pipes.js"></script>
 
-<body>
+<body style="background-color:lightgray">
 <script>
 </script>
-Modala Demonstration - 
-<span id="hed-mod" style="width:100%"></span><br>
+<table>
+<tr><td style="border-bottom:3px solid black">
+<b style="margin-left:20px;">Modala Demonstration</b>
+	<pipe id="counter" method="GET" class="plain-text" ajax="counter.php" query="addr:<?= $_SERVER['REMOTE_ADDR']; ?>" insert="counter"></pipe>	
+	<pipe class="modala" ajax="./git.json" insert="great" id="great"></pipe>
+</td>
+</tr>
+<tr>
+<td>
+	<span id="hed-mod" style="width:100%"></span><br>
+</td>
+</tr>
+</table>
 <br>
 <br>
 <pipe id="mod" class="modala" ajax="./modals.json" insert="hed-mod"></pipe>

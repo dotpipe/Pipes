@@ -1,9 +1,8 @@
 <?php
 
-        // $full = json_decode(file_get_contents("./modals.json"));
-        // $full->h->guts->gutty->value = time();
-        // $color = substr(dechex(time()),-6);
-        // $colored = '#'.$color;
-        echo time();
-        // file_put_contents("./modals.json", json_encode($full));
+        $color = substr(dechex(time()),-6);
+        $colored = '#'.$color;
+	$text = "#" . strrev($color);
+        echo "<input type='button' style='background-color:$colored;color:$text' value='AJAX Injection " . time() . "'></input>";
+
 ?>

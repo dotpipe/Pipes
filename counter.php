@@ -1,39 +1,57 @@
 <?php
 
 session_start();
-//if ($_SERVER["HTTP_REFERER"] != "http://g0d.me/grove/index.html")
-{
-//    	var_dump($_SESSION); //["HTTP_REFERER"];
-//    	return;
-}
-$totals = json_decode(file_get_contents("counter.json"));
 
-$totals->total++;
+//touch("counter.json");
+$totals = [];
+$file = file_get_contents("counter.json");
+if ($file)
+	$totals = json_decode($file);
+if (!isset($totals->total))
+	$totals = [ "total" => 1 ];
 
-$singular = "h" . hash("sha256", $_SERVER["REMOTE_ADDR"]);
 
-if (isset($totals->$singular))
+$addr = (!empty($_GET)) ? $_GET["addr"] : $_POST["addr"];
+
+$singular = hash("ripemd160", $addr);
+
+$merger = [];
+
+if (!empty($totals->$singular))
         $totals->$singular++;
-else 
+else
 {
-        $totals = array_merge($totals, [ $singular => 1 ]);
+        $totals["$singular"] = 1;
 }
-$testing = $totals->$singular;
 
-foreach($totals as $k)
+$real = 0;
+
+$t = 0;
+foreach ($totals as $k)
 {
-	$total++;
+	if ($t > 0)
+		$real += $k;
+	else
+		$t++;
 }
-$total--;
+$real--;
+$all = 0;
 
-$all = $totals->total;
+foreach ($totals as $k)
+{
+	$all++;
+}
 
-$totals = file_put_contents("counter.json", json_encode($totals));
+$all--;
 
-echo "You visited " . $testing . " Times<br>";
+$you = $totals->{"$singular"};
 
-echo "Seen " . $total . " visitors <br>";
+file_put_contents("counter.json", json_encode($totals));
 
-echo "Totaling " . $all . " Visits";
+echo "You visited " . $you . " Times ";
+
+echo "Seen " . $all . " visitors ";
+
+echo "Totaling " . $real . " Visits";
 
 ?>

@@ -1,0 +1,25 @@
+{
+        "tr0": {
+                "tagname": "tr",
+                "th00": {
+                        "tagname": "th",
+                        "lnk1": {
+                                "tagname": "lnk",
+                                "ajax": "https:\/\/github.com\/wise-penny\/pipes",
+                                "textContent": "GitHub + ",
+                                "class": "redirect",
+                                "id": "necessary"
+                        }
+                },
+                "th01": {
+                        "tagname": "th",
+                        "lnk2": {
+                                "tagname": "lnk",
+                                "ajax": "https:\/\/paypal.me\/pirodock",
+                                "textContent": "Donate to the framework",
+                                "class": "redirect",
+                                "id": "ids-required"
+                        }
+                }
+        }
+}

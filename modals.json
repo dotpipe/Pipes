@@ -1,35 +1,15 @@
 {
 	"tagname": "table",
-	"tr0": {
-		"tagname": "tr",
-		"th00": {
-			"tagname": "th",
-			"lnk1": {
-				"tagname": "lnk",
-				"ajax": "https:\/\/github.com\/wise-penny\/pipes",
-				"textContent": "GitHub + ",
-				"class": "redirect",
-				"id": "necessary"
-			}
-		},
-		"th01": {
-			"tagname": "th",
-			"lnk2": {
-				"tagname": "lnk",
-				"ajax": "https:\/\/paypal.me\/pirodock",
-				"textContent": "Donate to the framework",
-				"class": "redirect",
-				"id": "ids-required"
-			}
-		}
-	},
+	"style": "margin-left:30px",
 	"tr1": {
 		"tagname": "tr",
 		"td10": {
 			"tagname": "td",
+			"style": "width:200px;height:225px;justify-content:center;",
+                        "onclick": "carousel('carousel3')",
 			"card": {
 				"tagname": "carousel",
-				"style": "height:100%;width:200;vertical-align:bottom",
+				"style": "height:100%;width:170;vertical-align:bottom",
 				"file-index": "0",
 				"boxes": "6",
 				"interval": "2",
@@ -46,8 +26,8 @@
 			"tagname": "td",
 			"gk": {
 				"tagname": "timed",
-				"class": "set-attr",
-				"set-attr": "value",
+				"class": "plain-html",
+				"set-attr": "",
 				"delay": "3000",
 				"ajax": "button_src.php",
 				"insert": "gutty-button",
@@ -56,40 +36,37 @@
 			"h": {
 				"tagname": "div",
 				"style": "justify-content:center;padding:3px;border: 1px solid black;height:150;width:200;background-color:#abcdef;",
-				"textContent": "technically *I* was floating",
+				"textContent": "Please send $5 in BTC -->",
 				"class": "oiwfiriro",
 				"guts": {
 					"tagname": "p",
-					"innerText": "eowfwuioe",
+					"innerText": "AJAX Injection",
 					"style": "justify-content:center;color:#ffffff;width:96%;border:2px solid black;",
-					"gutty": {
-						"tagname": "input",
-						"id": "gutty-button",
-						"type": "button",
-						"value": "eowfwuioe",
-						"style": "justify-content:center;"
-					}
+					"id": "gutty-button"
 				},
 				"guts1": {
 					"tagname": "p",
-					"innerText": "eowfwuioe",
+					"innerText": "Hide/Show element",
 					"style": "justify-content:center;color:#ffffff;width:96%;border:2px solid black;",
 					"gutty": {
 						"tagname": "input",
 						"type": "button",
-						"value": "eowfwuioe",
+						"class": "pipe display",
+						"display": "displays",
+						"value": "****",
 						"style": "justify-content:center;"
 					}
 				},
 				"g": {
 					"tagname": "div",
 					"style": "height:150;width:200;background-color:#abcdef;",
-					"textContent": "technically *I* was floating",
+					"textContent": "By capturing this QR -->",
 					"guts": {
 						"tagname": "p",
 						"innerText": "eowfwuioe",
 						"style": "justify-content:center;color:#ffffff;width:96%;border:2px solid black;",
 						"gutty": {
+							"id": "displays",
 							"tagname": "input",
 							"type": "button",
 							"value": "eowfwuioe",
@@ -100,7 +77,7 @@
 				"mo": {
 					"tagname": "span",
 					"display": "mo-id1",
-					"textContent": "It was somewhere over here",
+					"textContent": "Or Mouse-over for actions!",
 					"id": "mid",
 					"class": "mouse-over",
 					"guts": {

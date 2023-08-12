@@ -253,7 +253,7 @@ function carousel(elem, auto = true) {
                 p.classList.add("pipe-grid-child");
                 p.classList.add("pipe");
                 obj.appendChild(p);
-                i = (crement > 0) ? i + 1 : (i <= 0) ? (mArray.length - 1) : i - 1;
+                i = (crement > 0) ? i + 1 : (i < 0) ? (mArray.length - 1) : i - 1;
 	}
 	else if ((!x.classList.contains("carousel-ajax") && !elem.classList.contains("carousel-ajax")))
 	{
@@ -262,7 +262,7 @@ function carousel(elem, auto = true) {
 		img.style = x.style;
 		img.classList.add("pipe-grid-child");
 		obj.appendChild(img);
-		i = (crement > 0) ? i + 1 : (i <= 0) ? (mArray.length - 1) : i - 1;
+		i = (crement > 0) ? i + 1 : (i < 0) ? (mArray.length - 1) : i - 1;
 		br = document.createElement("br");
 		if (multiVert == 2) {
 			n++;
@@ -359,11 +359,12 @@ function pipes(elem, stop = false) {
     }
     if (elem.hasAttribute("query")) {
         var optsArray = elem.getAttribute("query").split(";");
-
         optsArray.forEach((e, f) => {
             var g = e.split(":");
             query = query + g[0] + "=" + g[1] + "&";
         });
+	query = query.substring(0,-1);
+	console.log(query);
     }
     if (elem.hasAttribute("headers")) {
         var optsArray = elem.getAttribute("headers").split("&");
@@ -464,13 +465,33 @@ function navigate(elem, opts = null, query = "", classname = "") {
     var rawFile = new XMLHttpRequest();
     rawFile.open(opts.get("method"), elem_qstring, true);
     console.log(elem);
-
-    if (elem.classList.contains("plain-text")) {
+    if (elem.classList.contains("plain-html")) {
         rawFile.onreadystatechange = function () {
             if (rawFile.readyState === 4) {
                 var allText = "";// JSON.parse(rawFile.responseText);
                 try {
-                    allText = JSON.parse(rawFile.responseText);
+                    allText = (rawFile.responseText);
+                    if (elem.hasAttribute("callback")) {
+                        var func = elem.getAttribute("callback");
+                        this[func](allText);
+                    }
+                    if (elem.hasAttribute("insert")) {
+                        document.getElementById(elem.getAttribute("insert")).innerHTML = (rawFile.responseText);
+                    }
+                    return allText;
+                }
+                catch (e) {
+                    console.log("Error Handling Text");
+                }
+            }
+        }
+    }
+    else if (elem.classList.contains("plain-text")) {
+        rawFile.onreadystatechange = function () {
+            if (rawFile.readyState === 4) {
+                var allText = "";// JSON.parse(rawFile.responseText);
+                try {
+                    allText = (rawFile.responseText);
                     if (elem.hasAttribute("callback")) {
                         var func = elem.getAttribute("callback");
                         this[func](allText);
@@ -481,7 +502,7 @@ function navigate(elem, opts = null, query = "", classname = "") {
                     return allText;
                 }
                 catch (e) {
-                    console.log("Response not a JSON");
+                    console.log("Error Handling Text");
                 }
             }
         }
