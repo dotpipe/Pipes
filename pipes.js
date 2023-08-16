@@ -43,7 +43,9 @@
   *  json..............= returns a JSON file set as value
   *  headers...........= headers in CSS markup-style-attribute (delimited by '&') <any ajax="foo.bar" headers="foobar:boo&barfoo:barfoo;q:9&" insert="someID">
   *  form-class........= class name of devoted form elements
-  *  mouse.............= class name to work thru PipesJS' other attributes on mouseenter/mouseleave
+  *  mouse.............= class name to work thru PipesJS' other attributes on event="mouseover;mouseleave" (example)
+  *  mouse-insert......= class name to work thru PipesJS' other attributes on event="mouseover;mouseleave" (example)
+  *  event.............= works with mouse class. Creates eventListener on "insert" Node or current Node with mouse.
   **** FILTERS aer go ahead code usually coded in other languages and just come back with a result. Not wholly different from AJAX. They are general purpose files.
   **** ALL HEADERS FOR AJAX are available. They will use defaults to
   **** go on if there is no input to replace them.
@@ -123,7 +125,8 @@ let domContentLoad = (again = false) => {
         var rv = ev.split(";");
         Array.from(rv).forEach((v) => {
             elem.addEventListener(v, function () {
-                pipes(elem, true);
+                var seconds = 1.25; //Delay or wait 30 seconds
+                setTimeout(pipes(elem,true), seconds * 1000);
             });
         });
     });

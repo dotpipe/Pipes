@@ -64,10 +64,11 @@
 					"gutty": {
 						"tagname": "input",
 						"type": "button",
-						"class": "pipe display",
+						"class": "pipe display mouse",
 						"display": "displays",
 						"value": "****",
-						"style": "justify-content:center;"
+						"style": "justify-content:center;",
+						"event": "click"
 					}
 				},
 				"g": {
