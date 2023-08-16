@@ -465,7 +465,7 @@ function navigate(elem, opts = null, query = "", classname = "") {
     var rawFile = new XMLHttpRequest();
     rawFile.open(opts.get("method"), elem_qstring, true);
     console.log(elem);
-    if (elem.classList.contains("plain-html")) {
+    if (elem.classList.contains("text-html")) {
         rawFile.onreadystatechange = function () {
             if (rawFile.readyState === 4) {
                 var allText = "";// JSON.parse(rawFile.responseText);

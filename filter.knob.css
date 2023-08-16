@@ -1,0 +1,63 @@
+.container
+{
+	display: block;
+    justify-content: center;
+	align-items: center;
+	height: 10em;
+	position: relative;
+	width: 10em;
+	left: 25px;
+}
+
+.container::before
+{
+    width: 10em;
+    height: 10em;
+	content: '';
+	position: relative;
+	border-radius: 50%;
+}
+
+.knob-container::before
+{
+	content: '';
+	position: absolute;
+	font-size: 13px;
+	width: 5em;
+	height: 5em;
+}
+
+#knob
+{
+	width: 5em;
+	height: 5em;
+	position: absolute;
+}
+
+#knob::before,
+#knob::after
+{
+	content: '';
+	position: absolute;
+	border-radius: 50%;
+}
+
+#knob::before
+{
+	top: 0px;
+	left: 50%;
+	transform: translateX(-50%);
+	width: 10px;
+	height: 10px;
+	background: crimson;
+}
+
+#knob::after
+{
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	border: 3px solid black;
+	width: 130%;
+	height: 130%;
+}
