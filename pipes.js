@@ -8,21 +8,25 @@
   *  -------------------------------------------------------------
   *  insert............= return ajax call to this id
   *  ajax..............= calls and returns the value file's output ex: <pipe ajax="foo.bar" query="key0:value0;" insert="someID">
+  *  callback..........= calls function set as attribute value
   *  query.............= default query string associated with url ex: <anyTag query="key0:value0;key1:value2;" ajax="page.foo">
   *  <download>........= tag for downloading files ex: <download file="foo.zip" directory="/home/bar/"> (needs ending with slash)
   *  file..............= filename to download
   *  directory.........= relative or full path of 'file'
-  *  redirect..........= "follow" the ajax call in POST or GET mode ex: <pipe ajax="foo.bar" redirect query="key0:value0;" insert="someID">
+  *  redirect..........= "follow" the ajax call in POST or GET mode ex: <pipe ajax="foo.bar" class="redirect" query="key0:value0;" insert="someID">
+  *  js................= [Specifically a] Modala key/value pair. Allows access to outside JavaScript files in scope of top nest.
+  *  css...............= [Specifically a] Modala key/value pair. Imports a stylesheet file to the page accessing it.
   *  <lnk>.............= tag for clickable link <lnk ajax="goinghere.html" query="key0:value0;">
   *  <pipe>............= Tag (initializes on DOMContentLoaded Event) ex: <pipe ajax="foo.bar" query="key0:value0;" insert="someID">
   *  <dyn>.............= Automatic eventListening tag for onclick="pipes(this)" ex: <dyn ajax="foo.bar" query="key0:value0;" insert="someID">
-  *  dyn-one...........= class for <dyn> tag to only allow one-click to be accepted
+  *  dyn-one...........= Class to stop recurring clicking activities 
   *  plain-text........= plain text returned to the insertion point
+  *  plain-html........= returns as true HTML
   *  <timed>...........= Timed result refreshing tags (Keep up-to-date handling on page) ex: <timed ajax="foo.bar" delay="3000" query="key0:value0;" insert="someID">
   *  delay.............= delay between <timed> tag refreshes (required for <timed> tag) ex: see <timed>
   *  <carousel>........= Tag to create a carousel that moves every a timeOut() delay="x" occurs ex: <carousel ajax="foo.bar" file-order="foo.bar;bar.foo;foobar.barfoo" delay="3000" id="thisId" insert="thisId" height="100" width="100" boxes="8" style="height:100;width:800">
   *  carousel-ajax.....= Class to create Modala pictures for carousel use.
-  *  carousel-auto-off.= Class to stop carousel from moving without buttons
+  *  carousel-auto-off.= Class to stop carousel from moving (better to create buttons)
   *  carousel-vert.....= Class to make carousel vertical, instead of horizontal (default)
   *  boxes.............= <carousel> attribute to request for x boxes for pictures
   *  file-order........= ajax to these files, iterating [0,1,2,3]%array.length per call (delimited by ';') ex: <pipe query="key0:value0;" file-order="foo.bar;bar.foo;foobar.barfoo" insert="someID">
@@ -30,17 +34,17 @@
   *  incrIndex.........= increment thru index of file-order (0 moves once) (default: 1) ex: <pipe ajax="foo.bar" class="incrIndex" interval="2" file-order="foo.bar;bar.foo;foobar.barfoo" insert="someID">
   *  decrIndex.........= decrement thru index of file-order (0 moves once) (default: 1) ex: <pipe ajax="foo.bar" class="decrIndex" interval="3" file-order="foo.bar;bar.foo;foobar.barfoo" insert="someID">
   *  interval..........= Take this many steps when stepping through file-order default = 1
-  *  set-attr..........= attribute to set in target HTML tag ex: <pipe set-attr="value" ajax="foo.bar" query="key0:value0;" insert="thisOrSomeID">
+  *  set-attr..........= attribute to set in target HTML tag ex: <pipe id="thisOrSomeId" class="set-attr" set-attr="value" ajax="foo.bar" query="key0:value0;" insert="thisOrSomeID">
   *  mode..............= "POST" or "GET" (default: "POST") ex: <pipe mode="POST" set-attr="value" ajax="foo.bar" query="key0:value0;" insert="thisOrSomeID">
-  *  data-pipe.........= name of class for multi-tag data (augment with pipe) *** obfuscated to be reoriented
+  *  pipe..............= creates a listener on the object. use listen="eventType" to relegate.
   *  multiple..........= states that this object has two or more key/value pairs use: states this is a multi-select form box
   *  remove............= remove element in tag ex: <anyTag remove="someID;someOtherId;">
   *  display...........= toggle visible and invisible of anything in the value ex: <anyTag display="someID;someOtherId;">
-  *  json..............= returns a JSON file set as value *** obfuscated for now
-  *  callback..........= calls function set as attribute value
+  *  json..............= returns a JSON file set as value
   *  headers...........= headers in CSS markup-style-attribute (delimited by '&') <any ajax="foo.bar" headers="foobar:boo&barfoo:barfoo;q:9&" insert="someID">
   *  form-class........= class name of devoted form elements
-  *  mouse-over........= class name to work thru PipesJS' other attributes on mouseenter/mouseleave
+  *  mouse.............= class name to work thru PipesJS' other attributes on mouseenter/mouseleave
+  **** FILTERS aer go ahead code usually coded in other languages and just come back with a result. Not wholly different from AJAX. They are general purpose files.
   **** ALL HEADERS FOR AJAX are available. They will use defaults to
   **** go on if there is no input to replace them.
   */
@@ -109,25 +113,25 @@ let domContentLoad = (again = false) => {
         });
     });
 
-    let elementsArray_mouseOver = document.getElementsByClassName("mouse-over");
+    let elementsArray_mouseOver = document.getElementsByClassName("mouse");
     Array.from(elementsArray_mouseOver).forEach(function (elem) {
         if (elem.classList.contains("pipe-active"))
             return;
         elem.classList.toggle("pipe-active")
-        elem.addEventListener("mouseenter", function () {
-            pipes(elem, true);
-        });
-        elem.addEventListener("mouseleave", function () {
-            pipes(elem, true);
+        
+        var ev = elem.getAttribute("event");
+        var rv = ev.split(";");
+        Array.from(rv).forEach((v) => {
+            elem.addEventListener(v, function () {
+                pipes(elem, true);
+            });
         });
     });
 
     let elementsArray_p = document.getElementsByClassName("pipe");
     Array.from(elementsArray_p).forEach(function (elem) {
-        if (elem.classList.contains("pipe-active"))
-            return;
-        elem.classList.toggle("pipe-active")
-        elem.addEventListener("click", function () {
+        var ev = elem.getAttribute("event");
+        elem.addEventListener(ev, function () {
 		if (elem.classList.contains("dyn-one") && !elem.classList.contains("dyn-done"))
 		{
 			elem.classList.toggle("dyn-done");
@@ -161,6 +165,13 @@ function modala(value, tempTag, root, id) {
         const [k, v] = nest;
         if (v instanceof Object)
             modala(v, temp, root, id);
+        else if (k.toLowerCase() == "css")
+        {
+            var cssvar = document.createElement("link");
+            cssvar.href = v;
+            cssvar.rel = "stylesheet";
+            tempTag.appendChild(cssvar);
+        }
         else if (k.toLowerCase() == "js")
         {
             var js = document.createElement("script");

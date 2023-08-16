@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <head id="daTop"><title>PipesJS+Modala</title>
-<link rel="stylesheet" href="filter.knob.css">
 <style>
 .pipe-grid {
 	display: inline-grid;

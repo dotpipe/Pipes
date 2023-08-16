@@ -90,12 +90,14 @@
 				"mo": {
 					"tagname": "span",
 					"display": "mo-id1",
-					"textContent": "Or Mouse-over for actions!",
+					"textContent": "Or 'Mouse' for actions!",
 					"id": "mid",
-					"class": "mouse-over",
+					"class": "mouse",
+					"event": "mouseover;mouseleave",
 					"guts": {
-						"tagname": "a",
+						"tagname": "lnk",
 						"innerText": "Donate",
+						"class": "redirect",
 						"ajax": "http://www.paypal.me/pirodock",
 						"style": "display:none",
 						"id": "mo-id1"
@@ -114,6 +116,7 @@
 		},
 		"javascript": {
 			"js": "filter.knob.js"
-		}
+		},
+		"css": "filter.knob.css"
 	}
 }
