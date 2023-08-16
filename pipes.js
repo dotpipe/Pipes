@@ -156,12 +156,18 @@ function modala(value, tempTag, root, id) {
         console.error("value of reference incorrect");
         return;
     }
-    var temp = document.createElement((value["tagname"]));
-    //        console.log(value);
+    var temp = document.createElement(value["tagname"]);
     Object.entries(value).forEach((nest) => {
         const [k, v] = nest;
         if (v instanceof Object)
             modala(v, temp, root, id);
+        else if (k.toLowerCase() == "js")
+        {
+            var js = document.createElement("script");
+            js.src = v;
+            js.setAttribute("defer","true");
+            tempTag.appendChild(js);
+        }
         else if (!Number(k) && k.toLowerCase() != "tagname" && k.toLowerCase() != "textcontent" && k.toLowerCase() != "innerhtml" && k.toLowerCase() != "innertext") {
             temp.setAttribute(k, v);
         }

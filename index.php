@@ -16,7 +16,7 @@
 </style>
 </head>
 <script src="pipes.js"></script>
-<script src="filter.knob.js" defer></script>
+
 
 <body style="background-color:lightgray">
 <table>
@@ -27,14 +27,6 @@
 </td>
 </tr>
 <tr>
-<td>
-	<div class="container">
-		<div class="knob-container">
-			<div id="knob">
-			</div>
-		</div>
-	</div>
-</td>
 <td>
 	<span id="hed-mod" style="width:100%"></span><br>
 </td>
