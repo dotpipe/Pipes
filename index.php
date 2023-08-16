@@ -1,31 +1,40 @@
 <!DOCTYPE html>
-<head><title>PipesJS+Modala</title>
+<head id="daTop"><title>PipesJS+Modala</title>
+<link rel="stylesheet" href="filter.knob.css">
 <style>
 .pipe-grid {
 	display: inline-grid;
 	grid-template-columns: auto auto auto;
-	grid-gap:10px;
+	grid-gap: 10px;
 }
 
 .pipe-grid-child {
 	border-radius: 50% 20% / 10% 40%;
 	vertical-align: center;
 }
+
 </style>
 </head>
 <script src="pipes.js"></script>
+<script src="filter.knob.js" defer></script>
 
 <body style="background-color:lightgray">
-<script>
-</script>
 <table>
-<tr><td style="border-bottom:3px solid black">
+<tr><td colspan="3" style="border-bottom:3px solid black">
 <b style="margin-left:20px;">Modala Demonstration</b>
 	<pipe id="counter" method="GET" class="plain-text" ajax="counter.php" query="addr:<?= $_SERVER['REMOTE_ADDR']; ?>" insert="counter"></pipe>	
 	<pipe class="modala" ajax="./git.json" insert="great" id="great"></pipe>
 </td>
 </tr>
 <tr>
+<td>
+	<div class="container">
+		<div class="knob-container">
+			<div id="knob">
+			</div>
+		</div>
+	</div>
+</td>
 <td>
 	<span id="hed-mod" style="width:100%"></span><br>
 </td>
