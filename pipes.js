@@ -46,6 +46,7 @@
   *  mouse.............= class name to work thru PipesJS' other attributes on event="mouseover;mouseleave" (example)
   *  mouse-insert......= class name to work thru PipesJS' other attributes on event="mouseover;mouseleave" (example)
   *  event.............= works with mouse class. Creates eventListener on "insert" Node or current Node with mouse.
+  *  event-delay.......= works with mouse class. Creates eventListener delay on Node listener.
   **** FILTERS aer go ahead code usually coded in other languages and just come back with a result. Not wholly different from AJAX. They are general purpose files.
   **** ALL HEADERS FOR AJAX are available. They will use defaults to
   **** go on if there is no input to replace them.
@@ -125,7 +126,7 @@ let domContentLoad = (again = false) => {
         var rv = ev.split(";");
         Array.from(rv).forEach((v) => {
             elem.addEventListener(v, function () {
-                var seconds = 1.25; //Delay or wait 30 seconds
+                var seconds = elem.hasAttribute("event-delay") ? elem.getAttribute("event-delay") : 2; //Delay or wait 30 seconds
                 setTimeout(pipes(elem,true), seconds * 1000);
             });
         });
