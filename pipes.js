@@ -132,22 +132,22 @@ let domContentLoad = (again = false) => {
         });
     });
 
-    let elementsArray_p = document.getElementsByClassName("pipe");
-    Array.from(elementsArray_p).forEach(function (elem) {
-        var ev = elem.getAttribute("event");
-        elem.addEventListener(ev, function () {
-		if (elem.classList.contains("dyn-one") && !elem.classList.contains("dyn-done"))
-		{
-			elem.classList.toggle("dyn-done");
-			pipes(elem);
-			return;
-		}
-		else if (elem.classList.contains("dyn-one") && elem.classList.contains("dyn-done"))
-		{}
-		else
-			pipes(elem);
-        });
-    });
+    // let elementsArray_p = document.getElementsByClassName("pipe");
+    // Array.from(elementsArray_).forEach(function (elem) {
+    //     var ev = elem.getAttribute("event");
+    //     elem.addEventListener(ev, function () {
+	// 	if (elem.classList.contains("dyn-one") && !elem.classList.contains("dyn-done"))
+	// 	{
+	// 		elem.classList.toggle("dyn-done");
+	// 		pipes(elem);
+	// 		return;
+	// 	}
+	// 	else if (elem.classList.contains("dyn-one") && elem.classList.contains("dyn-done"))
+	// 	{}
+	// 	else
+	// 		pipes(elem);
+    //     });
+    // });
 }
 
 // modala(jsonObj,rootNode)
