@@ -114,7 +114,7 @@
 		"mo": {
 			"tagname": "span",
 			"display": "mo-id",
-			"class": "pipe-event",
+			"class": "mouse-over",
 			"event": "mouseover",
 			"textContent": "It was somewhere over here",
 			"id": "mo-init",
