@@ -457,7 +457,9 @@ function formAJAX(elem, classname) {
     // No, 'pipe' means it is generic. This means it is open season for all with this class
     for (var i = 0; i < document.getElementsByClassName(classname).length; i++) {
         var elem_value = document.getElementsByClassName(classname)[i];
-        elem_qstring = elem_qstring + elem_value.name + "=" + elem_value.value + "&";
+        var text = (elem_value.textContent.length > 0 && elem_value.value == undefined) 
+        elem_qstring = elem_qstring + elem_value.name + "=";
+        elem_qstring += (elem_value.textContent.length > 0 && elem_value.value == undefined) ? elem_value.textContent + "&" : elem_value.value + "&";
         // Multi-select box
         if (elem_value.hasOwnProperty("multiple")) {
             for (var o of elem_value.options) {
