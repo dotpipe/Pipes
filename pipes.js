@@ -35,7 +35,7 @@
   *  decrIndex.........= decrement thru index of file-order (0 moves once) (default: 1) ex: <pipe ajax="foo.bar" class="decrIndex" interval="3" file-order="foo.bar;bar.foo;foobar.barfoo" insert="someID">
   *  interval..........= Take this many steps when stepping through file-order default = 1
   *  set-attr..........= attribute to set in target HTML tag ex: <pipe id="thisOrSomeId" class="set-attr" set-attr="value" ajax="foo.bar" query="key0:value0;" insert="thisOrSomeID">
-  *  method............= "POST" or "GET" (default: "POST") ex: <pipe method="POST" set-attr="value" ajax="foo.bar" query="key0:value0;" insert="thisOrSomeID">
+  *  mode..............= "POST" or "GET" (default: "POST") ex: <pipe mode="POST" set-attr="value" ajax="foo.bar" query="key0:value0;" insert="thisOrSomeID">
   *  pipe..............= creates a listener on the object. use listen="eventType" to relegate.
   *  multiple..........= states that this object has two or more key/value pairs use: states this is a multi-select form box
   *  remove............= remove element in tag ex: <anyTag remove="someID;someOtherId;">
@@ -457,9 +457,7 @@ function formAJAX(elem, classname) {
     // No, 'pipe' means it is generic. This means it is open season for all with this class
     for (var i = 0; i < document.getElementsByClassName(classname).length; i++) {
         var elem_value = document.getElementsByClassName(classname)[i];
-        var text = (elem_value.textContent.length > 0 && elem_value.value == undefined) 
-        elem_qstring = elem_qstring + elem_value.name + "=";
-        elem_qstring += (elem_value.textContent.length > 0 && elem_value.value == undefined) ? elem_value.textContent + "&" : elem_value.value + "&";
+        elem_qstring = elem_qstring + elem_value.name + "=" + elem_value.value + "&";
         // Multi-select box
         if (elem_value.hasOwnProperty("multiple")) {
             for (var o of elem_value.options) {

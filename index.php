@@ -35,7 +35,7 @@
 <br>
 <pipe id="mod" class="modala" ajax="./modals.json" insert="hed-mod"></pipe>
 <div id="hed" class="pipe-grid" style="width:100%"></div><br>
-<button id="mod" event="click" class="dyn-one pipe mouse modala" ajax="./modal.json" insert="hed">Load Bottom</button><br>
+<button id="mod" event="click" class="modala" ajax="./modal.json" insert="hed">Load Bottom</button><br>
 </body>
 
 <pipe insert="txt" class="json" ajax="./modal.json" id="t"></pipe>

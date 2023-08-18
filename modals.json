@@ -64,7 +64,7 @@
 					"gutty": {
 						"tagname": "input",
 						"type": "button",
-						"class": "pipe display mouse",
+						"class": "pipe display",
 						"display": "displays",
 						"value": "****",
 						"style": "justify-content:center;",
@@ -93,8 +93,9 @@
 					"display": "mo-id1",
 					"textContent": "Or 'Mouse' for actions!",
 					"id": "mid",
-					"class": "mouse",
+					"class": "pipe display",
 					"event": "mouseover;mouseleave",
+					"event-delay": "0;3",
 					"guts": {
 						"tagname": "lnk",
 						"innerText": "Donate",
