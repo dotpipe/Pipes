@@ -116,38 +116,38 @@ let domContentLoad = (again = false) => {
         });
     });
 
-    let elementsArray_mouseOver = document.getElementsByClassName("mouse");
-    Array.from(elementsArray_mouseOver).forEach(function (elem) {
-        if (elem.classList.contains("pipe-active"))
-            return;
-        elem.classList.toggle("pipe-active")
+    // let elementsArray_mouseOver = document.getElementsByClassName("mouse");
+    // Array.from(elementsArray_mouseOver).forEach(function (elem) {
+    //     if (elem.classList.contains("pipe-active"))
+    //         return;
+    //     elem.classList.toggle("pipe-active")
         
-        var ev = elem.getAttribute("event");
-        var rv = ev.split(";");
-        Array.from(rv).forEach((v) => {
-            elem.addEventListener(v, function () {
-                var seconds = elem.hasAttribute("event-delay") ? elem.getAttribute("event-delay") : 2; //Delay or wait 30 seconds
-                setTimeout(pipes(elem,true), seconds * 1000);
-            });
-        });
-    });
-
-    // let elementsArray_p = document.getElementsByClassName("pipe");
-    // Array.from(elementsArray_).forEach(function (elem) {
     //     var ev = elem.getAttribute("event");
-    //     elem.addEventListener(ev, function () {
-	// 	if (elem.classList.contains("dyn-one") && !elem.classList.contains("dyn-done"))
-	// 	{
-	// 		elem.classList.toggle("dyn-done");
-	// 		pipes(elem);
-	// 		return;
-	// 	}
-	// 	else if (elem.classList.contains("dyn-one") && elem.classList.contains("dyn-done"))
-	// 	{}
-	// 	else
-	// 		pipes(elem);
+    //     var rv = ev.split(";");
+    //     Array.from(rv).forEach((v) => {
+    //         elem.addEventListener(v, function () {
+    //             var seconds = elem.hasAttribute("event-delay") ? elem.getAttribute("event-delay") : 2; //Delay or wait 30 seconds
+    //             setTimeout(pipes(elem,true), seconds * 1000);
+    //         });
     //     });
     // });
+
+    let elementsArray_p = document.getElementsByClassName("pipe-event");
+    Array.from(elementsArray_p).forEach(function (elem) {
+        var ev = elem.getAttribute("event");
+        elem.addEventListener(ev, function () {
+		if (elem.classList.contains("dyn-one") && !elem.classList.contains("dyn-done"))
+		{
+			elem.classList.toggle("dyn-done");
+			pipes(elem);
+			return;
+		}
+		else if (elem.classList.contains("dyn-one") && elem.classList.contains("dyn-done"))
+		{}
+		else
+			pipes(elem,true);
+        });
+    });
 }
 
 // modala(jsonObj,rootNode)
