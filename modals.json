@@ -40,7 +40,7 @@
 			"gk": {
 				"tagname": "timed",
 				"class": "plain-html",
-				"set-attr": "",
+				"set-attr": "value",
 				"delay": "3000",
 				"ajax": "button_src.php",
 				"insert": "gutty-button",

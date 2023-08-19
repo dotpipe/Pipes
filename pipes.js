@@ -485,7 +485,28 @@ function navigate(elem, opts = null, query = "", classname = "") {
     var rawFile = new XMLHttpRequest();
     rawFile.open(opts.get("method"), elem_qstring, true);
     console.log(elem);
-    if (elem.classList.contains("text-html")) {
+    
+    if (elem.hasAttribute("set-attr")) {
+        rawFile.onreadystatechange = function () {
+            if (rawFile.readyState === 4) {
+                var allText = (rawFile.responseText);
+                try {
+                    if (elem.classList.contains("plain-html"))
+                        document.getElementById(elem.getAttribute("insert")).innerHTML = (allText);
+
+                    else if (elem.classList.contains("plain-text"))
+                        document.getElementById(elem.getAttribute("insert")).textContent = (allText);
+                    else
+                        document.getElementById(elem.getAttribute("insert")).setAttribute(elem.getAttribute("set-attr"), allText);
+
+                }
+                catch (e) {
+                    console.error(e);
+                }
+            }
+        }
+    }
+    else if (elem.classList.contains("text-html")) {
         rawFile.onreadystatechange = function () {
             if (rawFile.readyState === 4) {
                 var allText = "";// JSON.parse(rawFile.responseText);
@@ -544,21 +565,6 @@ function navigate(elem, opts = null, query = "", classname = "") {
                 }
                 catch (e) {
                     console.log("Response not a JSON");
-                }
-            }
-        }
-    }
-    else if (elem.classList.contains("set-attr")) {
-        rawFile.onreadystatechange = function () {
-            if (rawFile.readyState === 4) {
-                var allText = JSON.parse(rawFile.responseText);
-                try {
-
-                    document.getElementById(elem.getAttribute("insert")).setAttribute(elem.getAttribute("set-attr"), allText);
-
-                }
-                catch (e) {
-                    console.error(e);
                 }
             }
         }
