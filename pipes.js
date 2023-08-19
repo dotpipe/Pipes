@@ -46,13 +46,12 @@
   *  mouse.............= class name to work thru PipesJS' other attributes on event="mouseover;mouseleave" (example)
   *  mouse-insert......= class name to work thru PipesJS' other attributes on event="mouseover;mouseleave" (example)
   *  event.............= works with mouse class. Creates eventListener on "insert" Node or current Node with mouse.
-  *  event-delay.......= works with mouse class. Creates eventListener delay on Node listener.
   **** FILTERS aer go ahead code usually coded in other languages and just come back with a result. Not wholly different from AJAX. They are general purpose files.
   **** ALL HEADERS FOR AJAX are available. They will use defaults to
   **** go on if there is no input to replace them.
   */
 
-document.addEventListener("DOMContentLoaded", function () {
+  document.addEventListener("DOMContentLoaded", function () {
     domContentLoad();
     return;
 });
@@ -116,23 +115,23 @@ let domContentLoad = (again = false) => {
         });
     });
 
-    // let elementsArray_mouseOver = document.getElementsByClassName("mouse");
-    // Array.from(elementsArray_mouseOver).forEach(function (elem) {
-    //     if (elem.classList.contains("pipe-active"))
-    //         return;
-    //     elem.classList.toggle("pipe-active")
+    let elementsArray_mouseOver = document.getElementsByClassName("mouse");
+    Array.from(elementsArray_mouseOver).forEach(function (elem) {
+        if (elem.classList.contains("pipe-active"))
+            return;
+        elem.classList.toggle("pipe-active")
         
-    //     var ev = elem.getAttribute("event");
-    //     var rv = ev.split(";");
-    //     Array.from(rv).forEach((v) => {
-    //         elem.addEventListener(v, function () {
-    //             var seconds = elem.hasAttribute("event-delay") ? elem.getAttribute("event-delay") : 2; //Delay or wait 30 seconds
-    //             setTimeout(pipes(elem,true), seconds * 1000);
-    //         });
-    //     });
-    // });
+        var ev = elem.getAttribute("event");
+        var rv = ev.split(";");
+        Array.from(rv).forEach((v) => {
+            elem.addEventListener(v, function () {
+                var seconds = 1.25; //Delay or wait 30 seconds
+                setTimeout(pipes(elem,true), seconds * 1000);
+            });
+        });
+    });
 
-    let elementsArray_p = document.getElementsByClassName("pipe-event");
+    let elementsArray_p = document.getElementsByClassName("pipe");
     Array.from(elementsArray_p).forEach(function (elem) {
         var ev = elem.getAttribute("event");
         elem.addEventListener(ev, function () {
@@ -145,7 +144,7 @@ let domContentLoad = (again = false) => {
 		else if (elem.classList.contains("dyn-one") && elem.classList.contains("dyn-done"))
 		{}
 		else
-			pipes(elem,true);
+			pipes(elem);
         });
     });
 }
