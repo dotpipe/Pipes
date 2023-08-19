@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <head id="daTop"><title>PipesJS+Modala</title>
 <style>
+	
 .pipe-grid {
 	display: inline-grid;
 	grid-template-columns: auto auto auto;
