@@ -20,6 +20,17 @@
                                 "class": "redirect",
                                 "id": "ids-required"
                         }
+                },
+                "th02": {
+                        "tagname": "th",
+                        "lnk2": {
+                                "tagname": "dyn",
+                                "innerText": "Oh here it is!",
+                                "class": "redirect",
+                                "ajax": "https://www.paypal.me/pirodock",
+                                "style": "display:none",
+                                "id": "mo-id"
+                        }
                 }
         }
 }
