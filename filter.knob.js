@@ -19,15 +19,14 @@ function actionKnob(e)
 
 	let deg = rad * (180 / Math.PI);
 
-	if (y < h && x > w)
+	// if (y < h && x > w)
 	{
-		if (prevX <= x && prevY <= y)
+		// if ((prevX <= x && prevY <= y) || !(prevX <= x && prevY <= y))
 		{
-
+			carousel('carousel3',false);
 		}
-		else if (prevX >= x && prevY >= y)
+		// else if (prevX >= x && prevY >= y)
 		{
-
 		}
 	}
 
