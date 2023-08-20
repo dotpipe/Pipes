@@ -51,10 +51,10 @@
   **** go on if there is no input to replace them.
   */
 
-  document.addEventListener("DOMContentLoaded", function () {
-    domContentLoad();
-    return;
-});
+    document.addEventListener("DOMContentLoaded", function () {
+        domContentLoad();
+        return;
+    });
 
 let domContentLoad = (again = false) => {
     doc_set = document.getElementsByTagName("pipe");
@@ -260,22 +260,26 @@ function carousel(elem, auto = true) {
     var obj = document.createElement("card");
     obj.classList.toggle("pipe-grid");
     for (n = 0; obj.children.length < x.getAttribute("boxes") * multiVert; n++) {
-	if ((x.classList.contains("carousel-ajax") || elem.classList.contains("carousel-ajax"))) // && x.children.length < elem.getAttribute("boxes")) {
+	if (x.classList.contains("carousel-ajax") || elem.classList.contains("carousel-ajax")) // && x.children.length < elem.getAttribute("boxes")) {
 	{
-                p = document.createElement("p");
-                p.setAttribute("ajax", mArray[(i + j) % mArray.length]);
-                p.setAttribute("insert", "self_" + obj.children.length + 1);
-                p.classList.add("modala");
-                p.id = "self_" + obj.children.length + 1;
-                p.setAttribute("onclick","pipes(this)");
-                p.click();
-                p.removeAttribute("onclick");
-                p.classList.add("pipe-grid-child");
-                p.classList.add("pipe");
-                obj.appendChild(p);
-                i = (crement > 0) ? i + 1 : (i < 0) ? (mArray.length - 1) : i - 1;
+        p = document.createElement("p");
+        p.setAttribute("ajax", mArray[(i + j) % mArray.length]);
+        p.setAttribute("insert", "self_" + obj.children.length + 1);
+        p.classList.add("modala");
+        p.id = "self_" + obj.children.length + 1;
+        p.setAttribute("onclick","pipes(this)");
+        p.click();
+        p.removeAttribute("onclick");
+        p.classList.add("pipe-grid-child");
+        p.classList.add("pipe");
+        obj.appendChild(p);
+        i = (crement > 0) ? i + 1 : (i < 0) ? (mArray.length - 1) : i - 1;
+        if (multiVert == 2) {
+            n++;
+            obj.appendChild(br);
+        }
 	}
-	else if ((!x.classList.contains("carousel-ajax") && !elem.classList.contains("carousel-ajax")))
+	else if (!x.classList.contains("carousel-ajax") && !elem.classList.contains("carousel-ajax"))
 	{
 		img = document.createElement("img");
 		img.src = mArray[(i + j) % mArray.length];
