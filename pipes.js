@@ -46,6 +46,7 @@
   *  mouse.............= class name to work thru PipesJS' other attributes on event="mouseover;mouseleave" (example)
   *  mouse-insert......= class name to work thru PipesJS' other attributes on event="mouseover;mouseleave" (example)
   *  event.............= works with mouse class. Creates eventListener on "insert" Node or current Node with mouse.
+  *  options...........= works with <select> tagName. Key:Value; pairs to setup ad easily roll out multiple selects.
   **** FILTERS aer go ahead code usually coded in other languages and just come back with a result. Not wholly different from AJAX. They are general purpose files.
   **** ALL HEADERS FOR AJAX are available. They will use defaults to
   **** go on if there is no input to replace them.
