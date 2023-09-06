@@ -168,6 +168,25 @@ function modala(value, tempTag, root, id) {
         const [k, v] = nest;
         if (v instanceof Object)
             modala(v, temp, root, id);
+        else if (k.toLowerCase() == "select")
+        {
+            var select = document.createElement("select");
+            temp.appendChild(select);
+            modala(v, temp, root, id);
+        }
+        else if (k.toLowerCase() == "options" && tempTag.tagName.toLowerCase() == "select")
+        {
+            var optsArray = v.split(";");
+            // var 
+            // var valsArray = elem.getAttribute("optsArray").split(":");
+            optsArray.forEach((e, f) => {
+                var g = e.split(":");
+                var select = document.createElement("option");
+                select.setAttribute("value",g[1]);
+                select.textContent = (g[1]);
+                tempTag.appendChild(select);
+            });
+        }
         else if (k.toLowerCase() == "css")
         {
             var cssvar = document.createElement("link");
