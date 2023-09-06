@@ -184,7 +184,7 @@ function modala(value, tempTag, root, id) {
                 var g = e.split(":");
                 var select = document.createElement("option");
                 select.setAttribute("value",g[1]);
-                select.textContent = (g[1]);
+                select.textContent = (g[0]);
                 tempTag.appendChild(select);
             });
         }
