@@ -26,9 +26,13 @@
   *  delay.............= delay between <timed> tag refreshes (required for <timed> tag) ex: see <timed>
   *  <carousel>........= Tag to create a carousel that moves every a timeOut() delay="x" occurs ex: <carousel ajax="foo.bar" file-order="foo.bar;bar.foo;foobar.barfoo" delay="3000" id="thisId" insert="thisId" height="100" width="100" boxes="8" style="height:100;width:800">
   *  carousel-ajax.....= Class to create Modala sets for carousel use.
-  *  carousel-images...= Class to use pure images for carousel use.
-  *  carousel-auto-off.= Class to stop carousel from moving (better to create buttons)
-  *  carousel-vert.....= Class to make carousel vertical, instead of horizontal (default)
+  *         -images...= Class to use pure images for carousel use.
+  *         -auto-off.= Class to stop carousel from moving (better to create buttons)
+  *         -vert.....= Class to make carousel vertical, instead of horizontal (default)
+  *         -video....= Class to make video carousel
+  *         -audio....= Class to make audio carousel
+  *         -iframe...= Class to make iframe carousel
+  *         -link.....= Class to make link carousel
   *  boxes.............= <carousel> attribute to request for x boxes for pictures
   *  file-order........= ajax to these files, iterating [0,1,2,3]%array.length per call (delimited by ';') ex: <pipe query="key0:value0;" file-order="foo.bar;bar.foo;foobar.barfoo" insert="someID">
   *  file-index........= counter of which index to use with file-order to go with ajax ex: <pipe ajax="foo.bar" query="key0:value0;" insert="someID">
@@ -347,7 +351,7 @@ function carousel(elem, auto = true) {
             video.style = x.style;
             video.classList.add("pipe-grid-child");
             video.autoplay = true;
-            video.loop = true;
+            video.loop = false;
             video.muted = true;
             video.id = "self_" + obj.children.length + 1;
             obj.appendChild(video);
@@ -386,7 +390,7 @@ function carousel(elem, auto = true) {
             n++;
             obj.appendChild(br);
         }
-        console.log("OIWEWI");
+        // console.log("OIWEWI");
     }
     // while (x.children.length || (x.classList.contains("carousel-ajax") || elem.classList.contains("carousel-ajax")) && x.children.length > x.getAttribute("boxes") * multiVert)
     //     x.removeChild(x.children[x.children.length - 1]);
