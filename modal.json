@@ -7,11 +7,12 @@
 		"id": "necessary"
 	},
 	"lnk2": {
-		"tagname": "lnk",
-		"ajax": "https:\/\/paypal.me\/pirodock",
-		"textContent": "Donate",
-		"class": "redirect",
-			"id": "ids-required"
+		"tagname": "select",
+		"select": {
+			"options": "ajax handler:pipes;dont tell now:modala; i love sue:yes!"
+		},
+		"width": "100px",
+		"id": "ids-required"
 	},
 	"car54": {
 		"id": "stuffer-left",
@@ -60,8 +61,8 @@
 					"interval": "3",
 					"class": "carousel-vert decrIndex",
 					"file-order": "grid.png;grid2.png;grid3.png;grid2.png;grid4.png;grid2.png;grid3.png",
-					"insert": "carousel2",
-					"id": "carousel2"
+					"insert": "carousel1",
+					"id": "carousel1"
 				}
 			}
 		},
@@ -69,7 +70,6 @@
 			"tagname": "div",
 			"style": "height:150;background-color:#abcdef;",
 			"textContent": "technically *I* was floating",
-			"class": "",
 			"guts": {
 				"tagname": "p",
 				"innerText": "eowfwuioe",

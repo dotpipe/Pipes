@@ -23,7 +23,7 @@ function actionKnob(e)
 	{
 		// if ((prevX <= x && prevY <= y) || !(prevX <= x && prevY <= y))
 		{
-			carousel('carousel3',false);
+			carousel('carousel4',false);
 		}
 		// else if (prevX >= x && prevY >= y)
 		{

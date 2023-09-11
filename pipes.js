@@ -25,7 +25,8 @@
   *  <timed>...........= Timed result refreshing tags (Keep up-to-date handling on page) ex: <timed ajax="foo.bar" delay="3000" query="key0:value0;" insert="someID">
   *  delay.............= delay between <timed> tag refreshes (required for <timed> tag) ex: see <timed>
   *  <carousel>........= Tag to create a carousel that moves every a timeOut() delay="x" occurs ex: <carousel ajax="foo.bar" file-order="foo.bar;bar.foo;foobar.barfoo" delay="3000" id="thisId" insert="thisId" height="100" width="100" boxes="8" style="height:100;width:800">
-  *  carousel-ajax.....= Class to create Modala pictures for carousel use.
+  *  carousel-ajax.....= Class to create Modala sets for carousel use.
+  *  carousel-images...= Class to use pure images for carousel use.
   *  carousel-auto-off.= Class to stop carousel from moving (better to create buttons)
   *  carousel-vert.....= Class to make carousel vertical, instead of horizontal (default)
   *  boxes.............= <carousel> attribute to request for x boxes for pictures
@@ -168,6 +169,44 @@ function modala(value, tempTag, root, id) {
         const [k, v] = nest;
         if (v instanceof Object)
             modala(v, temp, root, id);
+        else if (k.toLowerCase() == "select")
+        {
+            var select = document.createElement("select");
+            temp.appendChild(select);
+            modala(v, temp, root, id);
+        }
+        else if (k.toLowerCase() == "options" && tempTag.tagName.toLowerCase() == "select")
+        {
+            var optsArray = v.split(";");
+            // var 
+            // var valsArray = elem.getAttribute("optsArray").split(":");
+            optsArray.forEach((e, f) => {
+                var g = e.split(":");
+                var select = document.createElement("option");
+                select.setAttribute("value",g[1]);
+                select.textContent = (g[0]);
+                tempTag.appendChild(select);
+            });
+        }
+        else if (k.toLowerCase() == "select")
+        {
+            var select = document.createElement("select");
+            temp.appendChild(select);
+            modala(v, temp, root, id);
+        }
+        else if (k.toLowerCase() == "options" && tempTag.tagName.toLowerCase() == "select")
+        {
+            var optsArray = v.split(";");
+            // var 
+            // var valsArray = elem.getAttribute("optsArray").split(":");
+            optsArray.forEach((e, f) => {
+                var g = e.split(":");
+                var select = document.createElement("option");
+                select.setAttribute("value",g[1]);
+                select.textContent = (g[0]);
+                tempTag.appendChild(select);
+            });
+        }
         else if (k.toLowerCase() == "css")
         {
             var cssvar = document.createElement("link");
@@ -217,8 +256,8 @@ function fileOrder(elem) {
     index = index % arr.length;
     ppfc.setAttribute("file-index", index.toString());
 
-    console.log(ppfc);
-    if (ppfc.hasOwnAttribute("src")) {
+    // console.log(ppfc);
+    if (ppfc.tagName == "SOURCE" && ppfc.hasAttribute("src")) {
         try {
             // <Source> tag's parentNode will need to be paused and resumed
             // to switch the video
@@ -231,9 +270,17 @@ function fileOrder(elem) {
             ppfc.setAttribute("src", arr[index].toString());
         }
     }
-    else {
-        elem.setAttribute("ajax", arr[index].toString());
-        pipes(elem);
+    else if (ppfc && ppfc.tagName == "IMG") {
+
+        ppfc.setAttribute("src", arr[index].toString());
+        // elem.setAttribute("ajax", arr[index].toString());
+        // pipes(elem);
+    }
+    else
+    {
+        var obj = document.createElement("img");
+        obj.setAttribute("src", arr[index].toString());
+        ppfc.appendChild(obj);
     }
 }
 
@@ -244,7 +291,7 @@ function carousel(elem, auto = true) {
     var mArray = x.getAttribute("file-order").split(";");
     var y = 1;
     var crement = 1;
-    if (elem.classList.contains("decrIndex"))
+    if (x.classList.contains("decrIndex"))
         crement = (-1);
     var i = (parseInt(x.getAttribute("file-index"))) ?? 0;
     var j = parseInt(x.getAttribute("interval")) ?? 1;
@@ -258,50 +305,96 @@ function carousel(elem, auto = true) {
     }
     var m = 0;
     var obj = document.createElement("card");
+    obj.id = "insert-" + elem.getAttribute("insert");
     obj.classList.toggle("pipe-grid");
-    for (n = 0; obj.children.length < x.getAttribute("boxes") * multiVert; n++) {
-	if (x.classList.contains("carousel-ajax") || elem.classList.contains("carousel-ajax")) // && x.children.length < elem.getAttribute("boxes")) {
-	{
-        p = document.createElement("p");
-        p.setAttribute("ajax", mArray[(i + j) % mArray.length]);
-        p.setAttribute("insert", "self_" + obj.children.length + 1);
-        p.classList.add("modala");
-        p.id = "self_" + obj.children.length + 1;
-        p.setAttribute("onclick","pipes(this)");
-        p.click();
-        p.removeAttribute("onclick");
-        p.classList.add("pipe-grid-child");
-        p.classList.add("pipe");
-        obj.appendChild(p);
+    for (n = 0; obj.children.length < (x.getAttribute("boxes") * multiVert) % (elem.getAttribute("boxes") + 1); n++)
+    {
+        if (x.classList.contains("carousel-ajax") || elem.classList.contains("carousel-ajax")) // && x.children.length < elem.getAttribute("boxes")) {
+        {
+            p = document.createElement("p");
+            p.setAttribute("ajax", mArray[(i + j) % mArray.length]);
+            p.setAttribute("insert", "self_" + obj.children.length + 1);
+            p.classList.add("modala");
+            p.id = "self_" + obj.children.length + 1;
+            p.setAttribute("onclick","pipes(this)");
+            p.click();
+            p.removeAttribute("onclick");
+            p.classList.add("pipe-grid-child");
+            p.classList.add("pipe");
+            obj.appendChild(p);
+            i = (crement > 0) ? i + 1 : (i < 0) ? (mArray.length - 1) : i - 1;
+            if (multiVert == 2) {
+                n++;
+                obj.appendChild(br);
+            }
+        }
+        else if (x.classList.contains("carousel-images") || elem.classList.contains("carousel-images"))
+        {
+            img = document.createElement("img");
+            img.src = mArray[(i + j + 1) % mArray.length];
+            img.style = x.style;
+            img.classList.add("pipe-grid-child");
+            if (x.classList.contains("carousel-images")) {
+                img.height = x.getAttribute("height");
+                img.width = x.getAttribute("width");
+            }
+            obj.appendChild(img);
+        }
+        else if (x.classList.contains("carousel-video") || elem.classList.contains("carousel-video")) {
+            var video = document.createElement("video");
+            video.src = mArray[(i + j) % mArray.length];
+            video.style = x.style;
+            video.classList.add("pipe-grid-child");
+            video.autoplay = true;
+            video.loop = true;
+            video.muted = true;
+            video.id = "self_" + obj.children.length + 1;
+            obj.appendChild(video);
+        }
+        else if (x.classList.contains("carousel-audio") || elem.classList.contains("carousel-audio")) {
+            var audio = document.createElement("audio");
+            audio.src = mArray[(i + j) % mArray.length];
+            audio.style = x.style;
+            audio.classList.add("pipe-grid-child");
+            audio.autoplay = true;
+            audio.loop = true;
+            audio.muted = true;
+            audio.id = "self_" + obj.children.length + 1;
+            obj.appendChild(audio);
+        }
+        else if (x.classList.contains("carousel-iframe") || elem.classList.contains("carousel-iframe")) {
+            var iframe = document.createElement("iframe");
+            iframe.src = mArray[(i + j) % mArray.length];
+            iframe.style = x.style;
+            iframe.classList.add("pipe-grid-child");
+            iframe.id = "self_" + obj.children.length + 1;
+            obj.appendChild(iframe);
+        }
+        else if (x.classList.contains("carousel-link") || elem.classList.contains("carousel-link")) {
+            var link = document.createElement("a");
+            link.href = mArray[(i + j) % mArray.length];
+            link.textContent = mArray[(i + j) % mArray.length];
+            link.style = x.style;
+            link.classList.add("pipe-grid-child");
+            link.id = "self_" + obj.children.length + 1;
+            obj.appendChild(link);
+        }
         i = (crement > 0) ? i + 1 : (i < 0) ? (mArray.length - 1) : i - 1;
+        br = document.createElement("br");
         if (multiVert == 2) {
             n++;
             obj.appendChild(br);
         }
-	}
-	else if (!x.classList.contains("carousel-ajax") && !elem.classList.contains("carousel-ajax"))
-	{
-		img = document.createElement("img");
-		img.src = mArray[(i + j) % mArray.length];
-		img.style = x.style;
-		img.classList.add("pipe-grid-child");
-		obj.appendChild(img);
-		i = (crement > 0) ? i + 1 : (i < 0) ? (mArray.length - 1) : i - 1;
-		br = document.createElement("br");
-		if (multiVert == 2) {
-			n++;
-			obj.appendChild(br);
-		}
-	}
+        console.log("OIWEWI");
     }
-    while (x.children.length || (x.classList.contains("carousel-ajax") || elem.classList.contains("carousel-ajax")) && x.children.length > x.getAttribute("boxes") * multiVert)
-        x.removeChild(x.children[x.children.length - 1]);
+    // while (x.children.length || (x.classList.contains("carousel-ajax") || elem.classList.contains("carousel-ajax")) && x.children.length > x.getAttribute("boxes") * multiVert)
+    //     x.removeChild(x.children[x.children.length - 1]);
     x.append(obj);
-    var w = (Math.abs(i));
+    var w = (Math.abs(i + 1));
     x.setAttribute("file-index", w % mArray.length);
-    var delay = elem.getAttribute("delay");
+    var delay = x.getAttribute("delay");
     if (!x.classList.contains("carousel-auto-off"))
-        setTimeout(() => { carousel(elem.id, auto); }, delay);
+        setTimeout(() => { carousel(x.id, auto); }, delay);
 }
 
 function fileShift(elem) {
@@ -388,7 +481,7 @@ function pipes(elem, stop = false) {
             query = query + g[0] + "=" + g[1] + "&";
         });
 	query = query.substring(0,-1);
-	console.log(query);
+	// console.log(query);
     }
     if (elem.hasAttribute("headers")) {
         var optsArray = elem.getAttribute("headers").split("&");
@@ -472,7 +565,7 @@ function formAJAX(elem, classname) {
     }
     if (elem.classList.contains("redirect"))
         window.location.href = elem.getAttribute("ajax") + ((elem_qstring.length > 0) ? "?" + elem_qstring : "");
-    console.log(elem_qstring);
+    // console.log(elem_qstring);
     return (elem_qstring.substring(0, -2));
 }
 
@@ -488,7 +581,7 @@ function navigate(elem, opts = null, query = "", classname = "") {
 
     var rawFile = new XMLHttpRequest();
     rawFile.open(opts.get("method"), elem_qstring, true);
-    console.log(elem);
+    // console.log(elem);
     
     if (elem.hasAttribute("set-attr")) {
         rawFile.onreadystatechange = function () {
@@ -526,7 +619,7 @@ function navigate(elem, opts = null, query = "", classname = "") {
                     return allText;
                 }
                 catch (e) {
-                    console.log("Error Handling Text");
+                    // console.log("Error Handling Text");
                 }
             }
         }
@@ -547,7 +640,7 @@ function navigate(elem, opts = null, query = "", classname = "") {
                     return allText;
                 }
                 catch (e) {
-                    console.log("Error Handling Text");
+                    // console.log("Error Handling Text");
                 }
             }
         }
@@ -568,7 +661,7 @@ function navigate(elem, opts = null, query = "", classname = "") {
                     return allText;
                 }
                 catch (e) {
-                    console.log("Response not a JSON");
+                    // console.log("Response not a JSON");
                 }
             }
         }
@@ -578,7 +671,7 @@ function navigate(elem, opts = null, query = "", classname = "") {
             if (rawFile.readyState === 4) {
                 var allText = ""; // JSON.parse(rawFile.responseText);
                 allText = JSON.parse(rawFile.responseText);
-                console.log(allText);
+                // console.log(allText);
                 var x = document.getElementById(elem.getAttribute("insert"));
                 modala(allText, elem.getAttribute("insert"));
                 if (elem.hasAttribute("callback")) {
@@ -609,7 +702,7 @@ function navigate(elem, opts = null, query = "", classname = "") {
     try {
         rawFile.send();
     } catch (e) {
-        console.log(e);
+        // console.log(e);
     }
 }
 
