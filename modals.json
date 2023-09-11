@@ -18,7 +18,7 @@
 						"id": "tip00",
 						"textContent": "All Mouse Actions",
 						"class": "mouse",
-						"event": "mouseover;mouseleave",
+						"event": "mouseover:1000;",
 						"display": "tip01"
 					},
 					"p1": {
@@ -69,12 +69,15 @@
 						"id": "tip30",
 						"textContent": "All Mouse Actions",
 						"class": "mouse",
-						"event": "mouseover;mouseleave",
+						"event": "mousehover:1000;mouseleave:3500",
 						"display": "tip31"
 					},
 					"p1": {
 						"tagname": "img",
 						"id": "tip31",
+						"class": "mouse",
+						"display": "tip31",
+						"event": "mouseleave:1000",
 						"style": "position:absolute;display:none;z-index:3",
 						"src": "displayPics/td30.png"
 					}
@@ -102,7 +105,7 @@
 					"id": "td5",
 					"display": "tip51",
 					"class": "mouse",
-					"event": "mouseover;mouseleave",
+					"event": "mouseenter;mouseleave:3500",
 					"p0": {
 						"tagname": "p",
 						"p0": {

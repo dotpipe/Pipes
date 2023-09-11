@@ -57,10 +57,10 @@
   **** go on if there is no input to replace them.
   */
 
-    document.addEventListener("DOMContentLoaded", function () {
-        domContentLoad();
-        return;
-    });
+document.addEventListener("DOMContentLoaded", function () {
+    domContentLoad();
+    return;
+});
 
 let domContentLoad = (again = false) => {
     doc_set = document.getElementsByTagName("pipe");
@@ -87,16 +87,14 @@ let domContentLoad = (again = false) => {
             return;
         elem.classList.toggle("pipe-active");
         elem.addEventListener("click", function () {
-		if (elem.classList.contains("dyn-one") && !elem.classList.contains("dyn-done"))
-		{
-			elem.classList.toggle("dyn-done");
-			pipes(elem);
-			return;
-		}
-		else if (elem.classList.contains("dyn-one") && elem.classList.contains("dyn-done"))
-		{}
-		else
-			pipes(elem);
+            if (elem.classList.contains("dyn-one") && !elem.classList.contains("dyn-done")) {
+                elem.classList.toggle("dyn-done");
+                pipes(elem);
+                return;
+            }
+            else if (elem.classList.contains("dyn-one") && elem.classList.contains("dyn-done")) { }
+            else
+                pipes(elem);
         });
     });
 
@@ -121,36 +119,33 @@ let domContentLoad = (again = false) => {
         });
     });
 
-    let elementsArray_mouseOver = document.getElementsByClassName("mouse");
-    Array.from(elementsArray_mouseOver).forEach(function (elem) {
-        if (elem.classList.contains("pipe-active"))
-            return;
-        elem.classList.toggle("pipe-active")
-        
+    Array.from(document.querySelectorAll(".mouse")).forEach(function (elem) {
+        // if (elem.classList.contains("pipe-active"))
+        //     return;
+        // elem.classList.toggle("pipe-active")
+
         var ev = elem.getAttribute("event");
         var rv = ev.split(";");
         Array.from(rv).forEach((v) => {
-            elem.addEventListener(v, function () {
-                var seconds = elem.getAttribute("delay"); //Delay or wait 30 seconds
-                setTimeout(pipes(elem,true), seconds * 1000);
+            var g = v.split(":");
+            elem.addEventListener(g[0], function () {
+                console.log("t");
+                setTimeout(pipes(elem, true), g[1]);
             });
         });
     });
 
-    let elementsArray_p = document.getElementsByClassName("pipe");
-    Array.from(elementsArray_p).forEach(function (elem) {
+    Array.from(document.querySelectorAll(".pipe")).forEach(function (elem) {
         var ev = elem.getAttribute("event");
         elem.addEventListener(ev, function () {
-		if (elem.classList.contains("dyn-one") && !elem.classList.contains("dyn-done"))
-		{
-			elem.classList.toggle("dyn-done");
-			pipes(elem);
-			return;
-		}
-		else if (elem.classList.contains("dyn-one") && elem.classList.contains("dyn-done"))
-		{}
-		else
-			pipes(elem);
+            if (elem.classList.contains("dyn-one") && !elem.classList.contains("dyn-done")) {
+                elem.classList.toggle("dyn-done");
+                pipes(elem);
+                return;
+            }
+            else if (elem.classList.contains("dyn-one") && elem.classList.contains("dyn-done")) { }
+            else
+                pipes(elem);
         });
     });
 }
@@ -174,56 +169,50 @@ function modala(value, tempTag, root, id) {
         const [k, v] = nest;
         if (v instanceof Object)
             modala(v, temp, root, id);
-        else if (k.toLowerCase() == "select")
-        {
+        else if (k.toLowerCase() == "select") {
             var select = document.createElement("select");
             temp.appendChild(select);
             modala(v, temp, root, id);
         }
-        else if (k.toLowerCase() == "options" && tempTag.tagName.toLowerCase() == "select")
-        {
+        else if (k.toLowerCase() == "options" && tempTag.tagName.toLowerCase() == "select") {
             var optsArray = v.split(";");
             // var 
             // var valsArray = elem.getAttribute("optsArray").split(":");
             optsArray.forEach((e, f) => {
                 var g = e.split(":");
                 var select = document.createElement("option");
-                select.setAttribute("value",g[1]);
+                select.setAttribute("value", g[1]);
                 select.textContent = (g[0]);
                 tempTag.appendChild(select);
             });
         }
-        else if (k.toLowerCase() == "select")
-        {
+        else if (k.toLowerCase() == "select") {
             var select = document.createElement("select");
             temp.appendChild(select);
             modala(v, temp, root, id);
         }
-        else if (k.toLowerCase() == "options" && tempTag.tagName.toLowerCase() == "select")
-        {
+        else if (k.toLowerCase() == "options" && tempTag.tagName.toLowerCase() == "select") {
             var optsArray = v.split(";");
             // var 
             // var valsArray = elem.getAttribute("optsArray").split(":");
             optsArray.forEach((e, f) => {
                 var g = e.split(":");
                 var select = document.createElement("option");
-                select.setAttribute("value",g[1]);
+                select.setAttribute("value", g[1]);
                 select.textContent = (g[0]);
                 tempTag.appendChild(select);
             });
         }
-        else if (k.toLowerCase() == "css")
-        {
+        else if (k.toLowerCase() == "css") {
             var cssvar = document.createElement("link");
             cssvar.href = v;
             cssvar.rel = "stylesheet";
             tempTag.appendChild(cssvar);
         }
-        else if (k.toLowerCase() == "js")
-        {
+        else if (k.toLowerCase() == "js") {
             var js = document.createElement("script");
             js.src = v;
-            js.setAttribute("defer","true");
+            js.setAttribute("defer", "true");
             tempTag.appendChild(js);
         }
         else if (!Number(k) && k.toLowerCase() != "tagname" && k.toLowerCase() != "textcontent" && k.toLowerCase() != "innerhtml" && k.toLowerCase() != "innertext") {
@@ -281,8 +270,7 @@ function fileOrder(elem) {
         // elem.setAttribute("ajax", arr[index].toString());
         // pipes(elem);
     }
-    else
-    {
+    else {
         var obj = document.createElement("img");
         obj.setAttribute("src", arr[index].toString());
         ppfc.appendChild(obj);
@@ -304,16 +292,14 @@ function carousel(elem, auto = true) {
     if (x.classList.contains("carousel-vert")) {
         multiVert = 2;
     }
-    while (x.children.length)
-    {
+    while (x.children.length) {
         x.removeChild(x.children[0]);
     }
     var m = 0;
     var obj = document.createElement("card");
     // obj.id = "insert-" + elem.getAttribute("insert");
     obj.classList.toggle("pipe-grid");
-    for (n = 0; obj.children.length < (x.getAttribute("boxes") * multiVert); n++)
-    {
+    for (n = 0; obj.children.length < (x.getAttribute("boxes") * multiVert); n++) {
         if (x.classList.contains("carousel-ajax") || elem.classList.contains("carousel-ajax")) // && x.children.length < elem.getAttribute("boxes")) {
         {
             p = document.createElement("p");
@@ -321,7 +307,7 @@ function carousel(elem, auto = true) {
             p.setAttribute("insert", "self_" + obj.children.length + 1);
             p.classList.add("modala");
             p.id = "self_" + obj.children.length + 1;
-            p.setAttribute("onclick","pipes(this)");
+            p.setAttribute("onclick", "pipes(this)");
             p.click();
             p.removeAttribute("onclick");
             p.classList.add("pipe-grid-child");
@@ -333,8 +319,7 @@ function carousel(elem, auto = true) {
                 obj.appendChild(br);
             }
         }
-        else if (x.classList.contains("carousel-images") || elem.classList.contains("carousel-images"))
-        {
+        else if (x.classList.contains("carousel-images") || elem.classList.contains("carousel-images")) {
             img = document.createElement("img");
             img.src = mArray[(i + j + 1) % mArray.length];
             img.style = x.style;
@@ -485,8 +470,8 @@ function pipes(elem, stop = false) {
             var g = e.split(":");
             query = query + g[0] + "=" + g[1] + "&";
         });
-	query = query.substring(0,-1);
-	// console.log(query);
+        query = query.substring(0, -1);
+        // console.log(query);
     }
     if (elem.hasAttribute("headers")) {
         var optsArray = elem.getAttribute("headers").split("&");
@@ -587,7 +572,7 @@ function navigate(elem, opts = null, query = "", classname = "") {
     var rawFile = new XMLHttpRequest();
     rawFile.open(opts.get("method"), elem_qstring, true);
     // console.log(elem);
-    
+
     if (elem.hasAttribute("set-attr")) {
         rawFile.onreadystatechange = function () {
             if (rawFile.readyState === 4) {
