@@ -56,10 +56,10 @@
 					"file-index": "0",
 					"boxes": "10",
 					"delay": "5000",
-					"height": "200",
-					"width": "200",
+					"height": "50",
+					"width": "50",
 					"interval": "3",
-					"class": "carousel-vert decrIndex",
+					"class": "carousel-images carousel-vert decrIndex",
 					"file-order": "grid.png;grid2.png;grid3.png;grid2.png;grid4.png;grid2.png;grid3.png",
 					"insert": "carousel1",
 					"id": "carousel1"

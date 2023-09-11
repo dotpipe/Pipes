@@ -306,9 +306,9 @@ function carousel(elem, auto = true) {
     }
     var m = 0;
     var obj = document.createElement("card");
-    obj.id = "insert-" + elem.getAttribute("insert");
+    // obj.id = "insert-" + elem.getAttribute("insert");
     obj.classList.toggle("pipe-grid");
-    for (n = 0; obj.children.length < (x.getAttribute("boxes") * multiVert) % (elem.getAttribute("boxes") + 1); n++)
+    for (n = 0; obj.children.length < (x.getAttribute("boxes") * multiVert); n++)
     {
         if (x.classList.contains("carousel-ajax") || elem.classList.contains("carousel-ajax")) // && x.children.length < elem.getAttribute("boxes")) {
         {
@@ -391,7 +391,7 @@ function carousel(elem, auto = true) {
     // while (x.children.length || (x.classList.contains("carousel-ajax") || elem.classList.contains("carousel-ajax")) && x.children.length > x.getAttribute("boxes") * multiVert)
     //     x.removeChild(x.children[x.children.length - 1]);
     x.append(obj);
-    var w = (Math.abs(i + 1));
+    var w = (Math.abs(i));
     x.setAttribute("file-index", w % mArray.length);
     var delay = x.getAttribute("delay");
     if (!x.classList.contains("carousel-auto-off"))
