@@ -131,7 +131,7 @@ let domContentLoad = (again = false) => {
         var rv = ev.split(";");
         Array.from(rv).forEach((v) => {
             elem.addEventListener(v, function () {
-                var seconds = 1.25; //Delay or wait 30 seconds
+                var seconds = elem.getAttribute("delay"); //Delay or wait 30 seconds
                 setTimeout(pipes(elem,true), seconds * 1000);
             });
         });
