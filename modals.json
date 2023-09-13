@@ -105,7 +105,7 @@
 					"id": "td5",
 					"display": "tip51",
 					"class": "mouse",
-					"event": "mouseenter;mouseleave:3500",
+					"event": "mouseenter:1000;mouseleave:3500",
 					"p0": {
 						"tagname": "p",
 						"p0": {

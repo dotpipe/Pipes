@@ -1,0 +1,57 @@
+LICENSE AGREEMENT
+
+This License Agreement (the "Agreement") is entered into between Anthony David Pulse, Jr (the "Licensor") and ______________ (the "Licensee").
+
+1. Definitions
+   a. "PipesJS" refers to the PipesJS library developed by Anthony David Pulse, Jr.
+   b. "Modala" refers to the Modala library developed by Anthony David Pulse, Jr.
+   c. "Software" refers to both PipesJS and Modala collectively.
+   d. "Updates" refers to any future versions, enhancements, or modifications to the Software.
+
+2. Grant of License
+   a. The Licensor grants the Licensee a non-exclusive, non-transferable license to use the Software for the purpose of proceedings of their own.
+   b. The Licensee shall have the right to install and use the Software on any specified number of installations on client-ends.
+   c. The license fee for the use of the Software is $1 biweekly per client-end installation, except for Licensees with under 100 clients who are exempt from paying the license fee.
+
+3. Ownership and Restrictions
+   a. The Licensor retains all rights, title, and interest in and to the Software, including all intellectual property rights.
+   b. The Licensee shall not modify, reverse engineer, decompile, or disassemble the Software.
+   c. The Licensee shall not distribute, sublicense, or transfer the Software to any third party without prior written consent from the Licensor.
+
+4. Updates and Support
+   a. The Licensee shall be entitled to receive Updates to the Software during the term of this Agreement.
+   b. The Licensor shall provide technical support for the Software to the Licensee during normal business hours.
+
+5. Term and Termination
+   a. This Agreement shall commence on _________________ and continue until terminated.
+   b. Either party may terminate this Agreement upon written notice if the other party breaches any material term of this Agreement.
+   c. Upon termination, the Licensee shall cease all use of the Software and return or destroy all copies of the Software.
+
+6. Limitation of Liability
+   a. The Licensor shall not be liable for any indirect, incidental, consequential, or special damages arising out of or in connection with the use of the Software.
+
+7. Governing Law and Jurisdiction
+   a. This Agreement shall be governed by and construed in accordance with the laws of Michigan.
+   b. Any disputes arising out of or in connection with this Agreement shall be subject to the exclusive jurisdiction of the courts of Michigan.
+
+8. Entire Agreement
+   a. This Agreement constitutes the entire agreement between the parties and supersedes all prior agreements, understandings, or representations, whether oral or written.
+
+9. Severability
+   a. If any provision of this Agreement is held to be invalid or unenforceable, the remaining provisions shall continue in full force and effect.
+
+10. Waiver
+    a. The failure of either party to enforce any provision of this Agreement shall not be deemed a waiver of that provision or any other provision.
+
+11. Amendments
+    a. Any amendments or modifications to this Agreement must be in writing and signed by both parties.
+
+IN WITNESS WHEREOF, the parties hereto have executed this License Agreement as of the Effective Date.
+
+Licensor:
+Anthony David Pulse, Jr.
+3017 Fenton Rd, MI 48507
+1-810-336-1617
+inland14@live.com
+
+Licensee:

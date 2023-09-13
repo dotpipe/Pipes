@@ -321,7 +321,7 @@ function carousel(elem, auto = true) {
         }
         else if (x.classList.contains("carousel-images") || elem.classList.contains("carousel-images")) {
             img = document.createElement("img");
-            img.src = mArray[(i + j + 1) % mArray.length];
+            img.src = mArray[(i + j) % mArray.length];
             img.style = x.style;
             img.classList.add("pipe-grid-child");
             if (x.classList.contains("carousel-images")) {
@@ -347,7 +347,7 @@ function carousel(elem, auto = true) {
             audio.style = x.style;
             audio.classList.add("pipe-grid-child");
             audio.autoplay = true;
-            audio.loop = true;
+            audio.loop = false;
             audio.muted = true;
             audio.id = "self_" + obj.children.length + 1;
             obj.appendChild(audio);
