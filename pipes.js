@@ -554,34 +554,36 @@ function formAJAX(elem, classname) {
         }
     }
     if (elem.classList.contains("redirect"))
-        window.location.href = elem.getAttribute("ajax") + ((elem_qstring.length > 0) ? "?" + elem_qstring : "");
+        window.location.href = elem.getAttribute("ajax") + ((elem_qstring.length > 0) ? elem_qstring : "");
     // console.log(elem_qstring);
-    return (elem_qstring.substring(0, -2));
+    return (elem_qstring);
 }
 
 function navigate(elem, opts = null, query = "", classname = "") {
     //formAJAX at the end of this line
-
+//	console.log();
     elem_qstring = query + ((document.getElementsByClassName(classname).length > 0) ? formAJAX(elem, classname) : "");
-    elem_qstring = elem.getAttribute("ajax") + ((elem_qstring.length > 0) ? "?" + elem_qstring : "");
+//    elem_qstring = elem_qstring;
     elem_qstring = encodeURI(elem_qstring);
+	console.log(elem_qstring);
     opts = setAJAXOpts(elem, opts);
     var opts_req = new Request(elem_qstring);
     opts.set("mode", (opts["mode"] !== undefined) ? opts["mode"] : '"Access-Control-Allow-Origin":"*"');
 
     var rawFile = new XMLHttpRequest();
-    rawFile.open(opts.get("method"), elem_qstring, true);
-    // console.log(elem);
+    rawFile.open(opts.get("method"), elem.getAttribute("ajax") + "?" + elem_qstring, true);
+    console.log(elem);
 
-    if (elem.hasAttribute("set-attr")) {
+    if (elem.classList.contains("set-attr")) {
         rawFile.onreadystatechange = function () {
             if (rawFile.readyState === 4) {
                 var allText = (rawFile.responseText);
                 try {
                     if (elem.classList.contains("plain-html"))
                         document.getElementById(elem.getAttribute("insert")).innerHTML = (allText);
-
                     else if (elem.classList.contains("plain-text"))
+                        document.getElementById(elem.getAttribute("insert")).textContent = (allText);
+                    else if (elem.classList.contains("json"))
                         document.getElementById(elem.getAttribute("insert")).textContent = (allText);
                     else
                         document.getElementById(elem.getAttribute("insert")).setAttribute(elem.getAttribute("set-attr"), allText);
@@ -619,10 +621,12 @@ function navigate(elem, opts = null, query = "", classname = "") {
             if (rawFile.readyState === 4) {
                 var allText = "";// JSON.parse(rawFile.responseText);
                 try {
+                    var f = "";
                     allText = (rawFile.responseText);
                     if (elem.hasAttribute("callback")) {
                         var func = elem.getAttribute("callback");
                         this[func](allText);
+
                     }
                     if (elem.hasAttribute("insert")) {
                         document.getElementById(elem.getAttribute("insert")).textContent = (rawFile.responseText);
@@ -640,6 +644,7 @@ function navigate(elem, opts = null, query = "", classname = "") {
             if (rawFile.readyState === 4) {
                 var allText = "";// JSON.parse(rawFile.responseText);
                 try {
+			console.log(rawFile.responseText);
                     allText = JSON.parse(rawFile.responseText);
                     if (elem.hasAttribute("callback")) {
                         var func = elem.getAttribute("callback");
@@ -651,7 +656,7 @@ function navigate(elem, opts = null, query = "", classname = "") {
                     return allText;
                 }
                 catch (e) {
-                    // console.log("Response not a JSON");
+                    console.log("Response not a JSON");
                 }
             }
         }
@@ -671,11 +676,12 @@ function navigate(elem, opts = null, query = "", classname = "") {
             }
         }
     }
-    else if (!elem.hasAttribute("json") && !elem.hasAttribute("callback")) {
+    else if (!elem.classList.contains("json") && !elem.hasAttribute("callback")) {
         rawFile.onreadystatechange = function () {
             if (rawFile.readyState === 4) {
+		console.log(rawFile.responseText);
                 var allText = rawFile.responseText;
-                if (document.getElementById(elem.getAttribute("insert") !== null))
+                if (document.getElementById(elem.getAttribute("insert")) !== null)
                     document.getElementById(elem.getAttribute("insert")).innerHTML = allText;
             }
         }
@@ -684,6 +690,7 @@ function navigate(elem, opts = null, query = "", classname = "") {
         rawFile.onreadystatechange = function () {
             if (rawFile.readyState === 4) {
                 var allText = JSON.parse(rawFile.responseText);
+		console.log(allText);
                 var func = elem.getAttribute("callback");
                 this[func](allText);
             }
