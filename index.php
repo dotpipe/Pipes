@@ -5,6 +5,7 @@ session_start();
 <html>
 
 <head>
+    <link rel="icon" href="pipes.ico">
     <title>Modala Creator</title>
     <style>
         body {
@@ -81,40 +82,53 @@ session_start();
 </head>
 
 <body>
-    <h1>Modala Creator</h1>
 
-    <table style="width:85%;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1005898633128967"
+        crossorigin="anonymous"></script>
+    <ins class="adsbygoogle" style="display:block" data-ad-format="autorelaxed" data-ad-client="ca-pub-1005898633128967"
+        data-ad-slot="2759331251"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+    <dyn id="i" style="width:200px;" ajax="https://github.com/wise-penny/pipes" class="redirect">
+        https://github.com/wise-penny/pipes</dyn>
+    <dyn id="i" style="width:200px;" ajax="http://g0d.me/ivy" class="redirect">Ivy Seed</dyn>
+    <dyn id="i" style="width:200px;" ajax="http://g0d.me/freqwave" class="redirect">Freqwave</dyn>
+    <table style="width:75%;">
         <tr>
             <td style="width:30%">
+                <h1>Modala Creator</h1>
                 Please Help us with a donation! $1 a month counts as a very helpful subscription!
             </td>
         </tr>
         <tr>
             <td>
-                <div id="paypal-button-container-P-5H743869Y22155029MUBYZ7Y"></div>
-                <script
-                    src="https://www.paypal.com/sdk/js?client-id=AdvDfbOhJIOM4hn3n9AfE1loBfADjY0GM8cFTJwWiat9bqoDY9zU64gmv0P7nWabg6TETsZ7paH-k2Ud&vault=true&intent=subscription"
-                    data-sdk-integration-source="button-factory"></script>
-                <script>
-                    paypal.Buttons({
-                        style: {
-                            shape: 'rect',
-                            color: 'gold',
-                            layout: 'vertical',
-                            label: 'paypal'
-                        },
-                        createSubscription: function (data, actions) {
-                            return actions.subscription.create({
-                                /* Creates the subscription */
-                                plan_id: 'P-5H743869Y22155029MUBYZ7Y',
-                                quantity: 1 // The quantity of the product for a subscription
-                            });
-                        },
-                        onApprove: function (data, actions) {
-                            alert(data.subscriptionID); // You can add optional success message for the subscriber here
-                        }
-                    }).render('#paypal-button-container-P-5H743869Y22155029MUBYZ7Y'); // Renders the PayPal button
-                </script>
+                <article>
+                    <div id="paypal-button-container-P-5H743869Y22155029MUBYZ7Y"></div>
+                    <script
+                        src="https://www.paypal.com/sdk/js?client-id=AdvDfbOhJIOM4hn3n9AfE1loBfADjY0GM8cFTJwWiat9bqoDY9zU64gmv0P7nWabg6TETsZ7paH-k2Ud&vault=true&intent=subscription"
+                        data-sdk-integration-source="button-factory"></script>
+                    <script>
+                        paypal.Buttons({
+                            style: {
+                                shape: 'rect',
+                                color: 'gold',
+                                layout: 'vertical',
+                                label: 'paypal'
+                            },
+                            createSubscription: function (data, actions) {
+                                return actions.subscription.create({
+                                    /* Creates the subscription */
+                                    plan_id: 'P-5H743869Y22155029MUBYZ7Y',
+                                    quantity: 1 // The quantity of the product for a subscription
+                                });
+                            },
+                            onApprove: function (data, actions) {
+                                alert(data.subscriptionID); // You can add optional success message for the subscriber here
+                            }
+                        }).render('#paypal-button-container-P-5H743869Y22155029MUBYZ7Y'); // Renders the PayPal button
+                    </script>
+                </article>
             </td>
             <td rowspan="2">
 
@@ -143,16 +157,28 @@ session_start();
 
                     <br>
 
-                    <textarea id="ta"></textarea>
-                    
-                    <dyn id="copy" onclick="insertIntoTextArea(document.getElementById('ta').value)">Copy</dyn>
+                    <textarea id="ta" style="color:black" disabled="true"></textarea>
+
+                    <dyn id="copy" onclick="insertIntoTextArea(document.getElementById('ta').value)">Copy Modal</dyn>
                 </article>
             </td>
             <td rowspan="2">
+                <script async
+                    src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1005898633128967"
+                    crossorigin="anonymous"></script>
                 <div id="puthere"></div>
                 <dyn id="cancel" onclick="document.getElementById('puthere').textContent='';">Cancel Out</dyn>
             </td>
-            
+            <td rowspan="2">
+                <script async
+                    src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1005898633128967"
+                    crossorigin="anonymous"></script>
+                <ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article"
+                    data-ad-format="fluid" data-ad-client="ca-pub-1005898633128967" data-ad-slot="6576692306"></ins>
+                <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+            </td>
         </tr>
         <tr>
             <td>
@@ -161,11 +187,31 @@ session_start();
                     header="'contentType: application/x-www-form-urlencoded'"
                     onclick="modala(JSON.parse(document.getElementById('whole').value), document.getElementById('puthere'))">
                     Make page</dyn>
+                <?php $time = "json" . time() . ".json"; ?>
+                <dyn id="copy-download" ajax="makefile.php" method="GET" insert="download" form-class="form2"
+                    onclick="copyJSON()">Copy JSON</dyn>
+                <br>
+                <div id="download"></div>
             </td>
         </tr>
     </table>
     <script src="pipes.js"></script>
     <script>
+
+        function copyJSON() {
+            /* Get the text field */
+            var json = document.getElementById("whole");
+
+            /* Select the text field */
+            json.select();
+            json.setSelectionRange(0, 99999); /* For mobile devices */
+
+            /* Copy the text inside the text field */
+            document.execCommand("copy");
+
+            /* Alert the copied text */
+            alert("Copied Modal to clipboard");
+        }
 
         var lastCursorPosition = 0;
 
@@ -187,7 +233,7 @@ session_start();
                     "style": "width:150px;height:45px;font-size:30px",
                     "name": "key",
                     "select": {
-                        "options": "tagname:tagname;id:id;style:style;content:textContent;insert:insert;ajax:ajax;src:src;query:query;callback:callback;download:download;file:file;directory:directory;redirect:redirect;js:js;css:css;lnk:lnk;dyn:dyn;class:class"
+                        "options": "tagname *:tagname;id *:id;style:style;content:textContent;insert:insert;ajax:ajax;src:src;query:query;form-class:form-class;value:value;callback:callback;file:file;directory:directory;js:js;css:css;set-attr:set-attr;class:class"
                     },
                     "class": "form1",
                     "id": "key"

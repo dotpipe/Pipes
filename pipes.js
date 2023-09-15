@@ -503,10 +503,11 @@ function pipes(elem, stop = false) {
     }
     // This is a quick way to make a downloadable link in an href
     //     else
-    if (elem.tagName == "download") {
-        var text = ev.target.getAttribute("file");
+    if (elem.classList.contains("download")) {
+        console.log("$$$");
+        var text = elem.getAttribute("file");
         var element = document.createElement('a');
-        var location = ev.target.getAttribute("directory");
+        var location = (elem.hasAttribute("directory")) ? elem.getAttribute("directory") : "./";
         element.setAttribute('href', location + encodeURIComponent(text));
         element.style.display = 'none';
         document.body.appendChild(element);
