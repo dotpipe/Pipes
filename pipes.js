@@ -556,11 +556,11 @@ function formAJAX(elem, classname) {
 
 function navigate(elem, opts = null, query = "", classname = "") {
     //formAJAX at the end of this line
-    //	console.log();
+//	console.log();
     elem_qstring = query + ((document.getElementsByClassName(classname).length > 0) ? formAJAX(elem, classname) : "");
-    //    elem_qstring = elem_qstring;
+//    elem_qstring = elem_qstring;
     elem_qstring = encodeURI(elem_qstring);
-    console.log(elem_qstring);
+	console.log(elem_qstring);
     opts = setAJAXOpts(elem, opts);
     var opts_req = new Request(elem_qstring);
     opts.set("mode", (opts["mode"] !== undefined) ? opts["mode"] : '"Access-Control-Allow-Origin":"*"');
@@ -620,7 +620,7 @@ function navigate(elem, opts = null, query = "", classname = "") {
                     allText = (rawFile.responseText);
                     if (elem.hasAttribute("callback")) {
                         var func = elem.getAttribute("callback");
-                        func(allText);
+                        this[func](allText);
 
                     }
                     if (elem.hasAttribute("insert")) {
@@ -674,6 +674,7 @@ function navigate(elem, opts = null, query = "", classname = "") {
     else if (!elem.classList.contains("json") && !elem.hasAttribute("callback")) {
         rawFile.onreadystatechange = function () {
             if (rawFile.readyState === 4) {
+		console.log(rawFile.responseText);
                 var allText = rawFile.responseText;
                 if (document.getElementById(elem.getAttribute("insert")) !== null)
                     document.getElementById(elem.getAttribute("insert")).innerHTML = allText;
