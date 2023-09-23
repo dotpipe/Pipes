@@ -17,6 +17,6 @@ else
 	echo "error";
 	return;
 }
-echo json_encode(array($array), JSON_PRETTY_PRINT);
+echo json_encode(array("change" => $array), JSON_PRETTY_PRINT);
 
 ?>

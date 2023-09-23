@@ -28,14 +28,19 @@ session_start();
         textarea {
             max-width: 500px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 10px;
             background-color: #444;
             border-radius: 10px;
             border: 1px solid grey;
         }
 
+        a {
+            color: #fff;
+        }
+        
         select {
             max-width: 200px;
+            height: 20px;
             margin: 0 auto;
             padding: 0px;
             background-color: #eee;
@@ -48,8 +53,7 @@ session_start();
             margin-bottom: 10px;
         }
 
-        input[type="text"],
-        span {
+        input[type="text"] {
             float: right;
             width: 60%;
             margin: 0 auto;
@@ -82,28 +86,30 @@ session_start();
 </head>
 
 <body>
-
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1005898633128967"
-        crossorigin="anonymous"></script>
-    <ins class="adsbygoogle" style="display:block" data-ad-format="autorelaxed" data-ad-client="ca-pub-1005898633128967"
-        data-ad-slot="2759331251"></ins>
-    <script>
-        (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
-    <dyn id="i" style="width:200px;" ajax="https://github.com/wise-penny/pipes" class="redirect">
-        https://github.com/wise-penny/pipes</dyn>
-    <dyn id="i" style="width:200px;" ajax="http://g0d.me/ivy" class="redirect">Ivy Seed</dyn>
-    <dyn id="i" style="width:200px;" ajax="http://g0d.me/freqwave" class="redirect">Freqwave</dyn>
-    <table style="width:75%;">
+    <table style="width:">
         <tr>
-            <td style="width:30%">
-                <h1>Modala Creator</h1>
+            <td style="grid-template-columns:500px 500px auto;display:inline-grid;grid-column-count:3">
+                <dyn id="i1" style="position:relative;width:300px;" ajax="https://github.com/wise-penny/pipes"
+                    class="redirect">GitHub</dyn>
+                <dyn id="i2" style="position:static;width:300px;" ajax="http://g0d.me/ivy" class="redirect">Ivy Seed
+                </dyn>
+                <dyn id="i3" style="position:relative;width:300px;" ajax="http://g0d.me/freqwave" class="redirect">
+                    Freqwave</dyn>
+            </td>
+        </tr>
+    </table>
+
+    <div id="instr" style="position:absolute"></div>
+    <table style="width:75%;z-index:-1">
+        <tr>
+            <td style="width:30%;vertical-align:bottom;">
+                <br><br><br><br>
                 Please Help us with a donation! $1 a month counts as a very helpful subscription!
             </td>
         </tr>
         <tr>
             <td>
-                <article>
+                <article id="paypal-stuff">
                     <div id="paypal-button-container-P-5H743869Y22155029MUBYZ7Y"></div>
                     <script
                         src="https://www.paypal.com/sdk/js?client-id=AdvDfbOhJIOM4hn3n9AfE1loBfADjY0GM8cFTJwWiat9bqoDY9zU64gmv0P7nWabg6TETsZ7paH-k2Ud&vault=true&intent=subscription"
@@ -130,10 +136,9 @@ session_start();
                     </script>
                 </article>
             </td>
-            <td rowspan="2">
-
-                <article>
-
+            <td rowspan="3">
+                <article style="margin-top:-10px">
+                    <h1>Modala Creator</h1>
                     <block id="block0"></block>
                     <block id="block5"></block>
 
@@ -149,8 +154,6 @@ session_start();
                     <block id="block4"></block>
                     <block id="block9"></block>
 
-                    <br>
-
                     <dyn id="submit" form-class="form1" method="GET"
                         header="'contentType: application/x-www-form-urlencoded'" ajax="getform.php" insert="ta">Add
                     </dyn>
@@ -162,14 +165,14 @@ session_start();
                     <dyn id="copy" onclick="insertIntoTextArea(document.getElementById('ta').value)">Copy Modal</dyn>
                 </article>
             </td>
-            <td rowspan="2">
+            <td rowspan="3">
                 <script async
                     src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1005898633128967"
                     crossorigin="anonymous"></script>
                 <div id="puthere"></div>
                 <dyn id="cancel" onclick="document.getElementById('puthere').textContent='';">Cancel Out</dyn>
             </td>
-            <td rowspan="2">
+            <td rowspan="3">
                 <script async
                     src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1005898633128967"
                     crossorigin="anonymous"></script>
@@ -182,7 +185,7 @@ session_start();
         </tr>
         <tr>
             <td>
-                <textarea id="whole" name="modal" class="form2" style="height:500px"></textarea>
+                <textarea id="whole" name="modal" class="form2" style="height:250px;max-height:200px"></textarea>
                 <dyn id="submit" form-class="form2" method="GET"
                     header="'contentType: application/x-www-form-urlencoded'"
                     onclick="modala(JSON.parse(document.getElementById('whole').value), document.getElementById('puthere'))">
@@ -216,7 +219,6 @@ session_start();
         var lastCursorPosition = 0;
 
         function insertIntoTextArea(arg) {
-            console.log(arg + "$$$");
             var textarea = document.getElementById("whole");
             var cursorPosition = textarea.selectionStart;
             var text = textarea.value;
@@ -224,16 +226,37 @@ session_start();
             textarea.value = newText;
             lastCursorPosition = cursorPosition + arg.length;
         }
-
+        var cheatSheet =
+        {
+            "j0": {
+                "tagname": "dyn",
+                "textContent": "Instructions",
+                "ajax": "cheatsheet.txt",
+                "id": "inst",
+                "class": "mouse",
+                "event": "click:-1;",
+                "insert": "instruct",
+                "display": "instruct"
+            },
+            "j1": {
+                "tagname": "dyn",
+                "style": "display:none;font-size:12px;max-width:900px;z-index:3;position:static;margin-left:430px;margin-top:10px;",
+                "id": "instruct",
+                "class": "mouse",
+                "event": "click:-1",
+                "display": "instruct"
+            }
+        }
+        modala(cheatSheet, document.getElementById("instr"));
         var form = {
             "tagname": "div",
             "j0": {
                 "jsons": {
                     "tagname": "select",
-                    "style": "width:150px;height:45px;font-size:30px",
+                    "style": "width:150px;height:40px;font-size:30px",
                     "name": "key",
                     "select": {
-                        "options": "tagname *:tagname;id *:id;style:style;content:textContent;insert:insert;ajax:ajax;src:src;query:query;form-class:form-class;value:value;callback:callback;file:file;directory:directory;js:js;css:css;set-attr:set-attr;class:class"
+                        "options": "tagname *:tagname;id *:id;style:style;content:textContent;options:options;display:display;event:event;insert:insert;ajax:ajax;src:src;query:query;file-order:file-order;interval:interval;form-class:form-class;value:value;callback:callback;file:file;boxes:boxes;delay:delay;directory:directory;js:js;css:css;set-attr:set-attr;class:class;mode:mode"
                     },
                     "class": "form1",
                     "id": "key"

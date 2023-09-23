@@ -125,10 +125,6 @@ let domContentLoad = (again = false) => {
     });
 
     Array.from(document.querySelectorAll(".mouse")).forEach(function (elem) {
-        // if (elem.classList.contains("pipe-active"))
-        //     return;
-        // elem.classList.toggle("pipe-active")
-
         var ev = elem.getAttribute("event");
         var rv = ev.split(";");
         Array.from(rv).forEach((v) => {
@@ -242,16 +238,8 @@ function setTimers(target) {
 function fileOrder(elem) {
     arr = elem.getAttribute("file-order").split(";");
     ppfc = document.getElementById(elem.getAttribute("insert").toString());
-    if (!ppfc.hasAttribute("file-index"))
-        ppfc.setAttribute("file-index", "0");
-    index = parseInt(ppfc.getAttribute("file-index").toString());
-    var interv = elem.getAttribute("interval");
-    if (elem.classList.contains("decrIndex"))
-        index = Math.abs(parseInt(ppfc.getAttribute("file-index").toString())) - interv;
-    else
-        index = Math.abs(parseInt(ppfc.getAttribute("file-index").toString())) + interv;
-    if (index < 0)
-        index = arr.length - 1;
+    var index = elem.getAttribute("file-index");
+    index++;
     index = index % arr.length;
     ppfc.setAttribute("file-index", index.toString());
 
