@@ -421,6 +421,7 @@ function pipes(elem, stop = false) {
     var query = "";
     var headers = new Map();
     var formclass = "";
+    var actionclass = "";
 
     if (elem.id === null)
         return;
@@ -476,6 +477,13 @@ function pipes(elem, stop = false) {
     if (elem.hasAttribute("form-class")) {
         formclass = elem.getAttribute("form-class");
     }
+    if (elem.hasAttribute("action-class")) {
+        actionclass = elem.getElementsByClassName("action-class");
+        actionclass.forEach((a) => {
+            navigate(a, headers, query, formclass);
+        });
+        return;
+    }
     if (elem.hasAttribute("class-switch")) {
         classOrder(elem);
     }
@@ -505,7 +513,7 @@ function pipes(elem, stop = false) {
     }
     if (stop == true)
         return;
-    navigate(elem, headers, query, formclass);
+    navigate(elem, headers, query, formclass, actionclass);
 }
 
 function setAJAXOpts(elem, opts) {
@@ -554,7 +562,7 @@ function formAJAX(elem, classname) {
 }
 
 
-function navigate(elem, opts = null, query = "", classname = "") {
+function navigate(elem, opts = null, query = "", classname = "", actionclass = "") {
     //formAJAX at the end of this line
 //	console.log();
     elem_qstring = query + ((document.getElementsByClassName(classname).length > 0) ? formAJAX(elem, classname) : "");
@@ -598,7 +606,7 @@ function navigate(elem, opts = null, query = "", classname = "") {
                     allText = (rawFile.responseText);
                     if (elem.hasAttribute("callback")) {
                         var func = elem.getAttribute("callback");
-                        func(allText);
+                        eval?.(`func(allText)`);
                     }
                     if (elem.hasAttribute("insert")) {
                         document.getElementById(elem.getAttribute("insert")).innerHTML = (rawFile.responseText);
@@ -620,7 +628,7 @@ function navigate(elem, opts = null, query = "", classname = "") {
                     allText = (rawFile.responseText);
                     if (elem.hasAttribute("callback")) {
                         var func = elem.getAttribute("callback");
-                        this[func](allText);
+                        eval?.(`func(allText)`);
 
                     }
                     if (elem.hasAttribute("insert")) {
@@ -643,7 +651,7 @@ function navigate(elem, opts = null, query = "", classname = "") {
                     allText = JSON.parse(rawFile.responseText);
                     if (elem.hasAttribute("callback")) {
                         var func = elem.getAttribute("callback");
-                        func(allText);
+                        eval?.(`func(allText)`);
                     }
                     if (elem.hasAttribute("insert")) {
                         document.getElementById(elem.getAttribute("insert")).textContent = (rawFile.responseText);
@@ -666,7 +674,7 @@ function navigate(elem, opts = null, query = "", classname = "") {
                 modala(allText, elem.getAttribute("insert"));
                 if (elem.hasAttribute("callback")) {
                     var func = elem.getAttribute("callback");
-                    func(allText);
+                    eval?.(`func(allText)`);
                 }
             }
         }
@@ -686,8 +694,9 @@ function navigate(elem, opts = null, query = "", classname = "") {
             if (rawFile.readyState === 4) {
                 var allText = JSON.parse(rawFile.responseText);
                 console.log(allText);
+                "use strict";
                 var func = elem.getAttribute("callback");
-                func(allText);
+                eval?.(`func(allText)`);
             }
         }
     }
