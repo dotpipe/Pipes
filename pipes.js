@@ -48,6 +48,7 @@
   *  json..............= returns a JSON file set as value
   *  headers...........= headers in CSS markup-style-attribute (delimited by '&') <any ajax="foo.bar" headers="foobar:boo&barfoo:barfoo;q:9&" insert="someID">
   *  form-class........= class name of devoted form elements
+  *  action-class......= class name of devoted to-be-triggered tags (acts as listener to other certain tag(s))
   *  mouse.............= class name to work thru PipesJS' other attributes on event="mouseover;mouseleave" (example)
   *  mouse-insert......= class name to work thru PipesJS' other attributes on event="mouseover;mouseleave" (example)
   *  event.............= works with mouse class. Creates eventListener on "insert" Node or current Node with mouse.
