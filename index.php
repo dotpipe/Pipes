@@ -110,30 +110,7 @@ session_start();
         <tr>
             <td>
                 <article id="paypal-stuff">
-                    <div id="paypal-button-container-P-5H743869Y22155029MUBYZ7Y"></div>
-                    <script
-                        src="https://www.paypal.com/sdk/js?client-id=AdvDfbOhJIOM4hn3n9AfE1loBfADjY0GM8cFTJwWiat9bqoDY9zU64gmv0P7nWabg6TETsZ7paH-k2Ud&vault=true&intent=subscription"
-                        data-sdk-integration-source="button-factory"></script>
-                    <script>
-                        paypal.Buttons({
-                            style: {
-                                shape: 'rect',
-                                color: 'gold',
-                                layout: 'vertical',
-                                label: 'paypal'
-                            },
-                            createSubscription: function (data, actions) {
-                                return actions.subscription.create({
-                                    /* Creates the subscription */
-                                    plan_id: 'P-5H743869Y22155029MUBYZ7Y',
-                                    quantity: 1 // The quantity of the product for a subscription
-                                });
-                            },
-                            onApprove: function (data, actions) {
-                                alert(data.subscriptionID); // You can add optional success message for the subscriber here
-                            }
-                        }).render('#paypal-button-container-P-5H743869Y22155029MUBYZ7Y'); // Renders the PayPal button
-                    </script>
+                    <?= if (file_exists("paypal.html")) include("paypal.html"); ?>
                 </article>
             </td>
             <td rowspan="3">
@@ -166,21 +143,10 @@ session_start();
                 </article>
             </td>
             <td rowspan="3">
-                <script async
-                    src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1005898633128967"
-                    crossorigin="anonymous"></script>
                 <div id="puthere"></div>
                 <dyn id="cancel" onclick="document.getElementById('puthere').textContent='';">Cancel Out</dyn>
             </td>
-            <td rowspan="3">
-                <script async
-                    src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1005898633128967"
-                    crossorigin="anonymous"></script>
-                <ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article"
-                    data-ad-format="fluid" data-ad-client="ca-pub-1005898633128967" data-ad-slot="6576692306"></ins>
-                <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                </script>
+            <td rowspan="3" width="width:250px;max-width:400px;">
             </td>
         </tr>
         <tr>
@@ -239,9 +205,10 @@ session_start();
                 "display": "instruct"
             },
             "j1": {
-                "tagname": "dyn",
-                "style": "display:none;font-size:12px;max-width:900px;z-index:3;position:static;margin-left:430px;margin-top:10px;",
+                "tagname": "textarea",
+                "style": "display:none;font-size:12px;height:600px;color:lightgray;max-width:1000px;z-index:3;position:static;margin-left:430px;margin-top:10px;",
                 "id": "instruct",
+		"disabled": "true",
                 "class": "mouse",
                 "event": "click:-1",
                 "display": "instruct"
@@ -256,7 +223,7 @@ session_start();
                     "style": "width:150px;height:40px;font-size:30px",
                     "name": "key",
                     "select": {
-                        "options": "tagname *:tagname;id *:id;style:style;content:textContent;options:options;display:display;event:event;insert:insert;ajax:ajax;src:src;query:query;file-order:file-order;interval:interval;form-class:form-class;value:value;callback:callback;file:file;boxes:boxes;delay:delay;directory:directory;js:js;css:css;set-attr:set-attr;class:class;mode:mode"
+			"options": "tagname:tagname;id:id;style:style;content:textContent;insert:insert;ajax:ajax;src:src;query:query;callback:callback;download:download;file:file;directory:directory;redirect:redirect;js:js;css:css;lnk:lnk;dyn:dyn;class:class"
                     },
                     "class": "form1",
                     "id": "key"
@@ -279,26 +246,7 @@ session_start();
             modala(form, document.getElementById("block" + (i)));
         }
     </script>
-    <script>
-        paypal.Buttons({
-            style: {
-                shape: 'pill',
-                color: 'gold',
-                layout: 'horizontal',
-                label: 'subscribe'
-            },
-            createSubscription: function (data, actions) {
-                return actions.subscription.create({
-                    /* Creates the subscription */
-                    plan_id: 'P-0DV37363ES9515007MUANEOY',
-                    quantity: 1 // The quantity of the product for a subscription
-                });
-            },
-            onApprove: function (data, actions) {
-                alert(data.subscriptionID); // You can add optional success message for the subscriber here
-            }
-        }).render('#paypal-button-container-P-0DV37363ES9515007MUANEOY'); // Renders the PayPal button
-    </script>
+
 </body>
 
 </html>

@@ -131,13 +131,11 @@ let domContentLoad = (again = false) => {
         var rv = ev.split(";");
         Array.from(rv).forEach((v) => {
             var g = v.split(":");
-            var mouseclick = ['touchstart'];
-            while (toLowerCase(g[0]) === "click" && mouseclick.length() > 0)
+            if (g[0].toLowerCase() === "click")
             {
-                elem.addEventListener(g[0], function () {
+                elem.addEventListener('touchstart', function () {
                     setTimeout(pipes(elem, true), g[1]);
                 });
-                mouseclick.shift();
             }
             elem.addEventListener(g[0], function () {
                 setTimeout(pipes(elem, true), g[1]);
