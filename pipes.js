@@ -491,13 +491,6 @@ function pipes(elem, stop = false) {
         actionclass.forEach((a) => {
             navigate(a, headers, query, formclass);
         });
-        if (elem.hasAttribute("callback-chain")) {
-            var callbacks = elem.getElementsByClassName("callback-chain");
-            callbacks.forEach((a) => {
-                navigate(a, headers, query, formclass, callbacks);
-            });
-        }
-        return;
     }
     if (elem.hasAttribute("class-switch")) {
         classOrder(elem);
