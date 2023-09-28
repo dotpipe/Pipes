@@ -9,7 +9,7 @@
   *  ajax..............= calls and returns the value file's output ex: <pipe ajax="foo.bar" query="key0:value0;" insert="someID">
   *  callbacks.........= calls function set as attribute value
   *  call-chain........= same as callbacks, but the chained set of commands doesn't use AJAX results
-  *  query.............= default query string associated with url ex: <anyTag query="key0:value0;key1:value2;" ajax="page.foo">
+  *  query.............= default query string associated with url ex: <anyTag form-class="someClass" query="key0:value0;key1:value2;" ajax="page.foo"> (Req. form-class)
   *  <download>........= tag for downloading files ex: <download file="foo.zip" directory="/home/bar/"> (needs ending with slash)
   *  file..............= filename to download
   *  directory.........= relative or full path of 'file'
