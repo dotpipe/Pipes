@@ -110,7 +110,7 @@ session_start();
         <tr>
             <td>
                 <article id="paypal-stuff">
-                    <?= if (file_exists("paypal.html")) include("paypal.html"); ?>
+                    <?php if (file_exists("paypal.html")) include("paypal.html"); ?>
                 </article>
             </td>
             <td rowspan="3">
@@ -206,7 +206,7 @@ session_start();
             },
             "j1": {
                 "tagname": "textarea",
-                "style": "display:none;font-size:12px;height:600px;color:lightgray;max-width:1000px;z-index:3;position:static;margin-left:430px;margin-top:10px;",
+                "style": "display:none;font-size:12px;height:600px;color:lightgray;max-width:1000px;z-index:3;position:static;margin-left:530px;margin-top:10px;",
                 "id": "instruct",
 		"disabled": "true",
                 "class": "mouse",
