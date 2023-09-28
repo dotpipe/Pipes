@@ -10,6 +10,8 @@
   *  ajax..............= calls and returns the value file's output ex: <pipe ajax="foo.bar" query="key0:value0;" insert="someID">
   *  callbacks.........= calls function set as attribute value
   *  call-chain........= same as callbacks, but the chained set of commands doesn't use AJAX results
+  *  data-call-chain...= call any number of functions, successively, entering a keypair into the first, and the output for the rest;77
+  *  data..............= list of key:pair parameters to associated first function function in data-call-chain, rest are succesive
   *  query.............= default query string associated with url ex: <anyTag query="key0:value0;key1:value2;" ajax="page.foo">
   *  <download>........= tag for downloading files ex: <download file="foo.zip" directory="/home/bar/"> (needs ending with slash)
   *  file..............= filename to download
@@ -508,6 +510,24 @@ function pipes(elem, stop = false) {
         var hold = this;
         "use strict";
         callbacks.forEach((a) => {
+            hold = eval?.(`a(hold)`);
+        });
+    }
+    if (elem.hasAttribute("data-call-chain")) {
+        callbacks = elem.getElementsByClassName("data-call-chain");
+        "use strict";
+        var b = callbacks[0];
+        var optsArray = elem.getAttribute("data").split(";");
+        var query = null;
+        optsArray.forEach((e, f) => {
+            var g = e.split(":");
+            query.push(g[1]);
+        });
+        eval?.(`b(query)`);
+        callbacks.shift();
+        callbacks.forEach((a) => {
+            hold = elem.hasAttribute("data") ? elem.getAttribute("data") : "";
+
             hold = eval?.(`a(hold)`);
         });
     }
