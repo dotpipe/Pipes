@@ -8,7 +8,8 @@
   *  -------------------------------------------------------------
   *  insert............= return ajax call to this id
   *  ajax..............= calls and returns the value file's output ex: <pipe ajax="foo.bar" query="key0:value0;" insert="someID">
-  *  callback..........= calls function set as attribute value
+  *  callbacks.........= calls function set as attribute value
+  *  call-chain........= same as callbacks, but the chained set of commands doesn't use AJAX results
   *  query.............= default query string associated with url ex: <anyTag query="key0:value0;key1:value2;" ajax="page.foo">
   *  <download>........= tag for downloading files ex: <download file="foo.zip" directory="/home/bar/"> (needs ending with slash)
   *  file..............= filename to download
@@ -130,8 +131,15 @@ let domContentLoad = (again = false) => {
         var rv = ev.split(";");
         Array.from(rv).forEach((v) => {
             var g = v.split(":");
+            var mouseclick = ['touchstart'];
+            while (toLowerCase(g[0]) === "click" && mouseclick.length() > 0)
+            {
+                elem.addEventListener(g[0], function () {
+                    setTimeout(pipes(elem, true), g[1]);
+                });
+                mouseclick.shift();
+            }
             elem.addEventListener(g[0], function () {
-                console.log("t");
                 setTimeout(pipes(elem, true), g[1]);
             });
         });
@@ -483,6 +491,12 @@ function pipes(elem, stop = false) {
         actionclass.forEach((a) => {
             navigate(a, headers, query, formclass);
         });
+        if (elem.hasAttribute("callback-chain")) {
+            var callbacks = elem.getElementsByClassName("callback-chain");
+            callbacks.forEach((a) => {
+                navigate(a, headers, query, formclass, callbacks);
+            });
+        }
         return;
     }
     if (elem.hasAttribute("class-switch")) {
@@ -497,6 +511,14 @@ function pipes(elem, stop = false) {
             auto = false;
         carousel(elem, auto);
         return;
+    }
+    if (elem.hasAttribute("call-chain")) {
+        callbacks = elem.getElementsByClassName("call-chain");
+        var hold = this;
+        "use strict";
+        callbacks.forEach((a) => {
+            hold = eval?.(`a(hold)`);
+        });
     }
     // This is a quick way to make a downloadable link in an href
     //     else
@@ -563,7 +585,7 @@ function formAJAX(elem, classname) {
 }
 
 
-function navigate(elem, opts = null, query = "", classname = "", actionclass = "") {
+function navigate(elem, opts = null, query = "", classname = "", callbacks = "") {
     //formAJAX at the end of this line
 //	console.log();
     elem_qstring = query + ((document.getElementsByClassName(classname).length > 0) ? formAJAX(elem, classname) : "");
@@ -605,9 +627,13 @@ function navigate(elem, opts = null, query = "", classname = "", actionclass = "
                 var allText = "";// JSON.parse(rawFile.responseText);
                 try {
                     allText = (rawFile.responseText);
-                    if (elem.hasAttribute("callback")) {
-                        var func = elem.getAttribute("callback");
-                        eval?.(`func(allText)`);
+                    if (elem.hasAttribute("callbacks")) {
+                        callbacks = elem.getElementsByClassName("callbacks");
+                        var hold = this;
+                        "use strict";
+                        callbacks.forEach((a) => {
+                            hold = eval?.(`a(hold)`);
+                        });
                     }
                     if (elem.hasAttribute("insert")) {
                         document.getElementById(elem.getAttribute("insert")).innerHTML = (rawFile.responseText);
@@ -627,10 +653,13 @@ function navigate(elem, opts = null, query = "", classname = "", actionclass = "
                 try {
                     var f = "";
                     allText = (rawFile.responseText);
-                    if (elem.hasAttribute("callback")) {
-                        var func = elem.getAttribute("callback");
-                        eval?.(`func(allText)`);
-
+                    if (elem.hasAttribute("callbacks")) {
+                        callbacks = elem.getElementsByClassName("callbacks");
+                        var hold = this;
+                        "use strict";
+                        callbacks.forEach((a) => {
+                            hold = eval?.(`a(hold)`);
+                        });
                     }
                     if (elem.hasAttribute("insert")) {
                         document.getElementById(elem.getAttribute("insert")).textContent = (rawFile.responseText);
@@ -650,9 +679,13 @@ function navigate(elem, opts = null, query = "", classname = "", actionclass = "
                 try {
                     console.log(rawFile.responseText);
                     allText = JSON.parse(rawFile.responseText);
-                    if (elem.hasAttribute("callback")) {
-                        var func = elem.getAttribute("callback");
-                        eval?.(`func(allText)`);
+                    if (elem.hasAttribute("callbacks")) {
+                        callbacks = elem.getElementsByClassName("callbacks");
+                        var hold = this;
+                        "use strict";
+                        callbacks.forEach((a) => {
+                            hold = eval?.(`a(hold)`);
+                        });
                     }
                     if (elem.hasAttribute("insert")) {
                         document.getElementById(elem.getAttribute("insert")).textContent = (rawFile.responseText);
@@ -673,9 +706,13 @@ function navigate(elem, opts = null, query = "", classname = "", actionclass = "
                 // console.log(allText);
                 var x = document.getElementById(elem.getAttribute("insert"));
                 modala(allText, elem.getAttribute("insert"));
-                if (elem.hasAttribute("callback")) {
-                    var func = elem.getAttribute("callback");
-                    eval?.(`func(allText)`);
+                if (elem.hasAttribute("callbacks")) {
+                    callbacks = elem.getElementsByClassName("callbacks");
+                    var hold = this;
+                    "use strict";
+                    callbacks.forEach((a) => {
+                        hold = eval?.(`a(hold)`);
+                    });
                 }
             }
         }
@@ -695,9 +732,14 @@ function navigate(elem, opts = null, query = "", classname = "", actionclass = "
             if (rawFile.readyState === 4) {
                 var allText = JSON.parse(rawFile.responseText);
                 console.log(allText);
-                "use strict";
-                var func = elem.getAttribute("callback");
-                eval?.(`func(allText)`);
+                if (elem.hasAttribute("callbacks")) {
+                    callbacks = elem.getElementsByClassName("callbacks");
+                    var hold = this;
+                    "use strict";
+                    callbacks.forEach((a) => {
+                        hold = eval?.(`a(hold)`);
+                    });
+                }
             }
         }
     }
