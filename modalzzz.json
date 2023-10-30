@@ -2,7 +2,7 @@
     "tagname": "p",
     "lnk1": {
         "tagname": "lnk",
-        "ajax": "https:\/\/github.com\/wise-penny\/pipes",
+        "ajax": "https:\/\/github.com\/irondocks\/pipes",
         "textContent": "GitHub + ",
         "class": "redirect",
         "id": "necessary1"

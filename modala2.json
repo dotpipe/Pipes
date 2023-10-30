@@ -1,7 +1,7 @@
 {
 	"lnk1": {
 		"tagname": "lnk",
-		"ajax": "https:\/\/github.com\/wise-penny\/pipes",
+		"ajax": "https:\/\/github.com\/irondocks\/pipes",
 		"textContent": "Click to get yours & ",
 		"class": "redirect pipe-grid-child",
 		"id": "necessary"

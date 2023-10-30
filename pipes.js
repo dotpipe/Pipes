@@ -343,7 +343,7 @@ function carousel(elem, auto = true) {
             video.src = mArray[(i + j) % mArray.length];
             video.style = x.style;
             video.classList.add("pipe-grid-child");
-            video.autoplay = true;
+            video.autoplay = false;
             video.loop = false;
             video.muted = true;
             video.id = "self_" + obj.children.length + 1;
@@ -354,7 +354,7 @@ function carousel(elem, auto = true) {
             audio.src = mArray[(i + j) % mArray.length];
             audio.style = x.style;
             audio.classList.add("pipe-grid-child");
-            audio.autoplay = true;
+            audio.autoplay = false;
             audio.loop = false;
             audio.muted = true;
             audio.id = "self_" + obj.children.length + 1;
@@ -385,8 +385,8 @@ function carousel(elem, auto = true) {
         }
         // console.log("OIWEWI");
     }
-    // while (x.children.length || (x.classList.contains("carousel-ajax") || elem.classList.contains("carousel-ajax")) && x.children.length > x.getAttribute("boxes") * multiVert)
-    //     x.removeChild(x.children[x.children.length - 1]);
+    while (x.children.length || (x.classList.contains("carousel-ajax") || elem.classList.contains("carousel-ajax")) && x.children.length > x.getAttribute("boxes") * multiVert)
+        x.removeChild(x.children[x.children.length - 1]);
     x.append(obj);
     var w = (Math.abs(i));
     x.setAttribute("file-index", w % mArray.length);

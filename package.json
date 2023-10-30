@@ -1,0 +1,9 @@
+{
+  "name": "pipesjs",
+  "version": "1.0.0",
+  "author": "Anthony Pulse Jr. <inland14@live.com>",
+  "dependencies": {
+    "irondocks": "^1.0.0",
+    "pipesjs": "^1.0.0"
+  }
+}
