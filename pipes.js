@@ -7,18 +7,18 @@
   *  Attribute/Tag   |   Use Case
   *  -------------------------------------------------------------
   *  insert............= return ajax call to this id
-  *  modala............= Class to create JSON formed HTML tags into translated HTML. Have fun!!
+  *  modala............= Class to create JSON-formed HTML tags into translated HTML. Have fun!!
   *  ajax..............= calls and returns the value file's output ex: <pipe ajax="foo.bar" query="key0:value0;" insert="someID">
   *  callbacks.........= calls function set as attribute value
   *  call-chain........= same as callbacks, but the chained set of commands doesn't use AJAX results
-  *  data-call-chain...= call any number of functions, successively, entering a keypair into the first, and the output for the rest;77
-  *  data..............= list of key:pair parameters to associated first function function in data-call-chain, rest are succesive
+  *  data-call-chain...= call any number of functions, successively, entering a keypair into the first, and the output for the rest;
+  *  data..............= list of key:pair parameters to associated first function in data-call-chain, rest are successive
   *  query.............= default query string associated with url ex: <anyTag query="key0:value0;key1:value2;" ajax="page.foo">
   *  download..........= class for downloading files ex: <anything class="download" file="foo.zip" directory="/home/bar/"> (needs ending with slash)
   *  file..............= filename to download
   *  directory.........= relative or full path of 'file'
   *  redirect..........= "follow" the ajax call in POST or GET mode ex: <pipe ajax="foo.bar" method="GET" class="redirect" query="key0:value0;" insert="someID">
-  *  js................= [Specifically a] Modala key/value pair. Allows access to outside JavaScript files in scope of top nest.
+  *  js................= [Specifically a] Modala key/value pair. Allows access to outside JavaScript files in the scope of the top nest.
   *  css...............= [Specifically a] Modala key/value pair. Imports a stylesheet file to the page accessing it.
   *  <lnk>.............= tag for clickable link <lnk ajax="goinghere.html" query="key0:value0;">
   *  <pipe>............= Tag (initializes on DOMContentLoaded Event) ex: <pipe ajax="foo.bar" query="key0:value0;" insert="someID">
@@ -55,7 +55,7 @@
   *  mouse.............= class name to work thru PipesJS' other attributes on event="mouseover;mouseleave" (example)
   *  event.............= works with mouse/pipe classes. Creates eventListener to use the tag's pipes according to the event listed (separate with ;)
   *  options...........= works with <select> tagName. Key:Value; pairs to setup ad easily roll out multiple selects.
-  **** FILTERS aer go ahead code usually coded in other languages and just come back with a result. Not wholly different from AJAX. They are general purpose files.
+  **** FILTERS are ahead code usually coded in other languages and just come back with a result. Not wholly different from AJAX. They are general purpose files.
   **** ALL HEADERS FOR AJAX are available. They will use defaults to
   **** go on if there is no input to replace them.
   */
