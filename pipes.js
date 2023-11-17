@@ -2,7 +2,7 @@
   *  only usage: onclick="pipes(this)"
   *  to begin using the PipesJS code in other ways than <dyn> <pipe> and <timed>.
   *  Usable DOM Attributes (almost all are optional
-  *  upto x > 134,217,000 different configurations 
+  *  up to x > 134,217,000 different configurations
   *  with unlimited inputs/outputs):
   *  Attribute/Tag   |   Use Case
   *  -------------------------------------------------------------
@@ -23,7 +23,7 @@
   *  <lnk>.............= tag for clickable link <lnk ajax="goinghere.html" query="key0:value0;">
   *  <pipe>............= Tag (initializes on DOMContentLoaded Event) ex: <pipe ajax="foo.bar" query="key0:value0;" insert="someID">
   *  <dyn>.............= Automatic eventListening tag for onclick="pipes(this)" ex: <dyn ajax="foo.bar" query="key0:value0;" insert="someID">
-  *  dyn-one...........= Class to stop recurring clicking activities 
+  *  dyn-one...........= Class to stop recurring clicking activities
   *  plain-text........= plain text returned to the insertion point
   *  plain-html........= returns as true HTML
   *  <timed>...........= Timed result refreshing tags (Keep up-to-date handling on page) ex: <timed ajax="foo.bar" delay="3000" query="key0:value0;" insert="someID">
@@ -40,8 +40,8 @@
   *  boxes.............= <carousel> attribute to request for x boxes for pictures
   *  file-order........= ajax to these files, iterating [0,1,2,3]%array.length per call (delimited by ';') ex: <pipe query="key0:value0;" file-order="foo.bar;bar.foo;foobar.barfoo" insert="someID">
   *  file-index........= counter of which index to use with file-order to go with ajax ex: <pipe ajax="foo.bar" query="key0:value0;" insert="someID">
-  *  incrIndex.........= increment thru index of file-order (0 moves once) (default: 1) ex: <pipe ajax="foo.bar" class="incrIndex" interval="2" file-order="foo.bar;bar.foo;foobar.barfoo" insert="someID">
-  *  decrIndex.........= decrement thru index of file-order (0 moves once) (default: 1) ex: <pipe ajax="foo.bar" class="decrIndex" interval="3" file-order="foo.bar;bar.foo;foobar.barfoo" insert="someID">
+  *  incrIndex.........= increment through index of file-order (0 moves once) (default: 1) ex: <pipe ajax="foo.bar" class="incrIndex" interval="2" file-order="foo.bar;bar.foo;foobar.barfoo" insert="someID">
+  *  decrIndex.........= decrement through index of file-order (0 moves once) (default: 1) ex: <pipe ajax="foo.bar" class="decrIndex" interval="3" file-order="foo.bar;bar.foo;foobar.barfoo" insert="someID">
   *  interval..........= Take this many steps when stepping through file-order default = 1
   *  set-attr..........= attribute to set in target HTML tag ex: <pipe id="thisOrSomeId" set-attr="value" ajax="foo.bar" query="key0:value0;" insert="thisOrSomeID">
   *  mode..............= "POST" or "GET" (default: "POST") ex: <pipe mode="POST" set-attr="value" ajax="foo.bar" query="key0:value0;" insert="thisOrSomeID">
@@ -52,7 +52,7 @@
   *  headers...........= headers in CSS markup-style-attribute (delimited by '&') <any ajax="foo.bar" headers="foobar:boo&barfoo:barfoo;q:9&" insert="someID">
   *  form-class........= class name of devoted form elements
   *  action-class......= class name of devoted to-be-triggered tags (acts as listener to other certain tag(s))
-  *  mouse.............= class name to work thru PipesJS' other attributes on event="mouseover;mouseleave" (example)
+  *  mouse.............= class name to work through PipesJS' other attributes on event="mouseover;mouseleave" (example)
   *  event.............= works with mouse/pipe classes. Creates eventListener to use the tag's pipes according to the event listed (separate with ;)
   *  options...........= works with <select> tagName. Key:Value; pairs to setup ad easily roll out multiple selects.
   **** FILTERS are ahead code usually coded in other languages and just come back with a result. Not wholly different from AJAX. They are general purpose files.
@@ -147,7 +147,7 @@ let domContentLoad = (again = false) => {
     Array.from(document.querySelectorAll(".pipe")).forEach(function (elem) {
         var ev = elem.getAttribute("event");
         elem.addEventListener(ev, function () {
-            
+
             if (g[0].toLowerCase() === "click")
             {
                 elem.addEventListener('touchstart', function () {
@@ -192,7 +192,6 @@ function modala(value, tempTag, root, id) {
         }
         else if (k.toLowerCase() == "options" && tempTag.tagName.toLowerCase() == "select") {
             var optsArray = v.split(";");
-            // var 
             // var valsArray = elem.getAttribute("optsArray").split(":");
             optsArray.forEach((e, f) => {
                 var g = e.split(":");
@@ -209,7 +208,6 @@ function modala(value, tempTag, root, id) {
         }
         else if (k.toLowerCase() == "options" && tempTag.tagName.toLowerCase() == "select") {
             var optsArray = v.split(";");
-            // var 
             // var valsArray = elem.getAttribute("optsArray").split(":");
             optsArray.forEach((e, f) => {
                 var g = e.split(":");
