@@ -1,3 +1,18 @@
+# Announcement 11/29/2023
+
+Pipes, is now significantly better and has been changed in  the form of its name. Your code will still work. It is being slowly deprecated. Not made obsolete. "pipes(this)" is unnecessary now. Modala as well has been thrown in under it given, together, a single name. 
+
+The new repo is called Irondock. It is available at 
+
+npm i irondocks
+
+or you can clone at
+
+[github.com/irondocks/irondock](https://github.com/irondocks/irondock)
+
+git clone https://github.com/irondocks/irondock
+
+These changes were brought about because NodeJS already has a project named PipesJS. And I would've loved to have the name, but didn't try to secure it. So your favorite package, is now at a different repo here on GitHub. Thank you for all the support. I love you all!
 
 JavaScript DOM Handler for Routing and API
 
