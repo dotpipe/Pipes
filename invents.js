@@ -14,7 +14,7 @@
   *  modal.............= Irondocks key. Inserts the Irondocks file in the value for template ease of use.
   *  download..........= class for downloading files ex: <tagName class="download" file="foo.zip" directory="/home/bar/"> (needs ending with slash)
   *  file..............= filename to download
-  *  x-toggle..........= toggle values from class attribute that are listed in the toggle attribute "id1:class1;id1:class2;id2:class2"
+  *  toggle............= toggle values from class attribute that are listed in the toggle attribute
   *  directory.........= relative or full path of 'file'
   *  redirect..........= "follow" the ajax call in POST or GET mode ex: <pipe ajax="foo.bar" class="redirect" query="key0:value0;" insert="someID">
   *  js................= [Specifically a] Modala key/value pair. Allows access to outside JavaScript files in scope of top nest.
@@ -63,22 +63,16 @@
 
 // Just incase you get the hang of this file.
 // import { navigate, formAJAX, domContentLoad, setAJAXOpts, carousel, classOrder, fileOrder, fileShift, modala, pipes, setTimers };
+
 //export { navigate, formAJAX, domContentLoad, setAJAXOpts, carousel, classOrder, fileOrder, fileShift, modala, pipes, setTimers };
 
-function last() {
-
-    const irc = JSON.parse(document.body.innerText);
-    
-    document.body.innerText = "";
-    // document.head.append(modalaHead(irc, ""));
-    modala(irc, document.body);
-    document.body.style.display = "block";
-    document.addEventListener("click", function (elem) {
-        console.log(elem.target);
-        if (elem.target.id != undefined) { pipes(elem.target); }
+document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("click", (elem) => {
+        if (elem.target.id != undefined)
+            pipes(elem.target);
     });
     return;
-}
+});
 
 let domContentLoad = (again = false) => {
     doc_set = document.getElementsByTagName("pipe");
@@ -104,6 +98,16 @@ let domContentLoad = (again = false) => {
         if (elem.classList.contains("pipe-active"))
             return;
         elem.classList.toggle("pipe-active");
+        // elem.addEventListener("click", function () {
+        //     if (elem.classList.contains("dyn-one") && !elem.classList.contains("dyn-done")) {
+        //         elem.classList.toggle("dyn-done");
+        //         pipes(elem);
+        //         return;
+        //     }
+        //     else if (elem.classList.contains("dyn-one") && elem.classList.contains("dyn-done")) { }
+        //     else
+        //         pipes(elem);
+        // });
     });
 
     let elements_Carousel = document.getElementsByTagName("carousel");
@@ -127,21 +131,23 @@ let domContentLoad = (again = false) => {
         // });
     });
 
-    let elements_mouse = document.querySelectorAll(".mouse");
-    Array.from(elements_mouse).forEach(function (elem) {
+    Array.from(document.querySelectorAll(".mouse")).forEach(function (elem) {
+        // if (elem.classList.contains("pipe-active"))
+        //     return;
+        // elem.classList.toggle("pipe-active")
 
         var ev = elem.getAttribute("event");
         var rv = ev.split(";");
         Array.from(rv).forEach((v) => {
             var g = v.split(":");
             elem.addEventListener(g[0], function () {
+                console.log("t");
                 setTimeout(pipes(elem, true), g[1]);
             });
         });
     });
 
-    let elements_pipe = document.querySelectorAll(".pipe");
-    Array.from(elements_pipe).forEach(function (elem) {
+    Array.from(document.querySelectorAll(".pipe")).forEach(function (elem) {
         var ev = elem.getAttribute("event");
         elem.addEventListener(ev, function () {
             if (elem.classList.contains("dyn-one") && !elem.classList.contains("dyn-done")) {
@@ -156,63 +162,7 @@ let domContentLoad = (again = false) => {
     });
 }
 
-function modalaHead(value) {
-
-    if (value == undefined) {
-        console.error("value of reference incorrect");
-        return;
-    }
-    var temp = document.createElement(value["tagname"]);
-
-    Object.entries(value).forEach((nest) => {
-        const [k, v] = nest;
-        if (v instanceof Object) {
-            modalaHead(v);
-        }
-        else if (k.toLowerCase() == "title") {
-            var title = document.createElement("title");
-            title.innerText = v;
-            document.head.appendChild(title);
-        }
-        else if (k.toLowerCase() == "css") {
-            var optsArray = v.split(";");
-            console.log(v)
-            optsArray.forEach((e, f) => {
-                var cssvar = document.createElement("link");
-                cssvar.href = v;
-                cssvar.rel = "stylesheet";
-                document.head.appendChild(cssvar);
-            });
-           
-        }
-        else if (k.toLowerCase() == "js") {
-            var optsArray = v.split(";");
-            console.log(v)
-            optsArray.forEach((e, f) => {
-                const js = document.createElement("script");
-                js.src = e;
-                document.head.appendChild(js);
-            });
-        }
-        else if (k.toLowerCase() == "modal") {
-            fetch(v)
-                .then(response => response.json())
-                .then(data => {
-                    const tmp = modalaHead(data, temp, root, id);
-                    document.head.appendChild(tmp);
-                });
-        }
-        else if (!Number(k) && k.toLowerCase() != "tagname" && k.toLowerCase() != "textcontent" && k.toLowerCase() != "innerhtml" && k.toLowerCase() != "innertext") {
-            temp.setAttribute(k, v);
-        }
-        else if (!Number(k) && k.toLowerCase() != "tagname" && (k.toLowerCase() == "textcontent" || k.toLowerCase() == "innerhtml" || k.toLowerCase() == "innertext")) {
-            (k.toLowerCase() == "textcontent") ? temp.textContent = v : (k.toLowerCase() == "innerhtml") ? temp.innerHTML = v : temp.innerText = v;
-        }
-    });
-
-    return;
-}
-
+// modala(jsonObj,rootNode)
 function modala(value, tempTag, root, id) {
     if (typeof (tempTag) == "string") {
         tempTag = document.getElementById(tempTag);
@@ -227,18 +177,9 @@ function modala(value, tempTag, root, id) {
         return;
     }
     var temp = document.createElement(value["tagname"]);
-    if (value["header"] !== undefined && value["header"] instanceof Object) {
-
-        modalaHead(value["header"], "head", root, null);
-        var meta = document.createElement("meta");
-        meta.content = "script-src-elem 'self'; img-src 'self'; style-src 'self'; child-src 'none'; object-src 'none'";
-        meta.httpEquiv = "Content-Security-Policy";
-        document.head.appendChild(meta);
-    }
     Object.entries(value).forEach((nest) => {
         const [k, v] = nest;
-        if (k.toLowerCase() == "header");
-        else if (v instanceof Object)
+        if (v instanceof Object)
             modala(v, temp, root, id);
         else if (k.toLowerCase() == "select") {
             var select = document.createElement("select");
@@ -287,6 +228,7 @@ function modala(value, tempTag, root, id) {
         }
     });
     tempTag.appendChild(temp);
+    domContentLoad(true);
     return tempTag;
 }
 
@@ -681,7 +623,7 @@ function navigate(elem, opts = null, query = "", classname = "") {
 
                         // check if object a function? 
                         if (typeof fn === "function") {
-                            fn.apply(null, allText);
+                            fn.apply(allText);
                         }
                     }
                     if (elem.hasAttribute("insert")) {
@@ -708,7 +650,7 @@ function navigate(elem, opts = null, query = "", classname = "") {
 
                         // check if object a function? 
                         if (typeof fn === "function") {
-                            fn.apply(null, allText);
+                            fn.apply(allText);
                         }
                     }
                     if (elem.hasAttribute("insert")) {
@@ -735,7 +677,7 @@ function navigate(elem, opts = null, query = "", classname = "") {
 
                         // check if object a function? 
                         if (typeof fn === "function") {
-                            fn.apply(null, allText);
+                            fn.apply(allText);
                         }
                     }
                     if (elem.hasAttribute("insert")) {
@@ -755,7 +697,7 @@ function navigate(elem, opts = null, query = "", classname = "") {
                 var allText = ""; // JSON.parse(rawFile.responseText);
                 allText = JSON.parse(rawFile.responseText);
                 // console.log(allText);
-                document.getElementById(elem.getAttribute("insert")).innerHTML = "";
+                document.getElementById(elem.getAttribute("insert")) = "";
                 modala(allText, elem.getAttribute("insert"));
                 if (elem.hasAttribute("callback")) {
                     var func = elem.getAttribute("callback");
@@ -763,7 +705,7 @@ function navigate(elem, opts = null, query = "", classname = "") {
 
                     // check if object a function? 
                     if (typeof fn === "function") {
-                        fn.apply(null, allText);
+                        fn.apply(allText);
                     }
                 }
             }
@@ -788,7 +730,7 @@ function navigate(elem, opts = null, query = "", classname = "") {
 
                 // check if object a function? 
                 if (typeof fn === "function") {
-                    fn.apply(null, allText);
+                    fn.apply(allText);
                 }
             }
         }
@@ -799,5 +741,3 @@ function navigate(elem, opts = null, query = "", classname = "") {
         // console.log(e);
     }
 }
-
-last();

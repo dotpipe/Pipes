@@ -1,6 +1,4 @@
-<?php
-session_start();
-?>
+
 <!DOCTYPE html>
 <html>
 
@@ -86,32 +84,15 @@ session_start();
 </head>
 
 <body>
-    <table style="width:">
-        <tr>
-            <td style="grid-template-columns:500px 500px auto;display:inline-grid;grid-column-count:3">
-                <dyn id="i1" style="position:relative;width:300px;" ajax="https://github.com/irondocks/pipes"
-                    class="redirect">GitHub</dyn>
-                <dyn id="i2" style="position:static;width:300px;" ajax="http://g0d.me/ivy" class="redirect">Ivy Seed
-                </dyn>
-                <dyn id="i3" style="position:relative;width:300px;" ajax="http://g0d.me/freqwave" class="redirect">
-                    Freqwave</dyn>
-            </td>
-        </tr>
-    </table>
-
     <div id="instr" style="position:absolute"></div>
     <table style="width:75%;z-index:-1">
         <tr>
             <td style="width:30%;vertical-align:bottom;">
                 <br><br><br><br>
-                Please Help us with a donation! $1 a month counts as a very helpful subscription!
             </td>
         </tr>
         <tr>
             <td>
-                <article id="paypal-stuff">
-                    <?php if (file_exists("paypal.html")) include("paypal.html"); ?>
-                </article>
             </td>
             <td rowspan="3">
                 <article style="margin-top:-10px">
@@ -156,8 +137,7 @@ session_start();
                     header="'contentType: application/x-www-form-urlencoded'"
                     onclick="modala(JSON.parse(document.getElementById('whole').value), document.getElementById('puthere'))">
                     Make page</dyn>
-                <?php $time = "json" . time() . ".json"; ?>
-                <dyn id="copy-download" ajax="makefile.php" method="GET" insert="download" form-class="form2"
+                                <dyn id="copy-download" ajax="makefile.php" method="GET" insert="download" form-class="form2"
                     onclick="copyJSON()">Copy JSON</dyn>
                 <br>
                 <div id="download"></div>
