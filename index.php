@@ -198,16 +198,14 @@
         var form = {
             "tagname": "div",
             "j0": {
-                "jsons": {
-                    "tagname": "select",
-                    "style": "width:150px;height:40px;font-size:30px",
-                    "name": "key",
-                    "select": {
-			"options": "tagname:tagname;id:id;style:style;content:textContent;insert:insert;ajax:ajax;src:src;query:query;callback:callback;download:download;file:file;directory:directory;redirect:redirect;js:js;css:css;lnk:lnk;dyn:dyn;class:class"
-                    },
-                    "class": "form1",
-                    "id": "key"
-                }
+                "tagname": "select",
+                "style": "width:150px;height:40px;font-size:30px",
+                "name": "key",
+                "select": {
+                    "options": "tagname:tagname;id:id;class:class;insert:insert;ajax:ajax;turn:turn;ajax-multi:ajax-multi;call-chain:call-chain;query:query;modal:modal;br:br;download:download;file:file;x-toggle:x-toggle;directory:directory;redirect:redirect;js:js;css:css;dyn-one:dyn-one;plain-text:plain-text;plain-html:plain-html;delay:delay;direction:direction;vertical:vertical;auto:auto;sources:sources;type:type;width:width;height:height;boxes:boxes;file-order:file-order;file-index:file-index;incrIndex:incrIndex;decrIndex:decrIndex;iter:iter;set-attr:set-attr;mode:mode;pipe:pipe;multiple:multiple;remove:remove;display:display;json:json;headers:headers;form-class:form-class;action-class:action-class;mouse:mouse;mouse-insert:mouse-insert;event:event;options:options"
+                },
+                "class": "form1",
+                "id": "key"
             },
             "j1": {
                 "tagname": "input",
@@ -219,8 +217,8 @@
         };
 
         for (i = 0; i <= 9; i++) {
-            form['j0']['jsons']['name'] = "key" + i;
-            form['j0']['jsons']['id'] = "key" + i;
+            form['j0']['name'] = "key" + i;
+            form['j0']['id'] = "key" + i;
             form['j1']['name'] = "value" + (i);
             form['j1']['id'] = "GH" + (i);
             modala(form, document.getElementById("block" + (i)));
