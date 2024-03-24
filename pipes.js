@@ -67,18 +67,15 @@
 
 function last() {
 
-    // const irc = JSON.parse(document.body.innerText);
+    const irc = JSON.parse(document.body.innerText);
     
-    // document.body.innerText = "";
-    // // document.head.append(modalaHead(irc, ""));
-    // modala(irc, document.body);
-    var t = document.body.querySelectorAll("*")
-    
-    Array.from(t).forEach(elem => { 
-        elem.addEventListener("click", function (e) {
-            console.log(e.target);
-            if (e.target.id != undefined) { pipes(e.target); }
-        });
+    document.body.innerText = "";
+    // document.head.append(modalaHead(irc, ""));
+    modala(irc, document.body);
+    document.body.style.display = "block";
+    document.addEventListener("click", function (elem) {
+        console.log(elem.target);
+        if (elem.target.id != undefined) { pipes(elem.target); }
     });
     return;
 }
@@ -248,8 +245,7 @@ function modala(value, tempTag, root, id) {
             temp.appendChild(select);
             modala(v, temp, root, id);
         }
-        else if (k.toLowerCase() == "options" && tempTag.tagName.toLowerCase() == "select") {
-            console.log(v)
+        else if (k.toLowerCase() == "options" && temp.tagName.toLowerCase() == "select") {
             var optsArray = v.split(";");
             var options = null;
             console.log(v)
@@ -258,9 +254,9 @@ function modala(value, tempTag, root, id) {
                 options = document.createElement("option");
                 options.setAttribute("value", g[1]);
                 options.textContent = (g[0]);
-                tempTag.appendChild(options);
+                temp.appendChild(options);
             });
-            // temp.appendChild(select);
+            temp.appendChild(options);
             console.log("*")
         }
         else if (k.toLowerCase() == "css") {
@@ -283,10 +279,10 @@ function modala(value, tempTag, root, id) {
                     tempTag.appendChild(tmp);
                 });
         }
-        else if (!Number(k) && k.toLowerCase() != "tagname" && k.toLowerCase() != "textcontent" && k.toLowerCase() != "innerhtml" && k.toLowerCase() != "innertext" && k.toLowerCase() != "select") {
+        else if (!Number(k) && k.toLowerCase() != "tagname" && k.toLowerCase() != "textcontent" && k.toLowerCase() != "innerhtml" && k.toLowerCase() != "innertext") {
             temp.setAttribute(k, v);
         }
-        else if (!Number(k) && k.toLowerCase() != "tagname" && (k.toLowerCase() == "textcontent" || k.toLowerCase() == "innerhtml" || k.toLowerCase() == "innertext" || k.toLowerCase() != "select")) {
+        else if (!Number(k) && k.toLowerCase() != "tagname" && (k.toLowerCase() == "textcontent" || k.toLowerCase() == "innerhtml" || k.toLowerCase() == "innertext")) {
             (k.toLowerCase() == "textcontent") ? temp.textContent = v : (k.toLowerCase() == "innerhtml") ? temp.innerHTML = v : temp.innerText = v;
         }
     });
