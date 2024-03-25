@@ -87,7 +87,7 @@ function last() {
     // document.head.append(modalaHead(irc, ""));
     // modala(irc, document.body);
     all = document.querySelectorAll("*");
-    // document.body.style.display = "block";
+    document.body.style.display = "block";
     for (i = 0; i < all.length; i++) {
         all[i].addEventListener("click", function (elem) {
             if (elem.target.id != undefined) { pipes(elem.target); }
@@ -128,8 +128,6 @@ let domContentLoad = (again = false) => {
             return;
         elem.classList.toggle("pipe-active")
         let auto = true;
-        if (elem.classList.contains("carousel-auto-off"))
-            auto = false;
         if (elem.getAttribute("direction") == "left")
             setTimeout(shiftFilesLeft(elem, auto), elem.getAttribute("delay"));
         if (elem.getAttribute("direction") == "right")
@@ -296,6 +294,14 @@ function modala(value, tempTag, root, id) {
             var options = null;
             var i = (value['index'] == undefined) ? 0 : value['index'];
             temp.id = value['id'];
+            var audio = undefined
+            var video = undefined
+            if (value['type'] == "audio") {
+                audio = document.createElement("audio")
+            }
+            if (value['type'] == "video") {
+                video = document.createElement("video")
+            }
             optsArray.forEach((e, f) => {
                 if (value['type'] == "img") {
                     var gth = document.createElement("img");
@@ -310,22 +316,26 @@ function modala(value, tempTag, root, id) {
                     gth.src = e;
                     gth.width = value['width'];
                     gth.height = value['height'];
-                    while (e.substr(-i, 1) != '.') i++;
-                    gth.type = "audio/" + e.substring(-(i - 1));
-                    gth.controls = (values['controls'] != undefined && value['controls'] != false) ? true : false;
-                    temp.appendChild(gth);
+                    i = 0
+                    while (e.substr(i,1) != '.') i++;
+                    gth.type = "audio/" + e.substring((i + 1));
+                    if (value != undefined && value['controls'] !== undefined)
+                        gth.controls = (value['controls'] != undefined && value['controls'] != false) ? true : false;
+                    audio.appendChild(gth);
                 }
                 else if (value['type'] == "video") {
                     var gth = document.createElement("source");
                     gth.src = e;
                     gth.width = value['width'];
                     gth.height = value['height'];
-                    gth.style.display = "hidden";
-                    var i = 0;
-                    while (e.substr(-i, 1) != '.') i++;
-                    gth.type = "video/" + e.substring(-(i - 1));
-                    gth.controls = (values['controls'] != undefined && value['controls'] != false) ? true : false;
-                    temp.appendChild(gth);
+                    gth.style.display = "block";
+                    i = 0
+                    while (e.substr(i,1) != '.') i++;
+                    gth.type = "video/" + e.substring((i + 1));
+                    if (value != undefined && value['controls'] !== undefined)
+                        gth.controls = (value['controls'] != undefined && value['controls'] != false) ? true : false;
+                    video.appendChild(gth);
+                    temp.appendChild(video);
                 }
                 else if (value['type'] == "modal") {
                     fetch(e)
@@ -336,12 +346,14 @@ function modala(value, tempTag, root, id) {
                         });
                 }
             });
+            var g = (value['type'] == "video") ? video : (value['type'] == "audio") ? audio : temp
             var auto = (value['auto'] != undefined && value['auto'] != false) ? true : false;
             // carousel(temp, auto);
             if (value['description'] != undefined && value['direction'].toLowerCase() == "right")
-                shiftFilesRight(temp, auto, value['delay']);
+                shiftFilesRight(g, auto, value['delay']);
             else
-                shiftFilesLeft(temp, auto, value['delay']);
+                shiftFilesLeft(g, auto, value['delay']);
+            tempTag.appendChild(g)
 
         }
         else if (k.toLowerCase() == "br") {
@@ -379,7 +391,6 @@ function modala(value, tempTag, root, id) {
             (k.toLowerCase() == "textcontent") ? temp.textContent = v : (k.toLowerCase() == "innerhtml") ? temp.innerHTML = v : temp.innerText = v;
         }
     });
-
     tempTag.appendChild(temp);
     return tempTag;
 }

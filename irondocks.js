@@ -296,6 +296,15 @@ function modala(value, tempTag, root, id) {
             var options = null;
             var i = (value['index'] == undefined) ? 0 : value['index'];
             temp.id = value['id'];
+            var audio = undefined
+            var video = undefined
+            if (value['type'] == "audio") {
+                audio = document.createElement("audio")
+            }
+            if (value['type'] == "video") {
+                video = document.createElement("video")
+            }
+            
             optsArray.forEach((e, f) => {
                 if (value['type'] == "img") {
                     var gth = document.createElement("img");
@@ -310,22 +319,26 @@ function modala(value, tempTag, root, id) {
                     gth.src = e;
                     gth.width = value['width'];
                     gth.height = value['height'];
-                    while (e.substr(-i, 1) != '.') i++;
-                    gth.type = "audio/" + e.substring(-(i - 1));
-                    gth.controls = (values['controls'] != undefined && value['controls'] != false) ? true : false;
-                    temp.appendChild(gth);
+                    i = 0
+                    while (e.substr(i,1) != '.') i++;
+                    gth.type = "audio/" + e.substring((i + 1));
+                    if (values != undefined && values['controls'] !== undefined)
+                        gth.controls = (values['controls'] != undefined && value['controls'] != false) ? true : false;
+                    audio.appendChild(gth);
                 }
                 else if (value['type'] == "video") {
                     var gth = document.createElement("source");
                     gth.src = e;
                     gth.width = value['width'];
                     gth.height = value['height'];
-                    gth.style.display = "hidden";
-                    var i = 0;
-                    while (e.substr(-i, 1) != '.') i++;
-                    gth.type = "video/" + e.substring(-(i - 1));
-                    gth.controls = (values['controls'] != undefined && value['controls'] != false) ? true : false;
-                    temp.appendChild(gth);
+                    gth.style.display = "block";
+                    i = 0
+                    while (e.substr(i,1) != '.') i++;
+                    gth.type = "video/" + e.substring((i + 1));
+                    if (value != undefined && value['controls'] !== undefined)
+                        gth.controls = (value['controls'] != undefined && value['controls'] != false) ? true : false;
+                    video.appendChild(gth);
+                    temp.appendChild(video);
                 }
                 else if (value['type'] == "modal") {
                     fetch(e)
