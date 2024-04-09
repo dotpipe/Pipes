@@ -1,10 +1,10 @@
 <html>
 <head>
 
-    <script src="pipes.js"></script>
+    <script src="irondocks.js"></script>
 </head>
 </html>
-<p id="thisone" onclick="pipes(this)" ajax-multi="j.json:thisone@modala;j.json:thatone@json">THICK</p>
+<p id="thisone" style="display:block" onclick="pipes(this)" ajax-multi="j.json:thisone@modala;j.json:thatone@json">THICK</p>
 <p id="thatone">THIN</p>
 <script>
 var f = {
@@ -13,24 +13,25 @@ var f = {
         "id": "left",
         "width": 100,
         "height": 100,
-        "class": "carousel-step-left", 
+        "onclick": "pipes(this)",
+        "class": "carousel-step-left",
         "insert": "idtag1",
         "textContent": "HI!",
-        // "set-attr": "idtag1.auto:true;idtag1.direction:left"
+        "set-attr": "idtag1.auto:true;idtag1.direction:left"
     },
     "carousel": {
         "tagname": "card",
         "id": "idtag1",
-        "type": "audio",
-        "sources": "01.mp3;02.mp3",
-        "controls": "true",
+        "type": "img",
+        "sources": "headstockfront.jpg;headstockback.jpg;backheel.jpg;headstockback.jpg",
         "auto": false,
-        "boxes": 1,
+        "delay": 1500,
+        "boxes": 4,
         "iter": 0,
         "vertical": true,
         "insert": "idtag1",
-        "width": 200,
-        "height": 200,
+        "width": 100,
+        "height": 100,
         "direction": "right"
     },
     "button-right": {
@@ -38,10 +39,25 @@ var f = {
         "id": "right",
         "width": 100,
         "height": 100,
+        "onclick": "pipes(this)",
         "class": "carousel-step-right",
         "insert": "idtag1",
         "textContent": "HI!",
-        // "set-attr": "idtag1.auto:false;idtag1.direction:right"
+        "set-attr": "idtag1.auto:false;idtag1.direction:right"
+    },
+    "chexMix0": {
+        "tagname": "div",
+        "id": "get",
+        "insert": "left",
+        "textContent": "HEY!",
+        "set-var": "taking:out;messing:with;redoing:oldcode"
+    },
+    "chexMix1": {
+        "tagname": "div",
+        "id": "set",
+        "insert": "left",
+        "textContent": "HEY!",
+        "get-var": "taking;messing;redoing"
     }
 }
 modala(f, document.body);
