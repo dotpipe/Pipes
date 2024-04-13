@@ -12,10 +12,10 @@
   *  -------------------------------------------------------------
   *  insert............= return ajax call to this id
   *  turn..............= creates a call to each Node with an id matching the listed, delimited with a semicolon in the 'turn' attribute
-  *  ajax........= calls and returns multiple files for insert in as many nodes. Also allows class-type insertion types (ex: ajax-multi="page.html:therethere@plain-html")
+  *  ajax..............= calls and returns multiple files for insert in as many nodes. Also allows class-type insertion types (ex: ajax-multi="page.html:therethere@plain-html")
   *  callbacks.........= calls function set as attribute value
-  *  set-var...........= set window varianble as a dynamic value you setup
-  *  get-var...........= get variable fmo window array in JS
+  *  set-var...........= set window variable as a dynamic value you setup
+  *  get-var...........= get variable from window[] array in JS
   *  call-chain........= same as callbacks, but the chained set of commands doesn't use AJAX results
   *  query.............= default query string associated with url ex: <anyTag form-class="someClass" query="key0:value0;key1:value2;" ajax="page.foo"> (Req. form-class)
   *  modal.............= Irondocks key. Inserts the Irondocks file in the value for template ease of use.
@@ -59,7 +59,7 @@
   *  iter..........= Take this many steps when stepping through file-order default = 1
   *  set-attr..........= attribute to set in target HTML tag ex: <pipe id="thisOrSomeId" set-attr="id.attr:value" ajax="foo.bar" query="do0:reme0;" insert="thisOrSomeID">
   *  mode..............= "POST" or "GET" (default: "POST") ex: <pipe mode="POST" set-attr="value" ajax="foo.bar" query="key0:value0;" insert="thisOrSomeID">
-  *  pipe..............= creates a listener on the object. use listen="eventType" to relegate.
+  *  pipe..............= creates a listener on the object. use listen="eventType" to delegate.
   *  multiple..........= states that this object has two or more key/value pairs use: states this is a multi-select form box
   *  remove............= remove element in tag ex: <anyTag remove="someID;someOtherId;">
   *  display...........= toggle visible and invisible of anything in the value ex: <anyTag display="someID;someOtherId;">
